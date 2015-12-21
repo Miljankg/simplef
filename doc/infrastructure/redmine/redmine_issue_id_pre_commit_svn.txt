@@ -1,0 +1,62 @@
+######################
+==== The SVN Hook ====
+######################
+
+- CREDITS: http://blag.samandshannon.com/?p=6
+
+======================
+
+1. Copy and paste this first one into a file named ‘pre-commit’ (no file extension, or copy pre-commit.tmpl to pre-commit), and drop it into the hooks directory of your svn installation. This script will be called automatically by svn whenever someone tries to commit. All it really does is pass the submitted comment string on to our ruby script, featured below.
+
+#!/bin/bash
+
+REPOS="$1" 
+TXN="$2" 
+
+SVNLOOK=/usr/bin/svnlook
+
+# change to the current working directory
+cd `dirname $0`
+
+# svnlook at the comments being submitted with the commit request
+COMMENTS=$($SVNLOOK log -t "$TXN" "$REPOS")
+
+# Holla out to a little ruby pre-commit script.  if it fails, exit with a return
+#    code of 1, which means that errors occurred
+/usr/bin/env ruby pre-commit.rb "$COMMENTS" || exit 1
+
+NOTE: If there is anything else in the hook file (e.g. checking if user has rights to commit, you can comment that out if you want).
+
+2. A Ruby pre-commit script (pre-commit.rb)
+
+Copy the following code and paste it into a file named ‘pre-commit.rb’. Drop the file into your svn/hooks directory alongside the pre-commit script created above.
+
+#!/usr/bin/env ruby
+
+comments = ARGV[0]
+
+if /[a-zA-Z0-9]/ !~ comments
+  raise "You must include a comment with your commit."
+end
+
+if /NO-ISSUE/ =~ comments
+  exit
+end
+
+if /RedmineID:\s#([0-9]+)/ !~ comments
+  raise "You must reference a redmine issue in your commit comments (e.g. 'Redm$
+end
+
+issue_number = comments[/#([0-9]+)/][/([0-9]+)/]
+
+# Change the username, password, hostname, and dbname in the following line
+#    to match your settings
+command_line_output = `/usr/bin/mysql -N -u redmine_default -psuperpassword2015$
+    -h localhost redmine_default -e \
+    "SELECT COUNT(*) FROM issues I INNER JOIN issue_statuses S \
+    ON S.id = I.status_id WHERE S.is_closed = 0 AND I.id = #{issue_number};"`
+
+redmine_issue_open = command_line_output[0,1]
+if '0' == redmine_issue_open
+  raise "Issue ##{issue_number} is not in an open state or does not exists."
+end

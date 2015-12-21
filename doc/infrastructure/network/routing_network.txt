@@ -1,0 +1,57 @@
+#################
+==== Routing ====
+#################
+
+Ports: 443, 80, 22 are forwared directly to 192.168.0.100
+
+#################
+===== No-ip =====
+#################
+
+- CREDITS: http://www.noip.com/support/knowledgebase/installing-the-linux-dynamic-update-client-on-ubuntu/
+
+=================
+
+Host: sfsrv01.no-ip.org
+
+Install No-Ip Client on Ubuntu:
+
+cd /usr/local/src/
+wget http://www.no-ip.com/client/linux/noip-duc-linux.tar.gz
+tar xf noip-duc-linux.tar.gz
+cd noip-2.1.9-1/
+make install
+
+/usr/local/bin/noip2 -C (dash capital C, this will create the default config file)
+/usr/local/bin/noip2
+
+#################################
+===== Autostart NoIp Client =====
+#################################
+
+- CREDITS: http://askubuntu.com/questions/442246/how-to-run-an-application-on-startup-automatically
+
+=================================
+
+sudo touch /etc/init.d/noip2
+sudo chmod 755 /etc/init.d/noip2
+sudo update-rc.d noip2 defaults
+
+Then add this into /etc/init.d/noip2
+
+#! /bin/sh 
+# . /etc/rc.d/init.d/functions  # uncomment/modify for your killproc 
+case "$1" in 
+start) 
+echo "Starting noip2." 
+/usr/local/bin/noip2 
+;; 
+stop) 
+echo -n "Shutting down noip2." 
+killproc -TERM /usr/local/bin/noip2 
+;; 
+*) 
+echo "Usage: $0 {start|stop}" 
+exit 1 
+esac 
+exit 0

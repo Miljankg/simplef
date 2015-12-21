@@ -1,0 +1,58 @@
+#############################################################################
+==== How to install Redmine on Ubuntu 14.04 and setup email notification ====
+#############################################################################
+
+- CREDITS: https://www.youtube.com/watch?v=h8yxVz-docA
+
+=============================================================================
+
+# apt-get update && apt-get upgrade -y
+
+# apt-get install apache2 libapache2-mod-passenger mysql-server mysql-client
+
+# apt-get install redmine redmine-mysql
+
+# gem update
+# gem install bundler
+
+# vim /etc/apache2/mods-available/passenger.conf
+<IfModule mod_passenger.c>
+PassengerDefaultUser www-data
+PassengerRoot /usr/lib/ruby/vendor_ruby/phusion_passen­ger/locations.ini
+PassengerDefaultRuby /usr/bin/ruby
+</IfModule>
+
+# ln -s /usr/share/redmine/public /var/www/html/redmine
+
+vim /etc/apache2/sites-available/000-default.conf
+<Directory /var/www/html/redmine>
+RailsBaseURI /redmine 
+PassengerResolveSymlinksInDocumentRoot on
+</Directory>
+
+# service apache2 restart
+
+#If you get error "There was an error while trying to write to Gemfile.lock"
+touch /usr/share/redmine/Gemfile.lock
+chown www-data:www-data /usr/share/redmine/Gemfile.lock
+
+chown -R www-data:www-data /etc/redmine/default/
+chmod -R a+w,a+r /etc/redmine/default/
+
+chmod -R 0666 /var/cache/redmine/       # Was set to 777 [ setting internal error when accessed ]
+chmod -R 0666 /var/log/redmine/default/ # Was set to 777 
+
+#Copy configuration
+
+cp /usr/share/redmine/config/configuration.yml.example /etc/redmine/default/configuration.yml
+
+#Email notification
+apt-get install sendmail
+
+vim /etc/redmine/default/configuration.yml
+
+#Uncoment desired config (e.g. gmail email)
+
+production:
+email_delivery: delivery_method: :smtp smtp_settings: address: localhost port: 25 domain: test authentication: :none openssl_verify_mode: 'none'
+----------------------------------------­----------------------------------------­------------

@@ -1,0 +1,31 @@
+##################################
+==== Create your own SSL Cert ====
+##################################
+
+- CREDITS: https://www.digitalocean.com/community/tutorials/how-to-create-a-ssl-certificate-on-apache-for-ubuntu-14-04 
+
+==================================
+
+sudo mkdir /etc/apache2/ssl
+
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/apache2/ssl/sf.key -out /etc/apache2/ssl/sf.crt
+
+##################################
+====    Edit Apache config   =====
+##################################
+
+Add this to: /etc/apache2/sites-available/000-default.config
+
+<VirtualHost *:443>
+
+	SSLEngine on
+	SSLCertificateFile /etc/apache2/ssl/sf.crt
+	SSLCertificateKeyFile /etc/apache2/ssl/sf.key
+
+	RewriteEngine on
+        RewriteCond %{HTTPS} on
+        RewriteRule ^/redmine(.*) http://%{HTTP_HOST}%{REQUEST_URI}
+
+</VirtualHost>
+
+sudo service apache2 restart

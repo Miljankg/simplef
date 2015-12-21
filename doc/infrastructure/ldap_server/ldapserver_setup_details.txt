@@ -1,0 +1,5 @@
+domain:    sf.com
+server ip: 192.168.0.100
+console:   /superldap
+
+BUG #1: change password_hash in /usr/share/phpldapadmin/lib/TemplateRender.php on line 2469 to password_hash_custom.
