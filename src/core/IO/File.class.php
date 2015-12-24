@@ -9,6 +9,15 @@ namespace Core\IO;
  */
 class File {
         
+    /**
+     * Retreive file list from the specified path, according to provided pattern.
+     * 
+     * @param string $path
+     * @param string $pattern
+     * @param bool $recursive
+     * @param const $patternOptions From RecursiveRegexIterator consts
+     * @return array List of file paths
+     */
     public static function getFileList(
             $path, 
             $pattern, 
