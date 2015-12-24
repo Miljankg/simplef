@@ -20,14 +20,3 @@ $config['config_db']            = array(      // In case when framework config i
     'pass' => '',
     'type' => 'mysql' // currently only mysql
 );
-
-/* Core */
-$config['core_classes_dir']     = "core";
-$config['core_classes']         = array(  // List of core classes
-        'Boot',
-        'DB\DB',
-        'Config\ConfigLoader',
-        'Config\Config',
-        'Config\ConfigLocations'
-);
-

@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Core\Configuration as Conf;
+
 /**
  * Class which task is to boot complete Simple Framework.
  *
@@ -9,15 +11,13 @@ namespace Core;
  */
 class Boot {
     
+    private $coreDirectory = "core";
+    
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
-        'core_classes_dir',
-        'core_classes',
         'document_root',
         'config_type'
-    );
-    
-    private $loadedGlobalConfig;
+    );   
     
     public function __construct(array $mainLoadedConfig) {
         
@@ -31,12 +31,11 @@ class Boot {
         $this->checkRequiredMainConfigFields();    
         
         // Load core classes
-        $this->loadCoreClasses();      
+        $this->loadCoreClasses();              
         
-        // Load additional configs        
-        $this->loadedGlobalConfig = new Config\Config();
+        $this->loadAdditionalConfig();
         
-        $this->loadedGlobalConfig->addConfig($this->loadAdditionalConfig());
+        print_r(Conf\Config::$config);
         
     }
     
@@ -47,15 +46,21 @@ class Boot {
      */
     private function loadCoreClasses() {
         
-        $coreClassPath = $this->mainLoadedConfig['document_root'] 
-                . $this->mainLoadedConfig['core_classes_dir'] . '\\';
-        
-        foreach ($this->mainLoadedConfig['core_classes'] as $coreClass) {
+        $directoryIterator = new \RecursiveDirectoryIterator(
+                $this->mainLoadedConfig['document_root'] . $this->coreDirectory
+                );                
+        $recursiveIterator = new \RecursiveIteratorIterator($directoryIterator);
+        $classList = new \RegexIterator(
+                $recursiveIterator, 
+                '/^.+\.class\.php$/i', 
+                \RecursiveRegexIterator::GET_MATCH
+                );
+
+        foreach($classList as $filePath => $object) {
             
-            require_once $coreClassPath . $coreClass . '.class.php';
+            require_once $filePath;
             
         }
-        
     }
     
     /**
@@ -84,12 +89,12 @@ class Boot {
      */
     private function loadAdditionalConfig() {
         
-        $configLoader = new Config\ConfigLoader($this->mainLoadedConfig['config_type']);
+        $configLoader = new Conf\ConfigLoader($this->mainLoadedConfig['config_type']);
         
         $phpConfigLocation = null;
         $dbObj = null;
         
-        if ($this->mainLoadedConfig['config_type'] == Config\ConfigLocations::PHP_FILE) {
+        if ($this->mainLoadedConfig['config_type'] == Conf\ConfigLocations::PHP_FILE) {
             
             $phpConfigLocation = $this->mainLoadedConfig['document_root'] . 'config/';
                                     
