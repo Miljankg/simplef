@@ -21,7 +21,7 @@ class Config {
      * @param array $config Config to add
      * @throws \Exception When config is closed for addition
      */
-    public static function addMultipleConfigValues(array $config) {
+    public static function addMultipleConfigValues(array $config) {                
         
         if (Config::$configClosed) {
             
@@ -60,7 +60,7 @@ class Config {
      */
     public static function get($index) {
         
-        if (isset(Config::$config[$index])) {
+        if (!isset(Config::$config[$index])) {
             
             throw new \Exception("Index $index is does not exists in the config.");
         
@@ -68,6 +68,17 @@ class Config {
         
         return Config::$config[$index];
     }       
+    
+    /**
+     * Returns all config fields.
+     * 
+     * @return array Loaded config
+     */
+    public static function getAllFields() {
+        
+        return Config::$config;
+        
+    }
     
     /**
      * Closes config for adding new fields.

@@ -8,7 +8,9 @@ namespace Core\IO;
  * @author Miljan Pantic
  */
 class File {
-        
+    
+    /* Interface functions */
+    
     /**
      * Retreive file list from the specified path, according to provided pattern.
      * 
@@ -50,5 +52,35 @@ class File {
         return $fileListArray;
         
     }
+    
+    /**
+     * Writes or appends text to a file.
+     * 
+     * @param string $file File to write to.
+     * @param string $text Text to write.
+     * @param bool $append Should content be appended or written.
+     * @throws \Exception In case when $file param is empty or null.
+     */
+    public static function writeToFile($file, $text, $append = false) {
+        
+        if (empty($file)) {
+            
+            throw new \Exception("File cannot be empty or null.");
+            
+        }
+        
+        $options = null;
+        
+        if ($append) {
+            
+            $options = FILE_APPEND;
+            
+        }
+        
+        file_put_contents($file, $text, FILE_APPEND);
+        
+    }
+    
+    /***********************/    
     
 }

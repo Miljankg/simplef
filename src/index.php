@@ -3,11 +3,11 @@
 // Load main system configuration
 require_once 'config/constants.php';
 require_once 'config/system/config_main.php';
-require_once 'core/Boot.class.php';
+require_once 'core/SF.class.php';
 
 // Create instance of the boot class
-$boot = new \Core\Boot($config);
+$sf = new \Core\SF($config);
 
 // Start framework
-$boot->startSimpleFramework();
+$sf->execute();
 

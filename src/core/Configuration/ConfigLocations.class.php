@@ -7,8 +7,9 @@ namespace Core\Configuration;
  *
  * @author Miljan Pantic
  */
-abstract class ConfigLocations
-{
+abstract class ConfigLocations {
+    
     const PHP_FILE = 'php_file';
     const DB = 'db';
+    
 }
