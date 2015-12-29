@@ -133,6 +133,7 @@ class URL {
     {       
         $urlStr = '';
         $urlPartsStartIndex = 1;
+        $pageName = '';
         
         if (isset($_GET['pageName'])) {
             

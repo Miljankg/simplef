@@ -1,0 +1,337 @@
+
+[ 2015-12-27 21:06:45 ]  ERROR: Message: Config is closed for adding new fields.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Boot.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #1 {main}
+                         
+[ 2015-12-27 21:07:12 ]  ERROR:
+                         Message: Config is closed for adding new fields.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Boot.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #1 {main}
+                         
+[ 2015-12-27 21:08:03 ]  == ERROR ==
+                         Message: Config is closed for adding new fields.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Boot.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #1 {main}
+                         
+[ 2015-12-27 21:08:18 ]  == ERROR ==
+                         Message: Config is closed for adding new fields.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Boot.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #1 {main}
+                         
+[ 2015-12-27 23:34:38 ]  == ERROR ==
+                         Message: Index site_name is does not exists in the config.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Configuration\Config.class.php
+                         Line:   65
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(75): Core\Configuration\Config::get('site_name')
+                         #1 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #2 {main}
+                         
+[ 2015-12-27 23:35:13 ]  == ERROR ==
+                         Message: Page 404 is not configured.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php
+                         Line:   21
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(212): Core\Routing\Pages->__construct(Array, '404', 'http://localhos...')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:03:21 ]  == ERROR ==
+                         Message: Lang array does not have test field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(216): Core\Lang\Language::get('test')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:20:51 ]  == ERROR ==
+                         Message: Lang array does not have  field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(228): Core\Lang\Language::get('')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:22:06 ]  == ERROR ==
+                         Message: Lang array does not have 404 field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(230): Core\Lang\Language::get('404')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:22:10 ]  == ERROR ==
+                         Message: Lang array does not have 404 field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(230): Core\Lang\Language::get('404')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:26:53 ]  == ERROR ==
+                         Message: Lang array does not have page_404 field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(237): Core\Lang\Language::get('page_404')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:26:56 ]  == ERROR ==
+                         Message: Lang array does not have page_404 field.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Lang\Language.class.php
+                         Line:   50
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Boot.class.php(237): Core\Lang\Language::get('page_404')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(82): Core\Boot->loadPage()
+                         #2 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #3 {main}
+                         
+[ 2015-12-28 01:46:01 ]  == ERROR ==
+                         Message: Page 404 is not configured.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php
+                         Line:   74
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(27): Core\Routing\Pages->genListOfModulesToLoad(Array, '404', 'http://localhos...')
+                         #1 C:\xampp\htdocs\simplef\src\core\Boot.class.php(255): Core\Routing\Pages->__construct(Array, '404', 'http://localhos...', 'lang_test')
+                         #2 C:\xampp\htdocs\simplef\src\core\Boot.class.php(83): Core\Boot->loadPage()
+                         #3 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #4 {main}
+                         
+[ 2015-12-28 02:01:54 ]  == ERROR ==
+                         Message: T
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Boot.class.php
+                         Line:   85
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\index.php(12): Core\Boot->startSimpleFramework()
+                         #1 {main}
+                         
+[ 2015-12-29 00:43:40 ]  == ERROR ==
+                         Message: Index libs is does not exists in the config.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Configuration\Config.class.php
+                         Line:   65
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\SF.class.php(311): Core\Configuration\Config::get('libs')
+                         #1 C:\xampp\htdocs\simplef\src\core\SF.class.php(91): Core\SF->loadLibs('C:/xampp/htdocs...')
+                         #2 C:\xampp\htdocs\simplef\src\core\SF.class.php(49): Core\SF->bootUp()
+                         #3 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #4 {main}
+                         
+[ 2015-12-29 01:01:19 ]  == ERROR ==
+                         Message: Unable to load template file '<html>
+                             
+                             <body>
+                                 <div style="background-color: lightsalmon;">
+                                     OVO JE SAMO TEST
+                                 </div>
+                             </body>
+                             
+                         </html>
+                         '
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, true)
+                         #1 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(834): Smarty->fetch('<html>\n    \n   ...', NULL, NULL, NULL, true)
+                         #2 C:\xampp\htdocs\simplef\src\core\SF.class.php(355): Smarty->display('<html>\n    \n   ...')
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(121): Core\SF->displayContent('<html>\n    \n   ...')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #5 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #6 {main}
+                         
+[ 2015-12-29 01:26:32 ]  == ERROR ==
+                         Message: Page 404 is not configured.
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php
+                         Line:   73
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(38): Core\Routing\Page->genListOfModulesToLoad(Array, '404', 'http://localhos...')
+                         #1 C:\xampp\htdocs\simplef\src\core\SF.class.php(259): Core\Routing\Page->getModulesToLoad(Array, '404', 'http://localhos...', 'lang_test')
+                         #2 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #4 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #5 {main}
+                         
+[ 2015-12-29 02:27:07 ]  == ERROR ==
+                         Message: Unable to load template file 'lang_test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(24): Smarty->fetch('lang_test.tpl')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(53): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(269): Core\Routing\Pages->getCurrentPageContent('')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 02:27:11 ]  == ERROR ==
+                         Message: Unable to load template file 'lang_test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(24): Smarty->fetch('lang_test.tpl')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(53): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(269): Core\Routing\Pages->getCurrentPageContent('')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 02:28:22 ]  == ERROR ==
+                         Message: Unable to load template file 'lang_test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(24): Smarty->fetch('lang_test.tpl')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(54): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(269): Core\Routing\Pages->getCurrentPageContent('')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 02:30:14 ]  == ERROR ==
+                         Message: Unable to load template file 'lang_test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(24): Smarty->fetch('lang_test.tpl')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(54): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(269): Core\Routing\Pages->getCurrentPageContent('')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 02:30:47 ]  == ERROR ==
+                         Message: Unable to load template file 'lang_test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(24): Smarty->fetch('lang_test.tpl')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(54): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(269): Core\Routing\Pages->getCurrentPageContent('')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(119): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(53): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 04:39:11 ]  == ERROR ==
+                         Message: Unable to load template file 'C:/xampp/htdocs\simplef\src/templates\pages\test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(40): Smarty->fetch('C:/xampp/htdocs...')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(71): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(280): Core\Routing\Pages->getCurrentPageContent('test')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(120): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(54): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 04:40:34 ]  == ERROR ==
+                         Message: Unable to load template file 'C:/xampp/htdocs\simplef\src/templates\pages\test.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(40): Smarty->fetch('C:/xampp/htdocs...')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(71): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(280): Core\Routing\Pages->getCurrentPageContent('test')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(120): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(54): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         
+[ 2015-12-29 04:40:39 ]  == ERROR ==
+                         Message: Unable to load template file 'C:/xampp/htdocs\simplef\src/templates\pages\404.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\core\Routing\Page.class.php(40): Smarty->fetch('C:/xampp/htdocs...')
+                         #2 C:\xampp\htdocs\simplef\src\core\Routing\Pages.class.php(71): Core\Routing\Page->getContent(Object(Smarty))
+                         #3 C:\xampp\htdocs\simplef\src\core\SF.class.php(280): Core\Routing\Pages->getCurrentPageContent('404')
+                         #4 C:\xampp\htdocs\simplef\src\core\SF.class.php(120): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\core\SF.class.php(54): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         

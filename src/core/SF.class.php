@@ -9,6 +9,7 @@ use Core\Logging as Log;
 use Core\URLUtils as URL;
 use Core\Lang as Lang;
 use Core\Routing as Route;
+use Core\Components as Comp;
 
 /**
  * Class which task is to boot complete Simple Framework.
@@ -32,6 +33,8 @@ class SF {
         'pages',
         'empty_page_index'
     );
+    
+    private $tplEngine = null;
     
     public function __construct(array $mainLoadedConfig) {
         
@@ -59,16 +62,16 @@ class SF {
     /**
      * Boots up SF.
      */
-    private function bootUp() {
+    private function bootUp() {                
         
         // Check required fields
         $this->checkRequiredConfigFields(
                 $this->mainLoadedConfig,
                 $this->requiredMainConfig
-                );    
+                );                                    
         
         // Load core classes
-        $this->loadCoreClasses();              
+        $this->loadCoreClasses();                              
         
         $this->setUpExceptionHandling();                     
         
@@ -79,13 +82,18 @@ class SF {
                 Conf\Config::getAllFields(),
                 $this->requiredSystemConfig
                 );    
-        
+                        
         // Set up logger
         if (Conf\Config::get('error_log_enabled') == true) {
             
             $this->setUpLogger();                        
             
         }                          
+        
+        $documentRoot = Conf\Config::get('document_root');
+        
+        // Load libs
+        $this->loadLibs($documentRoot);
         
         // Parse URL
         URL\URL::processURL(
@@ -97,8 +105,10 @@ class SF {
                 );
         
         // Load language
-        $this->loadLanguage();
+        $this->loadLanguage();  
         
+        // Init template engine
+        $this->tplEngine = $this->initTplEngine($documentRoot);
     }
     
     /**
@@ -107,7 +117,9 @@ class SF {
     private function display() {
         
         // Load page
-        $this->loadPage();    
+        $fetchedTpl = $this->loadPage();   
+        
+        $this->displayContent($fetchedTpl);
         
     }
 
@@ -234,20 +246,39 @@ class SF {
      */
     private function loadPage() {                
         
-        $pagesObj = new Route\Pages();                     
-        $currPage = URL\URL::getCurrentPage();        
-        $pages = Conf\Config::get('pages');
+        $tplDir = $this->tplEngine->getTemplateDir(0);
         
-        $this->handlePageTranslations($currPage, $pages, $pagesObj->pageNotFoundPage);
-        
-        $modulesToLoad = $pagesObj->getModulesToLoad(
-                $pages, 
-                $currPage,
-                URL\URL::getMainUrl(),
-                Conf\Config::get('empty_page_index')
+        $componentLoader = new Comp\SFComponentLoader(
+                Conf\Config::get('document_root') . 'components/output/', 
+                $tplDir . 'out_components/', 
+                Conf\Config::get('output_components'), 
+                $this->tplEngine
                 );
         
-        print_r($modulesToLoad);
+        $pages = new Route\Pages(
+                Conf\Config::get('pages'),
+                Conf\Config::get('pages_out_components'),
+                Conf\Config::get('pages_templates'),
+                Conf\Config::get('empty_page_index'),
+                $this->tplEngine,
+                $tplDir . 'pages/',
+                $componentLoader
+                );                     
+        
+        $pages->pageNotFoundPage = Conf\Config::get('page_not_found_page');
+        
+        $currPage = URL\URL::getCurrentPage();                
+        
+        $this->handlePageTranslations(
+                $currPage, 
+                Conf\Config::get('pages'), 
+                $pages->pageNotFoundPage);
+        
+        // assign to the main tpl
+        $this->tplEngine->assign(
+                'mainContent',
+                $pages->getCurrentPageContent($currPage)
+                );                
         
     }
     
@@ -262,7 +293,7 @@ class SF {
         
         if (!empty($currPage)) {
         
-            foreach ($pages as $page => $modulesToLoad) {
+            foreach ($pages as $page) {
 
                 try {
 
@@ -299,7 +330,52 @@ class SF {
         }           
     }
 
+    /**
+     * Loads SF libraries.
+     * 
+     * @param string $documentRoot
+     */
+    private function loadLibs($documentRoot) {
+        
+        $libsToLoad = Conf\Config::get('sf_libs');
+        
+        foreach ($libsToLoad as $library) {
+            
+            require_once $documentRoot . 'lib/' . $library . '/incl_lib.php';
+            
+        }
+        
+    }
+    
+    /**
+     * Inits template engine.
+     * 
+     * @return Smarty Smarty object
+     */
+    private function initTplEngine($documentRoot) {
+        
+        $smarty = new \Smarty();
 
+        $smarty->setTemplateDir($documentRoot . 'templates');
+        $smarty->setCompileDir($documentRoot . 'templates_c');
+        $smarty->setCacheDir($documentRoot . 'cache');
+        $smarty->setConfigDir($documentRoot . 'config');				
+        
+        return $smarty;
+        
+    }
+    
+    /**
+     * Displays page content.
+     * 
+     * @param string $fetchedTpl Contect of a fetched tpl.
+     */
+    private function displayContent($fetchedTpl) {
+        
+        $this->tplEngine->display('index.tpl');
+        
+    }
+    
     /**********************/
     
 }

@@ -3,102 +3,160 @@
 namespace Core\Routing;
 
 use Core\URLUtils as URL;
+use Core\Components as Comp;
 
 /**
- * Pages API
+ * Handles multiple pages operations
+ *
+ * @author Miljan Pantic
  */
-class Pages {    
+class Pages {
+    
+    private $pages = array();
+    private $tplEngine = null;
+    private $emptyPageIndex = "";   
+    private $pagesTplDir = "";
     
     public $pageNotFoundPage = "404";
+    
+    public function __construct(
+            array $configuredPages,
+            array $configuredOutComponents,
+            array $configuredTemplates,
+            $emptyPageIndex,
+            \Smarty $tplEngine,
+            $pagesTplDir,
+            Comp\SFComponentLoader $componentLoader
+            ) {
+        
+        $this->init(
+                $configuredPages, 
+                $configuredOutComponents,
+                $configuredTemplates,
+                $emptyPageIndex,
+                $tplEngine,
+                $pagesTplDir,
+                $componentLoader
+                );
+    }    
     
     /* Interface functions */
     
     /**
-     * Retreives modules to load for the current page.
+     * Retreive current page content.
      * 
-     * @param array $loadedPagesConfig
-     * @param string $currentPage
-     * @param string $mainUrl
-     * @param string $emptyPageIndex
-     * @return array Modules to load
+     * @param type $currentPageName
+     * @return string Page content
+     * @throws \Exception if page 404 is not configured (prevents redirection loop).
      */
-    public function getModulesToLoad(
-            array $loadedPagesConfig, 
-            $currentPage, 
-            $mainUrl, 
-            $emptyPageIndex
-            ) {
+    public function getCurrentPageContent($currentPageName) {
         
-        $this->handleEmptyPage($currentPage, $emptyPageIndex);       
-                 
-        return $this->genListOfModulesToLoad(
-                $loadedPagesConfig, 
-                $currentPage, 
-                $mainUrl
-                );
+        $this->handleEmptyPage($currentPageName);
         
-    }
+        if (!isset($this->pages[$currentPageName])) {
+            
+            // Prevent 404 redirection loop if 404 page is not configured
+            if ($currentPageName == $this->pageNotFoundPage) {
+                
+                throw new \Exception("Page {$this->pageNotFoundPage} is not configured.");
+                
+            }
+            
+            $this->redirectTo404();
+            
+        }
+        
+        $page = $this->pages[$currentPageName];
+        
+        return $page->getContent($this->tplEngine);
+    }       
         
     /***********************/
     
     /* Internal functions */
     
-    /**
-     * Redirect to 404.
+    /**     
+     * Initalizes pages.
      * 
-     * @param string $mainUrl Main URL
+     * @param array $configuredPages
+     * @param array $configuredOutComponents
+     * @param array $configuredTemplates
+     * @param string $emptyPageIndex 
+     * @param Smarty $tplEngine
+     * @param string $pagesTplDir Pages template dir
      */
-    private function redirectTo404($mainUrl) {
+    private function init(            
+            array $configuredPages,
+            array $configuredOutComponents,
+            array $configuredTemplates,
+            $emptyPageIndex,
+            \Smarty $tplEngine,
+            $pagesTplDir,
+            Comp\SFComponentLoader $componentLoader) {
         
-        $location = $mainUrl . $this->pageNotFoundPage;
+        $this->emptyPageIndex = $emptyPageIndex;
+        $this->tplEngine = $tplEngine;
+        $this->pagesTplDir = $pagesTplDir;
+        
+        foreach ($configuredPages as $pageName) {
+            
+            $outCompsToLoad = array();
+            $tplToLoad = "";
+            
+            // Handle out components
+            if (isset($configuredOutComponents[$pageName])) {
+                
+                $outCompsToLoad = $configuredOutComponents[$pageName];
+                
+            }
+            
+            // Handle template
+            if (isset($configuredTemplates[$pageName])) {
+                
+                $tplToLoad = $configuredTemplates[$pageName];
+                
+            }
+            
+            if (empty($tplToLoad)) {
+                
+                $tplToLoad = $this->pagesTplDir . $pageName . ".tpl";
+                
+            }
+            
+            // Populate pages array
+            $this->pages[$pageName] = new Page(
+                    $pageName,
+                    $outCompsToLoad,
+                    $tplToLoad,
+                    $componentLoader
+                    );
+            
+        }                
+                
+    }
+
+
+    /**
+     * Redirect to 404.    
+     */
+    private function redirectTo404() {
+        
+        $location = URL\URL::getMainUrl() . $this->pageNotFoundPage;
             
         URL\URL::redirect($location); 
         
-    }
-    
-    /**
-     * Retreives modules to load for the specified page.
-     * 
-     * @param array $loadedPagesConfig
-     * @param string $currentPage
-     * @param string $mainUrl
-     * @throws \Exception If 404 page is not configured.
-     */
-    private function genListOfModulesToLoad(array $loadedPagesConfig, $currentPage, $mainUrl) {
-        
-        if (!isset($loadedPagesConfig[$currentPage])) {
-            
-            if ($currentPage == $this->pageNotFoundPage) {
-                
-                throw new \Exception("Page {$this->pageNotFoundPage} is not configured.");
-                
-            }                                               
-            
-            $this->redirectTo404($mainUrl);
-            
-        }
-        else if ($currentPage == $this->pageNotFoundPage 
-                && $currentPage != URL\URL::getCurrentPage()) {
-            
-            $this->redirectTo404($mainUrl);
-            
-        }
-                 
-        return $loadedPagesConfig[$currentPage];
-        
-    }
+    }        
     
     /**
      * Sets empty page index if current page is empty string.
      * 
      * @param string $currPage Current page
-     * @param string $emptyPageIndex Empty page index to set.
      */
-    private function handleEmptyPage(&$currPage, $emptyPageIndex) {
+    private function handleEmptyPage(&$currPage) {
         
         if (empty($currPage)) {
             
-            $currPage = $emptyPageIndex;
+            $currPage = $this->emptyPageIndex;
             
         }
         
@@ -107,4 +165,3 @@ class Pages {
     /**********************/
     
 }
-

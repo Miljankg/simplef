@@ -29,7 +29,7 @@ class Language {
         
         $lang = array();
         
-        $path = $documentRoot . "lang\\" . $langToLoad . "\\$langToLoad.php";
+        $path = $documentRoot . "lang/" . $langToLoad . "/$langToLoad.php";
         
         require_once $path;
         
