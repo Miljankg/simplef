@@ -487,3 +487,19 @@
                          #9 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
                          #10 {main}
                          
+[ 2016-01-10 15:04:54 ]  == ERROR ==
+                         Message: Unable to load template file 'C:/xampp/htdocs\simplef\src\app\templates\pages/404.tpl'
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\lib\smarty\libs\sysplugins\smarty_internal_template.php
+                         Line:   219
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\src\framework\lib\smarty\libs\Smarty.class.php(820): Smarty_Internal_Template->render(true, false, false)
+                         #1 C:\xampp\htdocs\simplef\src\framework\core\Routing\Page.class.php(46): Smarty->fetch('C:/xampp/htdocs...')
+                         #2 C:\xampp\htdocs\simplef\src\framework\core\Routing\Pages.class.php(75): Core\Routing\Page->getContent(Object(Smarty), Array)
+                         #3 C:\xampp\htdocs\simplef\src\framework\core\SF.class.php(335): Core\Routing\Pages->getCurrentPageContent('', 'http://localhos...', '')
+                         #4 C:\xampp\htdocs\simplef\src\framework\core\SF.class.php(170): Core\SF->loadPage()
+                         #5 C:\xampp\htdocs\simplef\src\framework\core\SF.class.php(95): Core\SF->display()
+                         #6 C:\xampp\htdocs\simplef\src\index.php(12): Core\SF->execute()
+                         #7 {main}
+                         

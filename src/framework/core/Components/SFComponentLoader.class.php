@@ -36,10 +36,10 @@ class SFComponentLoader {
             \Smarty $tplEngine,
             $configType,
             $currLang,
-            $wrapComponents,
-            DB $db,
+            $wrapComponents,            
             $logicCompDir,
-            $outCompLogic) {
+            $outCompLogic,
+            DB $db = null) {
         
         $this->outputComponentsDir = $outputComponentsDir;
         $this->outputComponentsTplDir = $outputComponentsTplDir;

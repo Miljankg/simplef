@@ -302,9 +302,9 @@ class SF {
                 SF::$config->get('config_type'),
                 URL::getCurrentLanguage(),
                 SF::$config->get('wrap_components'),
-                $this->db,
                 SF::$config->get('logic_components_dir'),
-                SF::$config->get('output_components_logic')                
+                SF::$config->get('output_components_logic'),
+                $this->db
                 );
         
         $pages = new Pages(

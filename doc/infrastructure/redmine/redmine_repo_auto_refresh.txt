@@ -1,0 +1,3 @@
+Add this to the post commit script of the repo: 
+
+/path_to_redmine/redmine/script/rails runner "Repository.fetch_changesets" -e production > /dev/null 2>&1 
