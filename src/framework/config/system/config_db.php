@@ -1,14 +1,14 @@
 <?php
 
-define('MAIN_DB', "main_db");
+// define('EXAMPLE_DB', "example_db");
 
 $config['db_config'] = array(
-    /*MAIN_DB => array(
+    /*EXAMPLE_DB => array(
         'db_type' => 'mysql',
         'db_user' => 'root',
         'db_pass' => 'root',
         'db_host' => 'localhost',
-        'db_name' => 'test2'
+        'db_name' => 'example_db'
     )*/
 );   // type of DB => [ Currently supported: "mysql", "oracle" ] 
 
