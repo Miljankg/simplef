@@ -21,6 +21,6 @@ abstract class LogicComponent extends SFComponent {
         
     }        
     
-     protected abstract function init();   
+     public abstract function init();
     
 }

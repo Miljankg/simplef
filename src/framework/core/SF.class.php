@@ -57,7 +57,7 @@ class SF {
         'is_cli',
         'is_site_multilang',
         'default_language',
-        'avaliable_langs',
+        'available_langs',
         'lang_dir',
         'sf_libs',
         'error_log_enabled',
@@ -150,7 +150,9 @@ class SF {
                 SF::$config->get('ssl_port'),
                 SF::$config->get('app_webroot_dir')
                 );         
-        
+
+        $this->checkLanguage(URL::getCurrentLanguage());
+
         $this->genConfigValues();
         
         // Init template engine
@@ -487,7 +489,7 @@ class SF {
                 $this->mainLoadedConfig['framework_dir'] . 
                 str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($class)) . 
                 '.class.php';
-        
+
         if( is_file($classFile) && !class_exists($class) ) {
                     
             require $classFile;
@@ -549,7 +551,17 @@ class SF {
             
         }        
         
-    }   
+    }
+
+    private function checkLanguage($currLanguage) {
+
+        if (!in_array($currLanguage, SF::$config->get('available_langs'))) {
+
+            throw new \Exception("Language \"$currLanguage\" is not configured.");
+
+        }
+
+    }
 
     /**********************/
     
