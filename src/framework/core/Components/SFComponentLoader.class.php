@@ -26,6 +26,8 @@ class SFComponentLoader {
     private $logicCompDir = "";
     private $outCompLogic = "";
     private $loadedLogicComponents = array();
+    private $commonComponents = array();
+    private $currPageName;
     
     public function __construct(
             $outputComponentsDir, 
@@ -39,7 +41,9 @@ class SFComponentLoader {
             $wrapComponents,            
             $logicCompDir,
             $outCompLogic,
-            DB $db = null) {
+            DB $db = null,
+            $commonComponents,
+            $currPageName) {
         
         $this->outputComponentsDir = $outputComponentsDir;
         $this->outputComponentsTplDir = $outputComponentsTplDir;
@@ -53,6 +57,8 @@ class SFComponentLoader {
         $this->logicCompDir = $logicCompDir;
         $this->outCompLogic = $outCompLogic;
         $this->logicComponentNamespace = $logicComponentNamespace;
+        $this->commonComponents = $commonComponents;
+        $this->currPageName = $currPageName;
         
     }
     
@@ -73,6 +79,13 @@ class SFComponentLoader {
             'css',
             'js'
         );
+
+        foreach ($this->commonComponents as $component => $exceptionPage) {
+
+            if ($this->currPageName != $exceptionPage)
+                $outputComponentsToLoad[] = $component;
+
+        }
         
         foreach ($outputComponentsToLoad as $outComponentName) {                        
             

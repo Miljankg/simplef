@@ -72,7 +72,8 @@ class SF {
         'empty_page_index',
         'page_not_found_page',
         'wrap_components',
-        'output_components_logic'
+        'output_components_logic',
+        'common_output_components'
     );
     
     private $tplEngine = null;
@@ -304,7 +305,9 @@ class SF {
                 SF::$config->get('wrap_components'),
                 SF::$config->get('logic_components_dir'),
                 SF::$config->get('output_components_logic'),
-                $this->db
+                $this->db,
+                SF::$config->get('common_output_components'),
+                SF::$config->get('current_page')
                 );
         
         $pages = new Pages(
@@ -515,7 +518,7 @@ class SF {
         
         $mainUrl = URL::getMainUrlNoLang();
         
-        SF::$config->set('main_url', $mainUrl);
+        SF::$config->set('main_url', URL::getMainUrl());
         SF::$config->set('main_url_no_lang', URL::getMainUrlNoLang());
         SF::$config->set('protocol', URL::getProtocol());
         SF::$config->set('current_page', URL::getCurrentPage());

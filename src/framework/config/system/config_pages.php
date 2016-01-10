@@ -39,3 +39,4 @@ $config['default_page']         = ""; // Empty = root
 $config['empty_page_index']     = "";
 $config['page_not_found_page']  = PAGE_404;
 $config['wrap_components']      = true;
+$config['common_output_components'] = array();
