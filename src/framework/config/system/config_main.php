@@ -23,12 +23,12 @@ $config['document_root']        = $_SERVER['DOCUMENT_ROOT'] . $config['ds'] . $c
 $config['framework_dir']        = $config['document_root'] . 'framework' . $config['ds'];
 $config['app_dir']              = $config['document_root'] . 'app' . $config['ds'];
 
-$config['main_url']             = ""; // Generated during framework initalization
-$config['protocol']             = ""; // Generated during framework initalization
-$config['main_url_no_lang']     = ""; // Generated during framework initalization
-$config['current_page']         = ""; // Generated during framework initalization
-$config['current_language']     = ""; // Generated during framework initalization
-$config['url_parts']            = ""; // Generated during framework initalization
+$config['main_url']             = ""; // Generated during framework initialization
+$config['protocol']             = ""; // Generated during framework initialization
+$config['main_url_no_lang']     = ""; // Generated during framework initialization
+$config['current_page']         = ""; // Generated during framework initialization
+$config['current_language']     = ""; // Generated during framework initialization
+$config['url_parts']            = ""; // Generated during framework initialization
 
 /* Config */
 $config['config_type']          = "php_file"; // php_file or db
