@@ -34,7 +34,7 @@ $config['pages_templates'] =
             
         );
 
-/* Pages */
+/* Misc */
 $config['default_page']         = ""; // Empty = root
 $config['empty_page_index']     = "";
 $config['page_not_found_page']  = PAGE_404;
