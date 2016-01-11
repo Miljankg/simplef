@@ -73,7 +73,8 @@ class SF {
         'page_not_found_page',
         'wrap_components',
         'output_components_logic',
-        'common_output_components'
+        'common_output_components',
+		'pages_url'
     );
     
     private $tplEngine = null;
@@ -311,7 +312,7 @@ class SF {
                 SF::$config->get('common_output_components'),
                 SF::$config->get('current_page')
                 );
-        
+
         $pages = new Pages(
                 SF::$config->get('pages'),
                 SF::$config->get('pages_out_components'),
@@ -332,10 +333,11 @@ class SF {
                 $pages->pageNotFoundPage);*/                
         
         $header = "";
-        
+
         $content = $pages->getCurrentPageContent(
                 $currPage, 
                 SF::$config->get('output_components_url'),
+                SF::$config->get('pages_url'),
                 $header
                 );                        
         
@@ -367,7 +369,7 @@ class SF {
         
         $indexCss = SF::$config->get('index_url') . 'css/index.css';
         $indexJs = SF::$config->get('index_url') . 'js/index.js';
-        
+
         $headerIndex = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$indexCss}\">\n";
         $headerIndex .= "<script src=\"{$indexJs}\"></script>\n";
         
@@ -528,6 +530,7 @@ class SF {
         SF::$config->set('url_parts', URL::getUrlParts());
         SF::$config->set('output_components_url', $mainUrl . SF::$config->get('output_components_url'));
         SF::$config->set('index_url', $mainUrl . SF::$config->get('index_url'));
+        SF::$config->set('pages_url', $mainUrl . SF::$config->get('pages_url'));
         
     }
     

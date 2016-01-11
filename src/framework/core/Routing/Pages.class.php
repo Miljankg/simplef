@@ -51,10 +51,10 @@ class Pages {
      * @return string Page content
      * @throws \Exception if page 404 is not configured (prevents redirection loop).
      */
-    public function getCurrentPageContent($currentPageName, $componentsUrl, &$header) {
+    public function getCurrentPageContent($currentPageName, $componentsUrl, $pagesUrl, &$header) {
         
         $this->handleEmptyPage($currentPageName);
-        
+
         if (!isset($this->pages[$currentPageName])) {
             
             // Prevent 404 redirection loop if 404 page is not configured
@@ -74,7 +74,7 @@ class Pages {
         
         $content = $page->getContent($this->tplEngine, $headerArr);
         
-        $header = $this->genHeaderString($headerArr, $componentsUrl);
+        $header = $this->genHeaderString($headerArr, $page->tplName, $pagesUrl, $componentsUrl);
         
         return $content;
     }       
@@ -83,9 +83,13 @@ class Pages {
     
     /* Internal functions */
     
-    private function genHeaderString(array $headerArr, $componentsUrl) {
-        
-        $header = "";
+    private function genHeaderString(array $headerArr, $tplName, $pagesUrl, $componentsUrl) {
+
+        $pageCss = $pagesUrl . $tplName . "/css/$tplName.css";
+        $pageJs = $pagesUrl . $tplName . "/js/$tplName.js";
+
+        $header = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$pageCss}\">" . PHP_EOL;
+        $header .= "<script src=\"{$pageJs}\"></script>" . PHP_EOL;
         
         foreach ($headerArr as $outCompName => $outCompVals) {
             
@@ -133,7 +137,7 @@ class Pages {
         $this->emptyPageIndex = $emptyPageIndex;
         $this->tplEngine = $tplEngine;
         $this->pagesTplDir = $pagesTplDir;
-        
+
         foreach ($configuredPages as $pageName) {
             
             $outCompsToLoad = array();
@@ -145,25 +149,32 @@ class Pages {
                 $outCompsToLoad = $configuredOutComponents[$pageName];
                 
             }
-            
+
+            $tplName = $pageName;
+
             // Handle template
             if (isset($configuredTemplates[$pageName])) {
-                
-                $tplToLoad = $configuredTemplates[$pageName];
+
+                $tplName = $configuredTemplates[$pageName];
+
+                $tplToLoad = $configuredTemplates[$pageName] . '/' . $configuredTemplates[$pageName] . ".tpl";
                 
             }
             
             if (empty($tplToLoad)) {
-                
-                $tplToLoad = $this->pagesTplDir . $pageName . ".tpl";
+
+                $tplToLoad = $pageName . '/' . $pageName . ".tpl";
                 
             }
-            
+
+            $tplToLoad = $this->pagesTplDir . $tplToLoad;
+
             // Populate pages array
             $this->pages[$pageName] = new Page(
                     $pageName,
                     $outCompsToLoad,
                     $tplToLoad,
+                    $tplName,
                     $componentLoader
                     );
             

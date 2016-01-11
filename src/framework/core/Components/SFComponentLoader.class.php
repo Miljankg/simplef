@@ -160,7 +160,7 @@ class SFComponentLoader {
                 
                 if ($this->wrapComponents) {
                     
-                    $componentContent = "<div id=\"{$outComponentName}\">\n{$componentContent}\n</div>";
+                    $componentContent = "<div id=\"{$outComponentName}\" class=\"output-component\">\n{$componentContent}\n</div>";
                     
                 }
                 

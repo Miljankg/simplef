@@ -13,15 +13,18 @@ class Page {
     private $outComponents;
     private $template;
     private $componentLoader = null;
+
+    public $tplName;
     
     public function __construct(
             $pageName, 
             array $outComponents, 
             $template,
+            $tplName,
             SFComponentLoader $componentLoader
             ) {
         
-        $this->init($pageName, $outComponents, $template, $componentLoader);
+        $this->init($pageName, $outComponents, $template, $tplName, $componentLoader);
         
     }
     
@@ -55,6 +58,7 @@ class Page {
             $pageName, 
             array $outComponents, 
             $template,
+            $tplName,
             SFComponentLoader $componentLoader
             ) {
                 
@@ -68,7 +72,8 @@ class Page {
             
         }
         
-        $this->template = $template;                
+        $this->template = $template;
+        $this->tplName = $tplName;
         
     }
     
