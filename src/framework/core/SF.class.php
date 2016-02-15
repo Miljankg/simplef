@@ -112,7 +112,7 @@ class SF implements ISF {
 
     //</editor-fold>
 
-    //<editor-fold desc="Interface functions">
+    //<editor-fold desc="Internal functions">
     
     /**
      * Boots up SF.
@@ -305,12 +305,14 @@ class SF implements ISF {
                 SF::$config->get('pages_out_components'),
                 SF::$config->get('pages_templates'),
                 SF::$config->get('empty_page_index'),
+                SF::$config->get('maintenance_mode'),
                 $this->tplEngine,
                 $tplDir . 'pages/',
                 $componentLoader
                 );                     
         
         $pages->pageNotFoundPage = SF::$config->get('page_not_found_page');
+        $pages->pageMaintenance = SF::$config->get('page_maintenance');
         
         $currPage = URL::getCurrentPage();                
         

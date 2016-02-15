@@ -11,22 +11,28 @@ use Core\Components\SFComponentLoader;
  * @author Miljan Pantic
  */
 class Pages {
-    
+
+    /** @var Page[] */
     private $pages = array();
+
     private $tplEngine = null;
-    private $emptyPageIndex = "";   
+    private $emptyPageIndex = "";
+    private $maintenanceMode = "";
     private $pagesTplDir = "";
     
     public $pageNotFoundPage = "404";
+    public $pageMaintenance = "maintenance";
     
     public function __construct(
-            array $configuredPages,
-            array $configuredOutComponents,
-            array $configuredTemplates,
-            $emptyPageIndex,
-            \Smarty $tplEngine,
-            $pagesTplDir,
-            SFComponentLoader $componentLoader
+        array $configuredPages,
+        array $configuredOutComponents,
+        array $configuredTemplates,
+        $emptyPageIndex,
+        $maintenanceMode,
+        /** @noinspection PhpUndefinedClassInspection */
+        \Smarty $tplEngine,
+        $pagesTplDir,
+        SFComponentLoader $componentLoader
             ) {
         
         $this->init(
@@ -34,6 +40,7 @@ class Pages {
                 $configuredOutComponents,
                 $configuredTemplates,
                 $emptyPageIndex,
+                $maintenanceMode,
                 $tplEngine,
                 $pagesTplDir,
                 $componentLoader
@@ -41,12 +48,13 @@ class Pages {
     }    
     
     /* Interface functions */
-    
+
     /**
      * Retreive current page content.
-     * 
+     *
      * @param string $currentPageName
      * @param string $componentsUrl
+     * @param string $pagesUrl
      * @param string &$header Generated header will be stored here
      * @return string Page content
      * @throws \Exception if page 404 is not configured (prevents redirection loop).
@@ -54,6 +62,9 @@ class Pages {
     public function getCurrentPageContent($currentPageName, $componentsUrl, $pagesUrl, &$header) {
         
         $this->handleEmptyPage($currentPageName);
+
+        if ($this->maintenanceMode)
+            $currentPageName = $this->pageMaintenance;
 
         if (!isset($this->pages[$currentPageName])) {
             
@@ -67,7 +78,8 @@ class Pages {
             $this->redirectTo404();
             
         }
-        
+
+        /** @var Page */
         $page = $this->pages[$currentPageName];
         
         $headerArr = array();
@@ -113,30 +125,35 @@ class Pages {
         
         return $header;
         
-    }
-    
-    /**     
-     * Initalizes pages.
-     * 
+    }/** @noinspection PhpUndefinedClassInspection */
+
+    /**
+     * Initializes pages.
+     *
      * @param array $configuredPages
      * @param array $configuredOutComponents
      * @param array $configuredTemplates
-     * @param string $emptyPageIndex 
-     * @param Smarty $tplEngine
+     * @param string $emptyPageIndex
+     * @param bool $maintenanceMode
+     * @param \Smarty $tplEngine
      * @param string $pagesTplDir Pages template dir
+     * @param SFComponentLoader $componentLoader
      */
-    private function init(            
-            array $configuredPages,
-            array $configuredOutComponents,
-            array $configuredTemplates,
-            $emptyPageIndex,
-            \Smarty $tplEngine,
-            $pagesTplDir,
-            SFComponentLoader $componentLoader) {
+    private function init(
+        array $configuredPages,
+        array $configuredOutComponents,
+        array $configuredTemplates,
+        $emptyPageIndex,
+        $maintenanceMode,
+        /** @noinspection PhpUndefinedClassInspection */
+        \Smarty $tplEngine,
+        $pagesTplDir,
+        SFComponentLoader $componentLoader) {
         
         $this->emptyPageIndex = $emptyPageIndex;
         $this->tplEngine = $tplEngine;
         $this->pagesTplDir = $pagesTplDir;
+        $this->maintenanceMode = $maintenanceMode;
 
         foreach ($configuredPages as $pageName) {
             

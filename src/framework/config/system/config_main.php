@@ -4,6 +4,8 @@ $config['display_errors']       = "on"; // Intended for ini_set
 $config['error_reporting']      = E_ALL; // Intended for ini_set
 $config['debug_level']          = 1; // Framework debug level
 
+$config['maintenance_mode']     = true;
+
 $config['ds']                   = DIRECTORY_SEPARATOR;
 
 $config['app_webroot_dir'] = str_replace(
