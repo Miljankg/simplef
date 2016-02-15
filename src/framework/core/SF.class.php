@@ -19,7 +19,7 @@ use Core\Database\DB;
  *
  * @author Miljan Pantic
  */
-class SF implements ISF{
+class SF implements ISF {
 
     //<editor-fold desc="Members">
 
@@ -92,7 +92,6 @@ class SF implements ISF{
     public function __construct(array $mainLoadedConfig) {
         
         $this->mainLoadedConfig = $mainLoadedConfig;
-        SF::$config = new Config('SF Global', array());
 
     }
 
@@ -474,7 +473,7 @@ class SF implements ISF{
      * @param string $class $class name
      */
     private function loadClass($class) {
-                                                                
+
         $classFile = 
                 $this->mainLoadedConfig['framework_dir'] . 
                 str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($class)) . 
