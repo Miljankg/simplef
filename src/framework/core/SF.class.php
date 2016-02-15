@@ -19,15 +19,18 @@ use Core\Database\DB;
  *
  * @author Miljan Pantic
  */
-class SF {
-    
-    private $coreDirectory = "core";
-    
+class SF implements ISF{
+
+    //<editor-fold desc="Members">
+
     private $db = null;
-    
+
+    /** @var Config */
     public static $config = null;
+
+    /** @var Language */
     public static $lang = null;
-    
+
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
         'display_errors',
@@ -46,8 +49,8 @@ class SF {
         'url_parts',
         'config_type',
         'config_db'
-    );  
-    
+    );
+
     private $requiredSystemConfig = array(
         'output_components_url',
         'index_url',
@@ -74,33 +77,43 @@ class SF {
         'wrap_components',
         'output_components_logic',
         'common_output_components',
-		'pages_url'
+        'pages_url'
     );
-    
+
+    /** @noinspection PhpUndefinedClassInspection */
+
+    /** @var \Smarty */
     private $tplEngine = null;
-    
+
+    //</editor-fold>
+
+    //<editor-fold desc="Constructors">
+
     public function __construct(array $mainLoadedConfig) {
         
         $this->mainLoadedConfig = $mainLoadedConfig;
-        
+        SF::$config = new Config('SF Global', array());
+
     }
-    
-    /* Interface functions */
+
+    //</editor-fold>
+
+    //<editor-fold desc="Interface functions">
     
     /**
      * Executes SF.
      */
     public function execute() {
-        
+
         $this->bootUp();
-        
+
         $this->display();
-                                
+
     }
-        
-    /***********************/
-    
-    /* Internal functions */        
+
+    //</editor-fold>
+
+    //<editor-fold desc="Interface functions">
     
     /**
      * Boots up SF.
@@ -171,35 +184,10 @@ class SF {
     private function display() {
         
         // Load page
-        $fetchedTpl = $this->loadPage();   
+        $this->loadPage();
         
-        $this->displayContent($fetchedTpl);
+        $this->displayContent();
         
-    }
-
-
-    /**
-     * Loads core classes using require_once method.
-     * 
-     * @param $root Framework root dir
-     */
-    private function loadCoreClasses($root) {
-        
-        $directoryIterator = new \RecursiveDirectoryIterator(
-                $root . $this->coreDirectory
-                );                
-        $recursiveIterator = new \RecursiveIteratorIterator($directoryIterator);
-        $classList = new \RegexIterator(
-                $recursiveIterator, 
-                '/^.+\.class\.php$/i', 
-                \RecursiveRegexIterator::GET_MATCH
-                );
-
-        foreach($classList as $filePath => $object) {
-            
-            require_once $filePath;
-            
-        }
     }
     
     /**
@@ -227,12 +215,12 @@ class SF {
     /**
      * Loads additioanl configuration and closes the config.
      * 
-     * @param $root Framework root dir
-     * @param $configType Config type
-     * @param $loadedConfig Config that is already loaded
+     * @param string $root Framework root dir
+     * @param string $configType Config type
+     * @param array $loadedConfig Config that is already loaded
      * @return array Loaded configuration
      */
-    private function loadAdditionalConfig($root, $configType, $loadedConfig) {
+    private function loadAdditionalConfig($root, $configType, array $loadedConfig) {
         
         SF::$config = new Config('SF Global', $loadedConfig);            
         
@@ -281,7 +269,7 @@ class SF {
             Logger::setNewLine(SF::$config->get('new_line'));
             Logger::setTimestampFormat(SF::$config->get('log_time_format'));
             
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
 
             // nothing to do, logger will take its own timestamp format and / or new line.
             
@@ -384,7 +372,7 @@ class SF {
      * @param array $pages Pages from config
      * @param string $page404
      */
-    private function handlePageTranslations(&$currPage, array $pages, $page404) {        
+    /*private function handlePageTranslations(&$currPage, array $pages, $page404) {
         
         if (!empty($currPage)) {
         
@@ -407,7 +395,7 @@ class SF {
 
             }                        
             
-            if ($currPage == URL\URL::getCurrentPage()) {
+            if ($currPage == URL::getCurrentPage()) {
                 
                 try {
                     
@@ -423,7 +411,7 @@ class SF {
             }
         
         }           
-    }
+    }*/
 
     /**
      * Loads SF libraries.
@@ -435,37 +423,37 @@ class SF {
         $libsToLoad = SF::$config->get('sf_libs');
         
         foreach ($libsToLoad as $library) {
-            
+
+            /** @noinspection PhpIncludeInspection */
             require_once $documentRoot . 'lib/' . $library . '/incl_lib.php';
             
         }
         
-    }
-    
+    }/** @noinspection PhpUndefinedClassInspection */
+
     /**
      * Inits template engine.
      * 
      * @param string $rootDir Root dir
-     * @return Smarty Smarty object   
+     * @return \Smarty Smarty object
      */
     private function initTplEngine($rootDir) {
-        
-        $smarty = new \Smarty();
 
-        $smarty->setTemplateDir($rootDir . 'templates');
-        $smarty->setCompileDir($rootDir . 'templates_c');
-        $smarty->setCacheDir($rootDir . 'cache');		
+        /** @noinspection PhpUndefinedClassInspection */
+        $smartyObj = new \Smarty();
+
+        $smartyObj->setTemplateDir($rootDir . 'templates');
+        $smartyObj->setCompileDir($rootDir . 'templates_c');
+        $smartyObj->setCacheDir($rootDir . 'cache');
         
-        return $smarty;
+        return $smartyObj;
         
     }
     
     /**
      * Displays page content.
-     * 
-     * @param string $fetchedTpl Contect of a fetched tpl.
      */
-    private function displayContent($fetchedTpl) {
+    private function displayContent() {
         
         $this->tplEngine->display('index/index.tpl');
         
@@ -493,7 +481,8 @@ class SF {
                 '.class.php';
 
         if( is_file($classFile) && !class_exists($class) ) {
-                    
+
+            /** @noinspection PhpIncludeInspection */
             require $classFile;
                   
         }        
@@ -566,6 +555,6 @@ class SF {
 
     }
 
-    /**********************/
-    
+    //</editor-fold>
+
 }
