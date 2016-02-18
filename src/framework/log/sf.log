@@ -1,0 +1,120 @@
+[ 2016-02-18 05:15:00 ]  == DEBUG ==
+                        Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:15:00 ]  == DEBUG ==
+                        Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:15:00 ]  == DEBUG ==
+                        Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:15:33 ]  == DEBUG ==
+                        Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:15:33 ]  == DEBUG ==
+                        Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:15:33 ]  == DEBUG ==
+                        Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:15:33 ]  == ERROR ==
+                        Message: SF ERROR => [ TEST ] 
+                        Code:   0
+                        File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                        Line:   187
+                        Trace:
+                        
+                        #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(114): Core\SF->bootUp()
+#1 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+#2 {main}
+                        
+
+[ 2016-02-18 05:16:19 ]  == DEBUG ==
+                        Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:16:19 ]  == DEBUG ==
+                        Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:16:19 ]  == DEBUG ==
+                        Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:16:29 ]  == DEBUG ==
+                        Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:16:29 ]  == DEBUG ==
+                        Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:16:29 ]  == DEBUG ==
+                        Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:17:29 ]  == DEBUG ==
+                        Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:17:29 ]  == DEBUG ==
+                        Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:17:29 ]  == DEBUG ==
+                        Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:17:29 ]  == ERROR ==
+                        Message: SF ERROR => [ TEST ] 
+                        Code:   0
+                        File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                        Line:   187
+                        Trace:
+                        
+                        #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(114): Core\SF->bootUp()
+#1 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+#2 {main}
+                        
+
+[ 2016-02-18 05:24:19 ]  == DEBUG ==
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:24:19 ]  == DEBUG ==
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:24:19 ]  == DEBUG ==
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:24:19 ]  == ERROR ==
+                         Message: SF ERROR => [ TEST ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   187
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(114): Core\SF->bootUp()
+                         #1 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #2 {main}
+                         
+
+[ 2016-02-18 05:30:12 ]  == DEBUG ==
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:30:12 ]  == DEBUG ==
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:30:12 ]  == DEBUG ==
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-18 05:30:12 ]  == ERROR ==
+                         Message: SF ERROR => [ TEST ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   187
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(114): Core\SF->bootUp()
+                         #1 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #2 {main}
+                         
+
+[ 2016-02-18 05:30:22 ]  == DEBUG ==
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-18 05:30:22 ]  == DEBUG ==
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-18 05:30:22 ]  == DEBUG ==
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+

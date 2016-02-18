@@ -8,11 +8,14 @@ use Core\Configuration\ConfigLocations;
 use Core\Exception\ExceptionHandler;
 use Core\CLI\CLIUtils;
 use Core\Logging\Logger;
+use Core\Logging\ILogger;
 use Core\URLUtils\URL;
 use Core\Routing\Pages;
 use Core\Components\SFComponentLoader;
 use Core\Lang\Language;
 use Core\Database\DB;
+use \Exception;
+
 
 /**
  * Class which task is to boot complete Simple Framework.
@@ -31,11 +34,14 @@ class SF implements ISF {
     /** @var Language */
     public static $lang = null;
 
+    /** @var ILogger */
+    public static $logger = null;
+
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
         'display_errors',
         'error_reporting',
-        'debug_level',
+        'debug_mode',
         'ds',
         'app_webroot_dir',
         'document_root',
@@ -117,24 +123,26 @@ class SF implements ISF {
     /**
      * Boots up SF.
      */
-    private function bootUp() {                
-        
+    private function bootUp() {
+
+        $this->registerAutoload();
+
+        $this->setUnhandledExceptionHandler();
+
         // Check required fields
         $this->checkRequiredConfigFields(
                 $this->mainLoadedConfig,
                 $this->requiredMainConfig
-                );                                    
-        
-        $this->registerAutoload();                             
-        
-        $this->setUpExceptionHandling();                                     
+                );
         
         $this->loadAdditionalConfig(
                 $this->mainLoadedConfig['framework_dir'],
                 $this->mainLoadedConfig['config_type'],
                 $this->mainLoadedConfig
                 );
-        
+
+        $this->setExceptionHandlingParams();
+
         // Check required fields
         $this->checkRequiredConfigFields(
                 SF::$config->getAllFields(),
@@ -172,9 +180,8 @@ class SF implements ISF {
         $this->tplEngine = $this->initTplEngine(SF::$config->get('app_dir'));
         
         $this->assignValsIntoTpl();
-        
+
         $this->connectToDb();
-        
     }
     
     /**
@@ -244,15 +251,27 @@ class SF implements ISF {
         
         SF::$config->addMultipleConfigValues($newConfigFields);                
     }
-    
+
+    /**
+     * Sets default exception handler for unhandled exceptions.
+     */
+    private function setUnhandledExceptionHandler()
+    {
+        set_exception_handler(array("Core\Exception\ExceptionHandler", "handleException"));
+    }
+
     /**
      * Sets up Exception handler API.
      */
-    private function setUpExceptionHandling() {
+    private function setExceptionHandlingParams() {
         
-        ExceptionHandler::setIsCli(CLIUtils::isCli());
-        
-        set_exception_handler(array("Core\Exception\ExceptionHandler", "handleException"));
+        ExceptionHandler::setParams(
+            CLIUtils::isCli(),
+            !SF::$config->get('debug_mode'),
+            SF::$config->get('error_page_url'),
+            SF::$config->get('log_level'),
+            SF::$config->get('system_exception_type')
+        );
         
     }
     
@@ -260,19 +279,17 @@ class SF implements ISF {
      * Sets up Logger.
      */
     private function setUpLogger() {
-        
-        Logger::setLogFile(SF::$config->get('log_file'));        
-        
-        try {
-            
-            Logger::setNewLine(SF::$config->get('new_line'));
-            Logger::setTimestampFormat(SF::$config->get('log_time_format'));
-            
-        } catch (\Exception $ex) {
 
-            // nothing to do, logger will take its own timestamp format and / or new line.
-            
-        }                
+        Logger::setInstance(
+            SF::$config->get('log_file'),
+            SF::$config->get('new_line'),
+            SF::$config->get('log_time_format'),
+            SF::$config->get('debug_mode')
+        );
+
+        SF::$logger = Logger::getInstance();
+
+        ExceptionHandler::setLogger(Logger::getInstance());
         
     }       
     
@@ -297,7 +314,8 @@ class SF implements ISF {
                 SF::$config->get('output_components_logic'),
                 $this->db,
                 SF::$config->get('common_output_components'),
-                SF::$config->get('current_page')
+                SF::$config->get('current_page'),
+                SF::$logger
                 );
 
         $pages = new Pages(
@@ -308,7 +326,8 @@ class SF implements ISF {
                 SF::$config->get('maintenance_mode'),
                 $this->tplEngine,
                 $tplDir . 'pages/',
-                $componentLoader
+                $componentLoader,
+                SF::$logger
                 );                     
         
         $pages->pageNotFoundPage = SF::$config->get('page_not_found_page');
@@ -419,18 +438,23 @@ class SF implements ISF {
      * 
      * @param string $documentRoot
      */
-    private function loadLibs($documentRoot) {
-        
+    private function loadLibs($documentRoot)
+    {
         $libsToLoad = SF::$config->get('sf_libs');
         
         foreach ($libsToLoad as $library) {
 
+            $path = $documentRoot . 'lib/' . $library . '/incl_lib.php';
+
+            SF::$logger->logDebug("Loading lib \"{$library}\", from: \"{$path}\"");
+
             /** @noinspection PhpIncludeInspection */
-            require_once $documentRoot . 'lib/' . $library . '/incl_lib.php';
-            
+            require_once $path;
         }
         
-    }/** @noinspection PhpUndefinedClassInspection */
+    }
+
+    /** @noinspection PhpUndefinedClassInspection */
 
     /**
      * Inits template engine.
@@ -468,28 +492,44 @@ class SF implements ISF {
         spl_autoload_register(array($this, 'loadClass'));
     
     }
-    
+
     /**
      * Loads single class.
-     * 
-     * @param string $class $class name
+     *
+     * @param string $oopElement Name of the class or a interface to load
      */
-    private function loadClass($class) {
+    private function loadClass($oopElement) {
 
-        $classFile = 
+        $tmp = explode("\\", $oopElement);
+
+        $oopElementName = end($tmp);
+
+        $suffix = ".class";
+
+        if(strpos($oopElementName, 'I') === 0 && ctype_upper(substr($oopElementName, 0, 2)))
+        {
+            $suffix = ".interface";
+        }
+
+        $suffix .= ".php";
+
+        $file =
                 $this->mainLoadedConfig['framework_dir'] . 
-                str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($class)) . 
-                '.class.php';
+                str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($oopElement)) .
+                $suffix;
 
-        if( is_file($classFile) && !class_exists($class) ) {
+        if( is_file($file) && !class_exists($oopElement) ) {
 
             /** @noinspection PhpIncludeInspection */
-            require $classFile;
+            require $file;
                   
         }        
         
     }
-    
+
+    /**
+     * Sets PHP.INI values from config.
+     */
     private function setIniValues()
     {
         $iniConfigFields = array(
@@ -497,12 +537,14 @@ class SF implements ISF {
             'error_reporting'
         );
         
-        foreach ($iniConfigFields as $field) {
-        
-            ini_set($field, SF::$config->get($field));
-            
-        }   
-        
+        foreach ($iniConfigFields as $field)
+        {
+            $value = SF::$config->get($field);
+
+            SF::$logger->logDebug("Setting INI field \"{$field}\" to value: {$value}");
+
+            ini_set($field, $value);
+        }
     }
     
     /**

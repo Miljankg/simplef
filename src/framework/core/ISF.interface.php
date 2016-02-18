@@ -5,11 +5,10 @@ namespace Core;
 /**
  * Interface ISF
  */
-interface ISF {
-
+interface ISF
+{
     /**
      * Executes SF.
      */
     public function execute();
-
 }

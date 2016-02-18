@@ -3,6 +3,7 @@
 namespace Core\Routing;
 
 use Core\Components\SFComponentLoader;
+use Core\Logging\ILogger;
 
 /**
  * Page API
@@ -12,7 +13,12 @@ class Page {
     private $pageName;
     private $outComponents;
     private $template;
+
+    /** @var SFComponentLoader */
     private $componentLoader = null;
+
+    /** @var ILogger */
+    private $logger = null;
 
     public $tplName;
     
@@ -21,15 +27,20 @@ class Page {
             array $outComponents, 
             $template,
             $tplName,
-            SFComponentLoader $componentLoader
+            SFComponentLoader $componentLoader,
+            ILogger $logger
             ) {
         
-        $this->init($pageName, $outComponents, $template, $tplName, $componentLoader);
+        $this->init($pageName, $outComponents, $template, $tplName, $componentLoader, $logger);
         
     }
     
     /* Interface functions */    
-    public function getContent(\Smarty $tplEngine, array &$header) {
+    public function getContent(
+        /** @noinspection PhpUndefinedClassInspection */
+        \Smarty $tplEngine,
+        array &$header
+        ) {
         
         $header = array();
         
@@ -59,12 +70,14 @@ class Page {
             array $outComponents, 
             $template,
             $tplName,
-            SFComponentLoader $componentLoader
+            SFComponentLoader $componentLoader,
+            ILogger $logger
             ) {
                 
         $this->pageName = $pageName;
         $this->outComponents = $outComponents;
         $this->componentLoader = $componentLoader;
+        $this->logger = $logger;
         
         if (empty($template)) {
             

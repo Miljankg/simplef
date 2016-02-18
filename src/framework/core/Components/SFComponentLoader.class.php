@@ -5,6 +5,7 @@ namespace Core\Components;
 use Core\Configuration\Config;
 use Core\Lang\Language;
 use Core\Database\DB;
+use Core\Logging\ILogger;
 
 /**
  * API For loading Output Component and their logic dependencies.
@@ -28,22 +29,27 @@ class SFComponentLoader {
     private $loadedLogicComponents = array();
     private $commonComponents = array();
     private $currPageName;
-    
+
+    /** @var ILogger */
+    private $logger = null;
+
     public function __construct(
-            $outputComponentsDir, 
-            $outputComponentsTplDir, 
-            $configuredOutputComponents,
-            $outputComponentNamespace,
-            $logicComponentNamespace,
-            \Smarty $tplEngine,
-            $configType,
-            $currLang,
-            $wrapComponents,            
-            $logicCompDir,
-            $outCompLogic,
-            DB $db = null,
-            $commonComponents,
-            $currPageName) {
+        $outputComponentsDir,
+        $outputComponentsTplDir,
+        $configuredOutputComponents,
+        $outputComponentNamespace,
+        $logicComponentNamespace,
+        /** @noinspection PhpUndefinedClassInspection */
+        \Smarty $tplEngine,
+        $configType,
+        $currLang,
+        $wrapComponents,
+        $logicCompDir,
+        $outCompLogic,
+        DB $db = null,
+        $commonComponents,
+        $currPageName,
+        ILogger $logger) {
         
         $this->outputComponentsDir = $outputComponentsDir;
         $this->outputComponentsTplDir = $outputComponentsTplDir;
@@ -59,16 +65,17 @@ class SFComponentLoader {
         $this->logicComponentNamespace = $logicComponentNamespace;
         $this->commonComponents = $commonComponents;
         $this->currPageName = $currPageName;
+        $this->logger = $logger;
         
     }
-    
+
     /**
      * Loads passed list of output components.
-     * 
+     *
      * @param array $outputComponentsToLoad
-     * @param string $currLang
      * @return array Array of component contents
      * @throws \Exception If some component is not an instance of the OutputComponent class
+     * @internal param string $currLang
      */
     public function loadOutputComponents(array $outputComponentsToLoad) {
         
@@ -116,7 +123,10 @@ class SFComponentLoader {
             $componentPhpFile = $componentDir . $outComponentName . '.php';
             $componentConfigDir = $componentDir . 'config/';
             $componentLangDir = $componentDir . 'lang/';
-            
+
+            $this->logger->logDebug("Loading Output component \"{$outComponentName}\"");
+
+            /** @noinspection PhpIncludeInspection */
             require $componentPhpFile;
             
             $langObj = $this->loadComponentLang(
@@ -201,7 +211,10 @@ class SFComponentLoader {
             
             $logicCompDir = $this->logicCompDir . $logic . '/';
             $logicCompConfigDir = $logicCompDir . 'config/';
-            
+
+            $this->logger->logDebug("Loading Logic component \"{$logic}\"");
+
+            /** @noinspection PhpIncludeInspection */
             require_once $logicCompDir . $logic . '.php';
             
             $configObj = $this->loadComponentConfig($logicCompConfigDir, $logic);
@@ -240,7 +253,8 @@ class SFComponentLoader {
     private function loadComponentConfig($configDir, $configNamespace) {        
         
         $config = array();
-        
+
+        /** @noinspection PhpIncludeInspection */
         require $configDir . 'config.php';
         
         $configObj = new Config($configNamespace);

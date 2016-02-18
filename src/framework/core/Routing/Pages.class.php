@@ -2,6 +2,7 @@
 
 namespace Core\Routing;
 
+use Core\Logging\ILogger;
 use Core\URLUtils\URL;
 use Core\Components\SFComponentLoader;
 
@@ -19,7 +20,10 @@ class Pages {
     private $emptyPageIndex = "";
     private $maintenanceMode = "";
     private $pagesTplDir = "";
-    
+
+    /** @var ILogger */
+    private $logger = null;
+
     public $pageNotFoundPage = "404";
     public $pageMaintenance = "maintenance";
     
@@ -32,7 +36,8 @@ class Pages {
         /** @noinspection PhpUndefinedClassInspection */
         \Smarty $tplEngine,
         $pagesTplDir,
-        SFComponentLoader $componentLoader
+        SFComponentLoader $componentLoader,
+        ILogger $logger
             ) {
         
         $this->init(
@@ -43,7 +48,8 @@ class Pages {
                 $maintenanceMode,
                 $tplEngine,
                 $pagesTplDir,
-                $componentLoader
+                $componentLoader,
+                $logger
                 );
     }    
     
@@ -78,6 +84,8 @@ class Pages {
             $this->redirectTo404();
             
         }
+
+        $this->logger->logDebug("Loading page \"{$currentPageName}\"");
 
         /** @var Page */
         $page = $this->pages[$currentPageName];
@@ -138,6 +146,7 @@ class Pages {
      * @param \Smarty $tplEngine
      * @param string $pagesTplDir Pages template dir
      * @param SFComponentLoader $componentLoader
+     * @param ILogger $logger
      */
     private function init(
         array $configuredPages,
@@ -148,12 +157,14 @@ class Pages {
         /** @noinspection PhpUndefinedClassInspection */
         \Smarty $tplEngine,
         $pagesTplDir,
-        SFComponentLoader $componentLoader) {
+        SFComponentLoader $componentLoader,
+        ILogger $logger) {
         
         $this->emptyPageIndex = $emptyPageIndex;
         $this->tplEngine = $tplEngine;
         $this->pagesTplDir = $pagesTplDir;
         $this->maintenanceMode = $maintenanceMode;
+        $this->logger = $logger;
 
         foreach ($configuredPages as $pageName) {
             
@@ -192,7 +203,8 @@ class Pages {
                     $outCompsToLoad,
                     $tplToLoad,
                     $tplName,
-                    $componentLoader
+                    $componentLoader,
+                    $this->logger
                     );
             
         }                
