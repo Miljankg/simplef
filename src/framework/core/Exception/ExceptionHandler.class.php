@@ -3,8 +3,9 @@
 namespace Core\Exception;
 
 use Core\Logging\ILogger;
-use Core\URLUtils\URL;
+use Core\URLUtils\IUrl;
 use \Exception;
+use NullPointerException;
 
 /**
  * Provides API for exception handling.
@@ -30,6 +31,9 @@ class ExceptionHandler implements IExceptionHandler
     /** @var ILogger */
     private static $logger = null;
 
+    /** @var IUrl  */
+    private static $url = null;
+
     private static $logLevel = "ALL";
 
     private static $systemExceptionType = "Exception";
@@ -52,7 +56,26 @@ class ExceptionHandler implements IExceptionHandler
         if (!ExceptionHandler::$showErrorPage || empty(ExceptionHandler::$errorPageUrl))
             ExceptionHandler::outputExceptionText($exText);
         else
-            URL::redirect(ExceptionHandler::$errorPageUrl);
+        {
+            if (ExceptionHandler::$url == null)
+                die('Url object is null, cannot redirect to error page');
+
+            ExceptionHandler::$url->redirect(ExceptionHandler::$errorPageUrl);
+        }
+    }
+
+    /**
+     * Sets url object that will be used for redirection to the error page.
+     *
+     * @param IUrl $urlObj Url object to set.
+     * @throws NullPointerException If passed url object is null.
+     */
+    public static function setUrlObject(IUrl $urlObj)
+    {
+        if ($urlObj == null)
+            throw new NullPointerException("Url object cannot be null.");
+
+        ExceptionHandler::$url = $urlObj;
     }
 
     /**

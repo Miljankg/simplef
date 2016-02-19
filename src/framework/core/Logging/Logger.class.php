@@ -14,9 +14,6 @@ class Logger implements ILogger
 {
     //<editor-fold desc="Members">
 
-    /** @var ILogger */
-    private static $instance = null;
-
     private $logFile = null;
     private $timeFormat = "[ Y-m-d H:i:s ]";
     private $newLine = "\n";
@@ -31,38 +28,27 @@ class Logger implements ILogger
 
     //</editor-fold>
 
-    //<editor-fold desc="ILogger functions">
+    //<editor-fold desc="Constructors">
 
     /**
-     * Retrieves logger instance
-     *
-     * @return ILogger Instance of the logger.
-     * @throws Exception If the logger instance is not set.
-     */
-    public static function getInstance()
-    {
-        if (Logger::$instance == null)
-            throw new Exception("Logger instance is not set.");
-
-        return Logger::$instance;
-    }
-
-    /**
-     * Sets logger instance.
+     * Constructor.
      *
      * @param string $logFile Log file path.
      * @param string $newLine New line char.
      * @param string $timestampFormat Timestamp format.
      * @param bool $isDebug Is debug mode on or off.
-     * @throws Exception If instance already exists.
      */
-    public static function setInstance($logFile, $newLine, $timestampFormat, $isDebug)
+    public function __construct($logFile, $newLine, $timestampFormat, $isDebug)
     {
-        if (Logger::$instance != null)
-            throw new Exception("Logger instance is already set.");
-
-        Logger::$instance = new Logger($logFile, $newLine, $timestampFormat, $isDebug);
+        $this->logFile = $logFile;
+        $this->newLine = $newLine;
+        $this->timeFormat = $timestampFormat;
+        $this->isDebug = $isDebug;
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="ILogger functions">
 
     /**
      * Log error to log file.
@@ -112,22 +98,6 @@ class Logger implements ILogger
     //</editor-fold>
 
     //<editor-fold desc="Internal functions">
-
-    /**
-     * Constructor.
-     *
-     * @param string $logFile Log file path.
-     * @param string $newLine New line char.
-     * @param string $timestampFormat Timestamp format.
-     * @param bool $isDebug Is debug mode on or off.
-     */
-    private function __construct($logFile, $newLine, $timestampFormat, $isDebug)
-    {
-        $this->logFile = $logFile;
-        $this->newLine = $newLine;
-        $this->timeFormat = $timestampFormat;
-        $this->isDebug = $isDebug;
-    }
 
     /**
      * Writes to a log file.

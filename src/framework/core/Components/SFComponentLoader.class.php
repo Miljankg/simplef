@@ -6,19 +6,23 @@ use Core\Configuration\Config;
 use Core\Lang\Language;
 use Core\Database\DB;
 use Core\Logging\ILogger;
+use \Exception;
 
 /**
  * API For loading Output Component and their logic dependencies.
  *
  * @author Miljan Pantic
  */
-class SFComponentLoader {
-    
+class SFComponentLoader implements IComponentLoader
+{
+    //<editor-fold desc="Members">
+
     private $outputComponentsDir = "";
     private $outputComponentsTplDir = "";
     private $configuredOutputComponents = "";
     private $tplEngine = null;    
     private $outputComponentNamespace = '';
+    private $logicComponentConfig;
     private $logicComponentNamespace = '';
     private $configType = null;
     private $currLang = "";
@@ -33,11 +37,16 @@ class SFComponentLoader {
     /** @var ILogger */
     private $logger = null;
 
+    //</editor-fold>
+
+    //<editor-fold desc="Constructor">
+
     public function __construct(
         $outputComponentsDir,
         $outputComponentsTplDir,
         $configuredOutputComponents,
         $outputComponentNamespace,
+        array $logicComponentConfig,
         $logicComponentNamespace,
         /** @noinspection PhpUndefinedClassInspection */
         \Smarty $tplEngine,
@@ -49,8 +58,8 @@ class SFComponentLoader {
         DB $db = null,
         $commonComponents,
         $currPageName,
-        ILogger $logger) {
-        
+        ILogger $logger)
+    {
         $this->outputComponentsDir = $outputComponentsDir;
         $this->outputComponentsTplDir = $outputComponentsTplDir;
         $this->configuredOutputComponents = $configuredOutputComponents;
@@ -66,19 +75,22 @@ class SFComponentLoader {
         $this->commonComponents = $commonComponents;
         $this->currPageName = $currPageName;
         $this->logger = $logger;
-        
+        $this->logicComponentConfig = $logicComponentConfig;
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="IComponentLoader functions">
 
     /**
      * Loads passed list of output components.
      *
      * @param array $outputComponentsToLoad
      * @return array Array of component contents
-     * @throws \Exception If some component is not an instance of the OutputComponent class
-     * @internal param string $currLang
+     * @throws Exception If some component is not an instance of the OutputComponent class
      */
-    public function loadOutputComponents(array $outputComponentsToLoad) {
-        
+    public function loadOutputComponents(array $outputComponentsToLoad)
+    {
         $componentContents = array();
         
         $ocConfigVals = array(
@@ -87,39 +99,28 @@ class SFComponentLoader {
             'js'
         );
 
-        foreach ($this->commonComponents as $component => $exceptionPage) {
-
+        foreach ($this->commonComponents as $component => $exceptionPage)
             if ($this->currPageName != $exceptionPage)
                 $outputComponentsToLoad[] = $component;
-
-        }
         
-        foreach ($outputComponentsToLoad as $outComponentName) {                        
-            
-            if (!isset($this->configuredOutputComponents[$outComponentName])) {
-                
-                throw new \Exception("Output component \"$outComponentName\" is not configured, but it is listed in the pages dependencies.");
-                
-            }
-            
+        foreach ($outputComponentsToLoad as $outComponentName)
+        {
+            if (!isset($this->configuredOutputComponents[$outComponentName]))
+                throw new Exception("Output component \"$outComponentName\" is not configured, but it is listed in the pages dependencies.");
+
             $ocData = array();
-            
-            foreach ($ocConfigVals as $ocConfigVal) {
-                
+
+            foreach ($ocConfigVals as $ocConfigVal)
+            {
                 $ocData[$ocConfigVal] = true;
-                
+
                 if (isset($this->configuredOutputComponents[$outComponentName][$ocConfigVal]) &&
                     !$this->configuredOutputComponents[$outComponentName][$ocConfigVal]
-                        ) {
-                    
+                )
                     $ocData[$ocConfigVal] = false;
-                    
-                }
-                
             }
-            
+
             $componentDir = $this->outputComponentsDir . $outComponentName . '/';
-            
             $componentPhpFile = $componentDir . $outComponentName . '.php';
             $componentConfigDir = $componentDir . 'config/';
             $componentLangDir = $componentDir . 'lang/';
@@ -128,159 +129,185 @@ class SFComponentLoader {
 
             /** @noinspection PhpIncludeInspection */
             require $componentPhpFile;
-            
+
             $langObj = $this->loadComponentLang(
-                    $componentLangDir,
-                    $this->currLang,
-                    $outComponentName
-                    );
-            
+                $componentLangDir,
+                $this->currLang,
+                $outComponentName
+            );
+
             $configObj = $this->loadComponentConfig(
-                        $componentConfigDir,
-                        $outComponentName                       
-                    );
-            
-            $logicComponents = $this->loadLogicComponents($outComponentName);
+                $componentConfigDir,
+                $outComponentName
+            );
+
+            $logicComponents = array();
+
+            if (isset($this->outCompLogic[$outComponentName]) &&
+                is_array($this->outCompLogic[$outComponentName])
+            )
+            {
+                $logicToLoad = $this->outCompLogic[$outComponentName];
+                $logicComponents = $this->loadLogicComponents($logicToLoad);
+            }
                                     
             $className = $this->outputComponentNamespace . $this->getClassName($outComponentName);
             
             $outputComponent = new $className($outComponentName, $configObj, $langObj, $logicComponents);
             
-            if (!$outputComponent instanceof OutputComponent) {
-                
-                throw new \Exception("Component \"$outputComponent\" is not an instance of OutputComponent.");
-                
-            }
+            if (!$outputComponent instanceof OutputComponent)
+                throw new Exception("Component \"$outputComponent\" is not an instance of OutputComponent.");
+
             
-            if ($ocData['template']) {
-                            
+            if ($ocData['template'])
                 $outputComponent->enableTplLoading(
                         $this->tplEngine, 
                         $this->outputComponentsTplDir . $outComponentName . '/' . $outComponentName . '.tpl'
                     );
-            
-            }
             
             $this->tplEngine->assign('configOutComp', $configObj);
             $this->tplEngine->assign('langOutComp', $langObj);
             
             $componentContent = $outputComponent->runComponentLogic();                        
             
-            if ($componentContent != null) {
-                
-                if ($this->wrapComponents) {
-                    
+            if ($componentContent != null)
+            {
+                if ($this->wrapComponents)
                     $componentContent = "<div id=\"{$outComponentName}\" class=\"output-component\">\n{$componentContent}\n</div>";
-                    
-                }
-                
-                $componentContents[$outComponentName]['content'] = $componentContent;                
+
+                $componentContents[$outComponentName]['content'] = $componentContent;
                 $componentContents[$outComponentName]['css'] = $ocData['js'];
                 $componentContents[$outComponentName]['js'] = $ocData['css'];
-                
             }
-            
         }                
         
         return $componentContents;
-        
     }
-    
-    private function loadLogicComponents($compName) {
-        
-        if (!isset($this->outCompLogic[$compName]) || 
-                !is_array($this->outCompLogic[$compName])) {
-            
-            return array();
-            
-        }            
-        
+
+    /**
+     * Load multiple logic components.
+     *
+     * @param string[] $logicComponentsToLoad Array of logic component names to load.
+     * @return LogicComponent[] Loaded logic components.
+     * @throws Exception If logic component is not configured properly.
+     */
+    public function loadLogicComponents($logicComponentsToLoad)
+    {
         $logicForReturn = array();
         
-        $logicToLoad = $this->outCompLogic[$compName];
-        
-        foreach ($logicToLoad as $logic) {
-            
-            if (array_key_exists($logic, $this->loadedLogicComponents)) {
-                
-                $logicForReturn[$logic] = $this->loadedLogicComponents[$logic];
-                
+        foreach ($logicComponentsToLoad as $logicToLoad => $logicDependencies) {
+            if (!isset($this->logicComponentConfig[$logicToLoad]))
+                throw new Exception("Logic \"{$logicToLoad}\" is not configured properly.");
+
+            if (array_key_exists($logicToLoad, $this->loadedLogicComponents)) {
+                $logicForReturn[$logicToLoad] = $this->loadedLogicComponents[$logicToLoad];
                 continue;
-                
             }
-            
-            $logicCompDir = $this->logicCompDir . $logic . '/';
-            $logicCompConfigDir = $logicCompDir . 'config/';
 
-            $this->logger->logDebug("Loading Logic component \"{$logic}\"");
+            $logicDependencies = array();
 
-            /** @noinspection PhpIncludeInspection */
-            require_once $logicCompDir . $logic . '.php';
-            
-            $configObj = $this->loadComponentConfig($logicCompConfigDir, $logic);
-            
-            $className = $this->logicComponentNamespace . $this->getClassName($logic);
-            
-            $logicComponentObj = new $className($logic, $configObj, $this->db);
-            
-            if (!$logicComponentObj instanceof LogicComponent) {
-                
-                throw new \Exception("Component \"$logic\" is not an instance of LogicComponent.");
-                
+            if (is_array($logicDependencies) && !empty($logicDependencies))
+            {
+                $logicDependencies = $this->loadLogicComponents($logicDependencies);
             }
-            
-            $logicComponentObj->init();
-            
-            $this->loadedLogicComponents[$logic] = $logicComponentObj;
-            $logicForReturn[$logic] = $logicComponentObj;
-            
+
+            $logicForReturn[$logicToLoad] = $this->loadLogicComponent($logicToLoad, $logicDependencies);
         }
         
         return $logicForReturn;
-        
     }
-    
-    private function loadComponentLang($langDir, $lang, $compName) {
-        
+
+    /**
+     * Loads logic component, by passed component name.
+     *
+     * @param string $logicToLoad Logic component name to load.
+     * @param LogicComponent[] $logicComponentDependencies Logic components that current logic component depends on.
+     * @return LogicComponent Loaded logic component object.
+     * @throws Exception If loaded component does not extends the LogicComponent class.
+     */
+    public function loadLogicComponent($logicToLoad, array $logicComponentDependencies)
+    {
+        $logicCompDir = $this->logicCompDir . $logicToLoad . '/';
+        $logicCompConfigDir = $logicCompDir . 'config/';
+
+        $this->logger->logDebug("Loading Logic component \"{$logicToLoad}\"");
+
+        /** @noinspection PhpIncludeInspection */
+        require_once $logicCompDir . $logicToLoad . '.php';
+
+        $configObj = $this->loadComponentConfig($logicCompConfigDir, $logicToLoad);
+
+        $className = $this->logicComponentNamespace . $this->getClassName($logicToLoad);
+
+        $logicComponentObj = new $className($logicToLoad, $configObj, $this->db, $logicComponentDependencies);
+
+        if (!$logicComponentObj instanceof LogicComponent)
+            throw new Exception("Component \"$logicToLoad\" is not an instance of LogicComponent.");
+
+        $logicComponentObj->init();
+
+        $this->loadedLogicComponents[$logicToLoad] = $logicComponentObj;
+
+        return $logicComponentObj;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Internal functions">
+
+    /**
+     * Load component language.
+     *
+     * @param string $langDir Language directory.
+     * @param string $lang Current language.
+     * @param string $compName Component name.
+     * @return Language Language object.
+     */
+    private function loadComponentLang($langDir, $lang, $compName)
+    {
         $langObj = new Language($compName);
-        
         $langObj->loadLang($lang, $langDir);
         
-        return $langObj;        
-        
+        return $langObj;
     }
-    
-    private function loadComponentConfig($configDir, $configNamespace) {        
-        
+
+    /**
+     * Loads component config.
+     *
+     * @param string $configDir Configuration directory.
+     * @param string $configNamespace Configuration namespace.
+     * @return Config Config object.
+     */
+    private function loadComponentConfig($configDir, $configNamespace)
+    {
         $config = array();
 
         /** @noinspection PhpIncludeInspection */
         require $configDir . 'config.php';
         
         $configObj = new Config($configNamespace);
-        
         $configObj->addMultipleConfigValues($config);
         
         return $configObj;
-        
     }
-    
-    private function getClassName($componentName) {
-        
+
+    /**
+     * Retrieves class name from component name.
+     *
+     * @param string $componentName Component name.
+     * @return string Class name.
+     */
+    private function getClassName($componentName)
+    {
         $separator = "_";
-        
         $compNameArr = explode($separator, $componentName);
-        
         $className = "";
         
-        foreach ($compNameArr as $compNameArrElement) {
-            
+        foreach ($compNameArr as $compNameArrElement)
             $className .= ucfirst($compNameArrElement);
-            
-        }
         
         return $className;
-        
     }
-    
+
+    //</editor-fold>
 }

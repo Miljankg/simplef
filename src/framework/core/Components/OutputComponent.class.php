@@ -3,78 +3,114 @@
 namespace Core\Components;
 
 use Core\Configuration\Config;
+use Core\Lang\Language;
 
 /**
  * Represents OutputComponent in SF
  *
  * @author Miljan Pantic
  */
-abstract class OutputComponent extends SFComponent {
-    
+abstract class OutputComponent extends SFComponent
+{
+    //<editor-fold desc="Members">
+
     protected $tplEnabled = false;
+
+    /** @noinspection PhpUndefinedClassInspection */
+
+    /** @var \Smarty */
     protected $tplEngine = null;
     protected $tpl = "";   
-    
+
+    /** @var Language */
     protected $langObj = null;
 
+    //</editor-fold>
 
-    public function __construct($name, Config $config = null, $langObj = null, array $logicComponents) {
+    //<editor-fold desc="Constructor">
+
+    /**
+     * OutputComponent constructor.
+     *
+     * @param string $name Component name.
+     * @param Config|null $config Config object.
+     * @param Language|null $langObj Language object.
+     * @param LogicComponent[] $logicComponents Logic component on which this component depends on.
+     */
+    public function __construct($name, Config $config = null, Language $langObj = null, array $logicComponents) {
         parent::__construct($name, $config, $logicComponents);
         
         $this->langObj = $langObj;
         
     }
 
+    //</editor-fold>
 
-    /* Interface functions */
-    
-    public function runComponentLogic() {
-        
+    //<editor-fold desc="Public functions">
+
+    /**
+     * Runs component logic and returns results.
+     *
+     * @return string Component parsed template.
+     */
+    public function runComponentLogic()
+    {
         $this->execute();
         
         $return = null;
         
-        if ($this->tplEnabled) {
-            
+        if ($this->tplEnabled)
             $return = $this->getTemplateContent();
-            
-        }
         
         return $return;
-        
     }
-    
-    public function enableTplLoading(\Smarty $tplEngine, $tpl) {
-        
+
+    /** @noinspection PhpUndefinedClassInspection */
+
+    /**
+     * Enabled tpl loading.
+     *
+     * @param \Smarty $tplEngine
+     * @param $tpl
+     */
+    public function enableTplLoading(
+        /** @noinspection PhpUndefinedClassInspection */
+        \Smarty
+        $tplEngine,
+        $tpl)
+    {
         $this->tplEnabled = true;
         $this->tplEngine = $tplEngine;
         $this->tpl = $tpl;
-        
     }
-    
-    public function disableTplLoading() {
-        
+
+    /**
+     * Disables tpl loading.
+     */
+    public function disableTplLoading()
+    {
         $this->tplEnabled = false;
         $this->tplEngine = null;
         $this->tpl = "";
-        
-    }        
-    
-    protected abstract function execute();    
-    
-    /***********************/
-    
-    /* Internal functions */
-    
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Internal functions">
+
     /**
-     * Retreives template content.
+     * Executes component logic.
+     */
+    protected abstract function execute();
+
+    /**
+     * Retrieves template content.
      * 
      * @return string Fetched template
      */
-    protected function getTemplateContent() {
-        
+    protected function getTemplateContent()
+    {
         return $this->tplEngine->fetch($this->tpl);
-        
     }
     
     /**
@@ -82,11 +118,10 @@ abstract class OutputComponent extends SFComponent {
      * 
      * @param string $data Data to output.
      */
-    protected function output($data) {
-        
+    protected function output($data)
+    {
         die($data);
-        
     }
-    
-    /**********************/
+
+    //</editor-fold>
 }

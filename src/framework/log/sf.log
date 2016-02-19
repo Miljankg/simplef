@@ -10,3 +10,249 @@
 [ 2016-02-19 01:18:08 ]  ==== DEBUG ====
                          Loading page "maintenance"
 
+[ 2016-02-19 23:28:58 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:28:58 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 0
+
+[ 2016-02-19 23:28:58 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:28:58 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Argument 5 passed to Core\Components\SFComponentLoader::__construct() must be of the type array, string given, called in C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php on line 346 and defined ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\Components\SFComponentLoader.class.php
+                         Line:   49
+                         Trace:
+                         
+                         #0 [internal function]: Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-19 23:31:13 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:31:13 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 0
+
+[ 2016-02-19 23:31:13 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:31:13 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Argument 10 passed to Core\Routing\PageLoader::init() must implement interface Core\URLUtils\IUrl, none given, called in C:\xampp\htdocs\simplef\simplef\src\framework\core\Routing\PageLoader.class.php on line 84 and defined ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\Routing\PageLoader.class.php
+                         Line:   195
+                         Trace:
+                         
+                         #0 [internal function]: Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-19 23:33:01 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:33:01 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 0
+
+[ 2016-02-19 23:33:01 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:33:01 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Argument 10 passed to Core\Routing\PageLoader::__construct() must implement interface Core\URLUtils\IUrl, string given, called in C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php on line 361 and defined ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\Routing\PageLoader.class.php
+                         Line:   71
+                         Trace:
+                         
+                         #0 [internal function]: Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-19 23:33:20 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:33:20 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 0
+
+[ 2016-02-19 23:33:20 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:33:20 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+
+[ 2016-02-19 23:33:20 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Undefined variable: componentsUrl ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\Routing\PageLoader.class.php
+                         Line:   209
+                         Trace:
+                         
+                         #0 [internal function]: Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-19 23:36:41 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:36:41 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:36:41 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:36:41 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+
+[ 2016-02-19 23:36:41 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Undefined variable: componentsUrl ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\Routing\PageLoader.class.php
+                         Line:   209
+                         Trace:
+                         
+                         #0 [internal function]: Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-19 23:37:21 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:37:21 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:37:21 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:37:21 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+
+[ 2016-02-19 23:58:59 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:58:59 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:58:59 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:58:59 ]  ==== ERROR ====
+                         Message: Class "Core\URLUtils\Url" does not implements "IUrl"
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   220
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(225): Core\SF->loadClassCheckInterface('url', 'IUrl')
+                         #1 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(172): Core\SF->processUrl()
+                         #2 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(118): Core\SF->bootUp()
+                         #3 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #4 {main}
+                         
+
+[ 2016-02-19 23:59:18 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:59:18 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:59:18 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:59:18 ]  ==== ERROR ====
+                         Message: Class "Core\URLUtils\Url" does not implements "Core\URL\IUrl"
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   220
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(225): Core\SF->loadClassCheckInterface('url', 'Core\\URL\\IUrl')
+                         #1 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(172): Core\SF->processUrl()
+                         #2 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(118): Core\SF->bootUp()
+                         #3 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #4 {main}
+                         
+
+[ 2016-02-19 23:59:25 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:59:25 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:59:25 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:59:25 ]  ==== ERROR ====
+                         Message: Class "Core\URLUtils\Url" does not implements "Core\Url\IUrl"
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   220
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(225): Core\SF->loadClassCheckInterface('url', 'Core\\Url\\IUrl')
+                         #1 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(172): Core\SF->processUrl()
+                         #2 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(118): Core\SF->bootUp()
+                         #3 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #4 {main}
+                         
+
+[ 2016-02-19 23:59:33 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:59:33 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:59:33 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:59:33 ]  ==== ERROR ====
+                         Message: Class "Core\Components\SFComponentLoader" does not implements "IComponentLoader"
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php
+                         Line:   220
+                         Trace:
+                         
+                         #0 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(360): Core\SF->loadClassCheckInterface('component_loade...', 'IComponentLoade...')
+                         #1 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(192): Core\SF->loadPage()
+                         #2 C:\xampp\htdocs\simplef\simplef\src\framework\core\SF.class.php(120): Core\SF->display()
+                         #3 C:\xampp\htdocs\simplef\simplef\src\index.php(18): Core\SF->execute()
+                         #4 {main}
+                         
+
+[ 2016-02-19 23:59:53 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-19 23:59:53 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-19 23:59:53 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-19 23:59:53 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+
+[ 2016-02-20 00:13:49 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-20 00:13:49 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-20 00:13:49 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-20 00:13:49 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+
+[ 2016-02-20 00:14:24 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-20 00:14:24 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-20 00:14:24 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-20 00:14:24 ]  ==== DEBUG ====
+                         Loading page "maintenance"
+

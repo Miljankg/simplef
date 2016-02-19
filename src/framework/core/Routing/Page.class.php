@@ -8,8 +8,10 @@ use Core\Logging\ILogger;
 /**
  * Page API
  */
-class Page {        
-    
+class Page
+{
+    //<editor-fold desc="Members">
+
     private $pageName;
     private $outComponents;
     private $template;
@@ -21,7 +23,11 @@ class Page {
     private $logger = null;
 
     public $tplName;
-    
+
+    //</editor-fold>
+
+    //<editor-fold desc="Constructor">
+
     public function __construct(
             $pageName, 
             array $outComponents, 
@@ -34,8 +40,20 @@ class Page {
         $this->init($pageName, $outComponents, $template, $tplName, $componentLoader, $logger);
         
     }
-    
-    /* Interface functions */    
+
+    //</editor-fold>
+
+    //<editor-fold desc="Public functions">
+
+    /** @noinspection PhpUndefinedClassInspection */
+
+    /**
+     * Retrieves page content.
+     *
+     * @param \Smarty $tplEngine Template engine.
+     * @param array $header Variable for storing header for each output component.
+     * @return string Page content.
+     */
     public function getContent(
         /** @noinspection PhpUndefinedClassInspection */
         \Smarty $tplEngine,
@@ -60,11 +78,11 @@ class Page {
         return $tplEngine->fetch($this->template);
         
     }
-    
-    /***********************/
-    
-    /* Internal functions */
-    
+
+    //</editor-fold>
+
+    //<editor-fold desc="Internal functions">
+
     private function init(
             $pageName, 
             array $outComponents, 
@@ -72,33 +90,25 @@ class Page {
             $tplName,
             SFComponentLoader $componentLoader,
             ILogger $logger
-            ) {
-                
+            )
+    {
         $this->pageName = $pageName;
         $this->outComponents = $outComponents;
         $this->componentLoader = $componentLoader;
         $this->logger = $logger;
         
-        if (empty($template)) {
-            
+        if (empty($template))
             throw new \Exception("Template path can not be empty.");
-            
-        }
         
         $this->template = $template;
         $this->tplName = $tplName;
-        
     }
     
-    private function loadOutputComponents() {
-        
-        return $this->componentLoader->loadOutputComponents($this->outComponents);             
-        
+    private function loadOutputComponents()
+    {
+        return $this->componentLoader->loadOutputComponents($this->outComponents);
     }
-    
-    /**********************/
-    
-    
-    
+
+    //</editor-fold>
 }
 

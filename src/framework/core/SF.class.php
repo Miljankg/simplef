@@ -9,8 +9,9 @@ use Core\Exception\ExceptionHandler;
 use Core\CLI\CLIUtils;
 use Core\Logging\Logger;
 use Core\Logging\ILogger;
-use Core\URLUtils\URL;
-use Core\Routing\Pages;
+use Core\Routing\PageLoader;
+use Core\URLUtils\IUrl;
+use Core\URLUtils\Url;
 use Core\Components\SFComponentLoader;
 use Core\Lang\Language;
 use Core\Database\DB;
@@ -37,6 +38,9 @@ class SF implements ISF {
     /** @var ILogger */
     public static $logger = null;
 
+    /** @var IUrl */
+    public static $url = null;
+
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
         'display_errors',
@@ -54,7 +58,8 @@ class SF implements ISF {
         'current_language',
         'url_parts',
         'config_type',
-        'config_db'
+        'config_db',
+        'important_classes'
     );
 
     private $requiredSystemConfig = array(
@@ -164,15 +169,9 @@ class SF implements ISF {
         $this->loadLibs($frameworkDir);
         
         // Parse URL
-        URL::processURL(
-                SF::$config->get('is_site_multilang'), 
-                SF::$config->get('default_language'),
-                SF::$config->get('default_page'),
-                SF::$config->get('ssl_port'),
-                SF::$config->get('app_webroot_dir')
-                );         
+        $this->processUrl();
 
-        $this->checkLanguage(URL::getCurrentLanguage());
+        $this->checkLanguage(SF::$url->getCurrentLanguage());
 
         $this->genConfigValues();
         
@@ -195,6 +194,45 @@ class SF implements ISF {
         $this->displayContent();
         
     }
+
+    /**
+     * Loads class and checks if it implements passed interface.
+     *
+     * @param string $index Index of a class in a config array.
+     * @param string $interface Interface which class should implement.
+     * @throws Exception If class does not implement wanted interface.
+     */
+    private function loadClassCheckInterface($index, $interface)
+    {
+        $importantClasses = SF::$config->get('important_classes');
+        $frameworkDir = SF::$config->get('framework_dir');
+
+        if (!isset($importantClasses[$index]))
+            throw new Exception("There is no important class \"{$index}\"");
+
+        $class = $importantClasses[$index];
+
+        $interfaces = class_implements($class);
+
+        /** @noinspection PhpIncludeInspection */
+        require_once $frameworkDir . $importantClasses[$index] . '.class.php';
+
+        if(empty($interfaces) || !in_array($interface, $interfaces))
+            throw new Exception("Class \"{$class}\" does not implements \"{$interface}\"");
+    }
+
+    private function processUrl()
+    {
+        $this->loadClassCheckInterface('url', 'Core\URLUtils\IUrl');
+
+        SF::$url = new Url(
+            SF::$config->get('is_site_multilang'),
+            SF::$config->get('default_language'),
+            SF::$config->get('default_page'),
+            SF::$config->get('ssl_port'),
+            SF::$config->get('app_webroot_dir')
+        );
+    }
     
     /**
      * Checks if all required config fields are loaded.
@@ -202,11 +240,11 @@ class SF implements ISF {
      * In case of exception, die is called.
      * 
      * @param array $arrayToCheck Config array to check
-     * @param array $requiredFelds Required fields
+     * @param array $requiredFields Required fields
      */
-    private function checkRequiredConfigFields(array $arrayToCheck, array $requiredFelds) {
+    private function checkRequiredConfigFields(array $arrayToCheck, array $requiredFields) {
         
-        foreach ($requiredFelds as $reqField) {
+        foreach ($requiredFields as $reqField) {
             
             if (!isset($arrayToCheck[$reqField])) {
                 
@@ -247,8 +285,8 @@ class SF implements ISF {
                 $phpConfigLocation, 
                 $loadedConfig,
                 $dbObj
-                );                
-        
+                );
+
         SF::$config->addMultipleConfigValues($newConfigFields);                
     }
 
@@ -298,37 +336,41 @@ class SF implements ISF {
     /**
      * Sets up Logger.
      */
-    private function setUpLogger() {
+    private function setUpLogger()
+    {
+        $this->loadClassCheckInterface('logger', 'Core\Logging\ILogger');
 
-        Logger::setInstance(
+        SF::$logger = new Logger(
             SF::$config->get('log_file'),
             SF::$config->get('new_line'),
             SF::$config->get('log_time_format'),
             SF::$config->get('debug_mode')
         );
 
-        SF::$logger = Logger::getInstance();
-
-        ExceptionHandler::setLogger(Logger::getInstance());
+        ExceptionHandler::setLogger(SF::$logger);
         
     }       
     
     /**
      * Loads page.
      */
-    private function loadPage() {                
-        
+    private function loadPage()
+    {
         $tplDir = $this->tplEngine->getTemplateDir(0);
-        
+
+        $this->loadClassCheckInterface('component_loader', 'Core\Components\IComponentLoader');
+        $this->loadClassCheckInterface('page_loader', 'Core\Routing\IPageLoader');
+
         $componentLoader = new SFComponentLoader(
                 SF::$config->get('app_dir') . 'components/output/', 
                 $tplDir . 'out_components/', 
                 SF::$config->get('output_components'), 
                 SF::$config->get('out_comp_ns'),
+                SF::$config->get('logic_components'),
                 SF::$config->get('logic_comp_ns'),
                 $this->tplEngine,
                 SF::$config->get('config_type'),
-                URL::getCurrentLanguage(),
+                SF::$url->getCurrentLanguage(),
                 SF::$config->get('wrap_components'),
                 SF::$config->get('logic_components_dir'),
                 SF::$config->get('output_components_logic'),
@@ -338,7 +380,7 @@ class SF implements ISF {
                 SF::$logger
                 );
 
-        $pages = new Pages(
+        $pageLoader = new PageLoader(
                 SF::$config->get('pages'),
                 SF::$config->get('pages_out_components'),
                 SF::$config->get('pages_templates'),
@@ -347,13 +389,16 @@ class SF implements ISF {
                 $this->tplEngine,
                 $tplDir . 'pages/',
                 $componentLoader,
-                SF::$logger
-                );                     
+                SF::$logger,
+                SF::$url,
+                SF::$config->get('output_components_url'),
+                SF::$config->get('pages_url')
+                );
+
+        $pageLoader->pageNotFoundPage = SF::$config->get('page_not_found_page');
+        $pageLoader->pageMaintenance = SF::$config->get('page_maintenance');
         
-        $pages->pageNotFoundPage = SF::$config->get('page_not_found_page');
-        $pages->pageMaintenance = SF::$config->get('page_maintenance');
-        
-        $currPage = URL::getCurrentPage();                
+        $currPage = SF::$url->getCurrentPageName();
         
         /*$this->handlePageTranslations(
                 $currPage, 
@@ -362,10 +407,8 @@ class SF implements ISF {
         
         $header = "";
 
-        $content = $pages->getCurrentPageContent(
-                $currPage, 
-                SF::$config->get('output_components_url'),
-                SF::$config->get('pages_url'),
+        $content = $pageLoader->getCurrentPageContent(
+                $currPage,
                 $header
                 );                        
         
@@ -373,7 +416,7 @@ class SF implements ISF {
         
         SF::$lang = new Language("SF Global");
         
-        SF::$lang->loadLang(URL::getCurrentLanguage(), SF::$config->get('main_lang_dir'));
+        SF::$lang->loadLang(SF::$url->getCurrentLanguage(), SF::$config->get('main_lang_dir'));
         
         $this->tplEngine->assign(
                 'header',
@@ -384,8 +427,7 @@ class SF implements ISF {
         $this->tplEngine->assign(
                 'mainContent',
                 $content
-                );                
-        
+                );
     }
     
     /**
@@ -518,18 +560,14 @@ class SF implements ISF {
      *
      * @param string $oopElement Name of the class or a interface to load
      */
-    private function loadClass($oopElement) {
-
+    private function loadClass($oopElement)
+    {
         $tmp = explode("\\", $oopElement);
-
         $oopElementName = end($tmp);
-
         $suffix = ".class";
 
         if(strpos($oopElementName, 'I') === 0 && ctype_upper(substr($oopElementName, 0, 2)))
-        {
             $suffix = ".interface";
-        }
 
         $suffix .= ".php";
 
@@ -538,13 +576,9 @@ class SF implements ISF {
                 str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($oopElement)) .
                 $suffix;
 
-        if( is_file($file) && !class_exists($oopElement) ) {
-
+        if( is_file($file) && !class_exists($oopElement) )
             /** @noinspection PhpIncludeInspection */
             require $file;
-                  
-        }        
-        
     }
 
     /**
@@ -585,14 +619,14 @@ class SF implements ISF {
      */
     private function genConfigValues() {         
         
-        $mainUrl = URL::getMainUrlNoLang();
+        $mainUrl = SF::$url->getMainUrlNoLang();
         
-        SF::$config->set('main_url', URL::getMainUrl());
-        SF::$config->set('main_url_no_lang', URL::getMainUrlNoLang());
-        SF::$config->set('protocol', URL::getProtocol());
-        SF::$config->set('current_page', URL::getCurrentPage());
-        SF::$config->set('current_language', URL::getCurrentLanguage());
-        SF::$config->set('url_parts', URL::getUrlParts());
+        SF::$config->set('main_url', SF::$url->getMainUrl());
+        SF::$config->set('main_url_no_lang', SF::$url->getMainUrlNoLang());
+        SF::$config->set('protocol', SF::$url->getProtocol());
+        SF::$config->set('current_page', SF::$url->getCurrentPageName());
+        SF::$config->set('current_language', SF::$url->getCurrentLanguage());
+        SF::$config->set('url_parts', SF::$url->getUrlParts());
         SF::$config->set('output_components_url', $mainUrl . SF::$config->get('output_components_url'));
         SF::$config->set('index_url', $mainUrl . SF::$config->get('index_url'));
         SF::$config->set('pages_url', $mainUrl . SF::$config->get('pages_url'));

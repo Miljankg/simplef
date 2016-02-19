@@ -1,15 +1,21 @@
 <?php
 
+//<editor-fold desc="Logic components">
+
+$config['logic_components'] = array(
+    // LOGIC_COMPONENT => array(LOGIC_COMPONENT1, LOGIC_COMPONENT2)
+);
+
+//</editor-fold>
+
 //<editor-fold desc="Output components">
 
 $config['output_components']        = array(
-    
-                
-    
-            );
+    // OUTPUT_COMPONENT => array(js => true | false, css => true | false)
+);
 
 $config['output_components_logic']  = array(
-    
+    // OUTPUT_COMPONENT => array(LOGIC_COMPONENT1, LOGIC_COMPONENT2)
 );
 
 //</editor-fold>

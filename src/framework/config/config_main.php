@@ -6,7 +6,7 @@
  * If debug mode is on, this values can be adjusted to display errors. Otherwise, framework will set error report to 0.
  */
 $config['display_errors']       = "on";
-$config['error_reporting']      = 0;
+$config['error_reporting']      = E_ALL;
 
 //</editor-fold>
 
@@ -37,11 +37,10 @@ $config['app_webroot_dir'] = str_replace(
                 $_SERVER['DOCUMENT_ROOT']
                 ), 
         '', 
-        dirname(dirname(dirname(__DIR__)))
+        dirname(dirname(__DIR__))
         ); // Application location within the server webroot
 
-$config['app_webroot_dir'] = ltrim($config['app_webroot_dir'], $config['ds']);
-
+$config['app_webroot_dir']      = ltrim($config['app_webroot_dir'], $config['ds']);
 $config['document_root']        = $_SERVER['DOCUMENT_ROOT'] . $config['ds'] . $config['app_webroot_dir'] . $config['ds'];
 $config['framework_dir']        = $config['document_root'] . 'framework' . $config['ds'];
 $config['app_dir']              = $config['document_root'] . 'app' . $config['ds'];
@@ -67,6 +66,17 @@ $config['config_db']            = array(      // In case when framework config i
     'user' => '',
     'pass' => '',
     'type' => 'mysql' // currently only mysql
+);
+
+//</editor-fold>
+
+//<editor-fold desc="Class loading">
+
+$config['important_classes'] = array(
+    'url' => 'Core\URLUtils\Url',
+    'component_loader' => 'Core\Components\SFComponentLoader',
+    'logger' => 'Core\Logging\Logger',
+    'page_loader' => 'Core\Routing\PageLoader'
 );
 
 //</editor-fold>

@@ -3,7 +3,9 @@
 namespace Core\Exception;
 
 use \Exception;
+use \NullPointerException;
 use Core\Logging\ILogger;
+use Core\URLUtils\IUrl;
 
 interface IExceptionHandler
 {
@@ -19,6 +21,14 @@ interface IExceptionHandler
      * @return
      */
     public static function setParams($isCli, $showErrorPage, $errorPageUrl, $logLevel, $systemExceptionType);
+
+    /**
+     * Sets url object that will be used for redirection to the error page.
+     *
+     * @param IUrl $urlObj Url object to set.
+     * @throws NullPointerException If passed url object is null.
+     */
+    public static function setUrlObject(IUrl $urlObj);
 
     /**
      * Sets logger instance.

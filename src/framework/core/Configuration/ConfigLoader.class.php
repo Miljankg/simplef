@@ -16,8 +16,6 @@ class ConfigLoader {
         ConfigLocations::PHP_FILE
     );
     
-    private $configTypes = array('system');
-    
     private $configLocation;   
     
     public function __construct($configLocation) {
@@ -67,27 +65,22 @@ class ConfigLoader {
      * @param array $alreadyLoadedConfig Config that is already loaded.
      */
     private function loadConfigurationFromPhpFile($configPhpFileDir, array $alreadyLoadedConfig = array()) {                        
-        
-        foreach ($this->configTypes as $configDir) {
-            
-            $confDirToLoadFrom = $configPhpFileDir . $configDir . '/';
-            
-            $filesToLoad = File::getFileList(
-                    $confDirToLoadFrom,
-                    '/.*config_.*\.php/',
-                    false
-                    );                                                           
-            
-            $config = $alreadyLoadedConfig;                        
 
-            foreach ($filesToLoad as $fileToLoad) {
-                
-                require_once $fileToLoad;
-                                
-            }
+        $confDirToLoadFrom = $configPhpFileDir . '/';
+            
+        $filesToLoad = File::getFileList(
+                 $confDirToLoadFrom,
+                 '/.*config_.*\.php/',
+                 false
+                 );
+            
+        $config = $alreadyLoadedConfig;
 
-            return $config;
-        }                        
+        foreach ($filesToLoad as $fileToLoad)
+            /** @noinspection PhpIncludeInspection */
+            require_once $fileToLoad;
+
+        return $config;
     }
     
     /**

@@ -3,96 +3,113 @@
 namespace Core\URLUtils;
 
 /**
- * URL Utilites
+ * URL Utilities
  *
  * @author Miljan Pantic
  */
-class URL {
-    
-    private static $pageName = "";
-    private static $currLang = "";
-    private static $protocol = "";
-    private static $mainUrl = "";
-    private static $mainUrlNoLang = "";
-    private static $urlParts = array();
-    
-    /* Interface functions */
-    
+class Url implements IUrl
+{
+    //<editor-fold desc="Members">
+
+    protected $pageName = "";
+    protected $currLang = "";
+    protected $protocol = "";
+    protected $mainUrl = "";
+    protected $mainUrlNoLang = "";
+    protected $urlParts = array();
+
+    //</editor-fold>
+
+    //<editor-fold desc="Constructor">
+
     /**
      * Parse URL and populates internal URL class values.
-     * 
-     * @param bool $multilanguage Is site multilanguage or not
+     *
+     * @param bool $multilingual Is site multilingual or not
      * @param string $defaultLanguage Default language from config
      * @param string $defaultPage Default page from config
      * @param string $sslPort SSL Port from config
      * @param string $siteName Site name from config
      */
-    public static function processURL(
-            $multilanguage, 
-            $defaultLanguage, 
+    public function __construct(
+        $multilingual,
+        $defaultLanguage,
+        $defaultPage,
+        $sslPort,
+        $siteName
+    )
+    {
+        $this->processURL(
+            $multilingual,
+            $defaultLanguage,
             $defaultPage,
             $sslPort,
-            $siteName            
-            ) {
-        
-        URL::parseUrl($multilanguage, $defaultLanguage, $defaultPage);
-        URL::determineProtocol($sslPort);
-        URL::generateMainUrlVals(URL::$protocol, $siteName, URL::$currLang);
-    }        
-    
+            $siteName
+        );
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="IUrl functions">
+
     /**
      * Returns current language.
-     * 
+     *
      * @return string Current language.
      */
-    public static function getCurrentLanguage() {
-        
-        return URL::$currLang;
-        
+    public function getCurrentLanguage()
+    {
+        return $this->currLang;
     }
-    
+
     /**
      * Return current page name.
-     * 
+     *
      * @return string Current page name.
      */
-    public static function getCurrentPage() {
-        
-        return URL::$pageName;
-        
+    public function getCurrentPageName()
+    {
+        return $this->pageName;
     }
-    
+
     /**
      * Returns current protocol from URL.
-     * 
+     *
      * @return string Protocol https or http
      */
-    public static function getProtocol() {
-        
-        return URL::$protocol;
-        
+    public function getProtocol()
+    {
+        return $this->protocol;
     }
-    
+
     /**
      * Returns main url.
-     * 
+     *
      * @return string Main URL
      */
-    public static function getMainUrl() {
-        
-        return URL::$mainUrl;
-        
+    public function getMainUrl()
+    {
+        return $this->mainUrl;
     }
-    
-     /**
+
+    /**
      * Returns main url without lang.
-     * 
+     *
      * @return string Main URL with no lang
      */
-    public static function getMainUrlNoLang() {
-        
-        return URL::$mainUrlNoLang;
-        
+    public function getMainUrlNoLang()
+    {
+        return $this->mainUrlNoLang;
+    }
+
+    /**
+     * Retrieves URL Parts.
+     *
+     * @return array URL Parts.
+     */
+    public function getUrlParts()
+    {
+        return $this->urlParts;
     }
 
     /**
@@ -100,140 +117,139 @@ class URL {
      *
      * @param string $location
      */
-    public static function redirect($location) {
-
+    public function redirect($location)
+    {
         header("Location: $location");
         exit;
-        
     }
-    
-    /**
-     * Retreives URL Parts.
-     * 
-     * @return array URL Parts.
-     */
-    public static function getUrlParts() {
-        
-        return URL::$urlParts;
-        
-    }
-    
-    /**
-     * Parses URL and populates URL class internal fields.
-     * 
-     * @param bool $multilanguage Is site multilanguage.
-     * @param string $defaultLanguage 
-     * @param string $defaultPage
-     */
-    public static function parseUrl(
-            $multilanguage, 
-            $defaultLanguage, 
-            $defaultPage
-            )
-    {       
-        $urlStr = '';
-        $urlPartsStartIndex = 1;
-        $pageName = '';
-        
-        if (isset($_GET['pageName'])) {
-            
-            $urlStr = htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');
 
-        }        
-
-        $urlArr = explode("/", $urlStr);
-        
-        if ($multilanguage) {                                                
-            
-            // if lang is present in the url
-            if (isset($urlArr[0]) && $urlArr[0] != "" && strlen($urlArr[0]) == 2) {
-                
-                $urlPartsStartIndex = 2;
-                
-                $language = $urlArr[0];
-
-                if (isset($urlArr[1]) && $urlArr[1] != "")
-                {
-                    $pageName = $urlArr[1];
-                }
-                
-            } else {
-                $pageName = $urlArr[0];
-                $language = $defaultLanguage;
-            }           
-            
-        } else {
-            
-            $pageName = $urlStr;            
-            $language = $defaultLanguage;
-            
-        }
-
-        if (strlen($pageName) == 0) {
-            
-            $pageName = $defaultPage;
-            
-        }
-        
-        for ($i = $urlPartsStartIndex; $i < count($urlArr); $i++) {
-            
-            URL::$urlParts[] = $urlArr[$i];
-            
-        }
-        
-        URL::$currLang = $language;
-        URL::$pageName = $pageName;        
-    }
-    
     /**
      * Process URL string in order to escape it.
-     * 
+     *
      * @param string $url Url to parse
      * @return string Parsed url
      */
-    public static function getProperUrlFromString($url) {
-        
+    public function getProperUrlFromString($url)
+    {
         return str_replace('\\', '/', $url);
-        
     }
-    
-    /***********************/
-    
-    /* Internal functions */        
-    
+
     /**
      * Determines http or https.
-     * 
+     *
      * @param string $sslPort
+     * @return string HTTP or HTTPS
      */
-    private static function determineProtocol($sslPort) {
-        
-        URL::$protocol = 
-                (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' 
-                || $_SERVER['SERVER_PORT'] == $sslPort) 
+    public function determineProtocol($sslPort)
+    {
+        return
+            (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+                || $_SERVER['SERVER_PORT'] == $sslPort)
                 ? "https://" : "http://";
-        
     }
-    
+
+    //</editor-fold>
+
+    //<editor-fold desc="Internal functions">
+
+    /**
+     * Parse URL and populates internal URL class values.
+     *
+     * @param bool $multilingual Is site multilingual or not
+     * @param string $defaultLanguage Default language from config
+     * @param string $defaultPage Default page from config
+     * @param string $sslPort SSL Port from config
+     * @param string $siteName Site name from config
+     */
+    protected function processURL(
+        $multilingual,
+        $defaultLanguage,
+        $defaultPage,
+        $sslPort,
+        $siteName
+    )
+    {
+        $this->parseUrl($multilingual, $defaultLanguage, $defaultPage);
+        $this->protocol = $this->determineProtocol($sslPort);
+        $this->generateMainUrlValues($this->protocol, $siteName, $this->currLang);
+    }
+
+    /**
+     * Parses URL and populates URL class internal fields.
+     *
+     * @param bool $multilingual Is site multilingual.
+     * @param string $defaultLanguage
+     * @param string $defaultPage
+     */
+    protected function parseUrl(
+        $multilingual,
+        $defaultLanguage,
+        $defaultPage
+    )
+    {
+        $urlStr = '';
+        $urlPartsStartIndex = 1;
+        $pageName = '';
+
+        if (isset($_GET['pageName']))
+            $urlStr = htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');
+
+        $urlArr = explode("/", $urlStr);
+
+        if ($multilingual)
+        {
+            // if lang is present in the url
+            if (isset($urlArr[0]) && $urlArr[0] != "" && strlen($urlArr[0]) == 2)
+            {
+                $urlPartsStartIndex = 2;
+
+                $language = $urlArr[0];
+
+                if (isset($urlArr[1]) && $urlArr[1] != "")
+                    $pageName = $urlArr[1];
+
+            }
+            else
+            {
+                $pageName = $urlArr[0];
+                $language = $defaultLanguage;
+            }
+
+        }
+        else
+        {
+            $pageName = $urlStr;
+            $language = $defaultLanguage;
+        }
+
+        if (strlen($pageName) == 0)
+            $pageName = $defaultPage;
+
+        for ($i = $urlPartsStartIndex; $i < count($urlArr); $i++)
+            $this->urlParts[] = $urlArr[$i];
+
+        $this->currLang = $language;
+        $this->pageName = $pageName;
+    }
+
     /**
      * Generates main url and main url with no language.
-     * 
+     *
      * @param string $protocol http or https
      * @param string $siteName Site name from main config
      * @param string $currLang Current language
      */
-    private static function generateMainUrlVals($protocol, $siteName, $currLang) {
-        
-        URL::$mainUrlNoLang = 
-                $protocol . 
-                $_SERVER['HTTP_HOST'] .
-                '/' .
-                str_replace('\\', '/', $siteName) . 
-                '/';
-        
-        URL::$mainUrl = URL::$mainUrlNoLang . $currLang . "/";
-        
+    protected function generateMainUrlValues($protocol, $siteName, $currLang)
+    {
+        $this->mainUrlNoLang =
+            $protocol .
+            $_SERVER['HTTP_HOST'] .
+            '/' .
+            str_replace('\\', '/', $siteName) .
+            '/';
+
+        $this->mainUrl = $this->mainUrlNoLang . $currLang . "/";
     }
-    
-    /**********************/
+
+    //</editor-fold>
 }
