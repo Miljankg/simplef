@@ -94,14 +94,14 @@ class URL {
         return URL::$mainUrlNoLang;
         
     }
-    
+
     /**
      * Redirects to a given location.
-     * 
+     *
      * @param string $location
      */
     public static function redirect($location) {
-        
+
         header("Location: $location");
         exit;
         
@@ -138,7 +138,7 @@ class URL {
         if (isset($_GET['pageName'])) {
             
             $urlStr = htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');
-            
+
         }        
 
         $urlArr = explode("/", $urlStr);

@@ -62,7 +62,7 @@ class Config {
         
         if (!isset($this->config[$index])) {
             
-            throw new \Exception("Index $index is does not exists in the {$this->namespace} config.");
+            throw new \Exception("Index \"$index\" is does not exists in the \"{$this->namespace}\" config.");
         
         }
         

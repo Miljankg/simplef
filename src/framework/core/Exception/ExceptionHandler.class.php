@@ -47,7 +47,12 @@ class ExceptionHandler implements IExceptionHandler
     {
         $exText = ExceptionHandler::getExceptionString($ex);
 
-        ExceptionHandler::outputExceptionText($exText, get_class($ex));
+        $exText = ExceptionHandler::saveToLogFile($exText, get_class($ex));
+
+        if (!ExceptionHandler::$showErrorPage || empty(ExceptionHandler::$errorPageUrl))
+            ExceptionHandler::outputExceptionText($exText);
+        else
+            URL::redirect(ExceptionHandler::$errorPageUrl);
     }
 
     /**
@@ -121,9 +126,24 @@ class ExceptionHandler implements IExceptionHandler
      * It can also redirect to the error page if right parameter is set in the init function.
      *
      * @param string $exText Exception string.
-     * @param string $exType Exception type.
+     * @return bool False if code is not outputted properly.
      */
-    private static function outputExceptionText($exText, $exType)
+    private static function outputExceptionText($exText)
+    {
+        if (!ExceptionHandler::$isCli)
+            $exText = ExceptionHandler::prepTextForBrowser($exText);
+
+        die($exText);
+    }
+
+    /**
+     * Logs error to log file.
+     *
+     * @param string $exText Exception string.
+     * @param string $exType Exception type.
+     * @return string Since error text can be adjusted if the logger is not set, new text is returned so it can be used further.
+     */
+    private static function saveToLogFile($exText, $exType)
     {
         $nl = ExceptionHandler::$newLine;
 
@@ -140,11 +160,6 @@ class ExceptionHandler implements IExceptionHandler
                     ExceptionHandler::$logger->logError($exText);
                     break;
 
-                case LOG_LEVEL_SYSTEM_ONLY:
-                    if (ExceptionHandler::$systemExceptionType == $exTypeName)
-                        ExceptionHandler::$logger->logError($exText);
-                    break;
-
                 default:
                     $exTypesToLog = explode(",", ExceptionHandler::$logLevel);
 
@@ -154,15 +169,7 @@ class ExceptionHandler implements IExceptionHandler
             }
         }
 
-        if (!ExceptionHandler::$isCli)
-            $exText = ExceptionHandler::prepTextForBrowser($exText);
-
-        if (!ExceptionHandler::$showErrorPage || empty(ExceptionHandler::$errorPageUrl))
-        {
-           die($exText);
-        }
-
-        URL::redirect(ExceptionHandler::$errorPageUrl);
+        return $exText;
     }
 
     /**

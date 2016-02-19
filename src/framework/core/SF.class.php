@@ -157,7 +157,7 @@ class SF implements ISF {
         }                   
         
         $this->setIniValues();
-        
+
         $frameworkDir = SF::$config->get('framework_dir');
         
         // Load libs
@@ -257,7 +257,27 @@ class SF implements ISF {
      */
     private function setUnhandledExceptionHandler()
     {
-        set_exception_handler(array("Core\Exception\ExceptionHandler", "handleException"));
+        set_exception_handler(array('Core\Exception\ExceptionHandler', 'handleException'));
+        register_shutdown_function(array('Core\SF', 'shutdownFunction'));
+    }
+
+    public static function shutdownFunction()
+    {
+        $last_error = error_get_last();
+
+        if ($last_error === null)
+            return;
+
+        $exception = new \ErrorException(
+            "FATAL_ERROR [ " . $last_error['message'] . " ] ",
+            0,
+            1,
+            $last_error['file'],
+            $last_error['line'],
+            null
+        );
+
+        ExceptionHandler::handleException($exception);
     }
 
     /**
@@ -268,7 +288,7 @@ class SF implements ISF {
         ExceptionHandler::setParams(
             CLIUtils::isCli(),
             !SF::$config->get('debug_mode'),
-            SF::$config->get('error_page_url'),
+            SF::$config->get("main_url") . SF::$config->get('error_page_url'),
             SF::$config->get('log_level'),
             SF::$config->get('system_exception_type')
         );
@@ -532,16 +552,29 @@ class SF implements ISF {
      */
     private function setIniValues()
     {
+        $displayErrorField = 'display_errors';
+        $errorReportingField = 'error_reporting';
+
         $iniConfigFields = array(
-            'display_errors',
-            'error_reporting'
+            $displayErrorField,
+            $errorReportingField
         );
-        
+
+        $debugModeDependentFields = array(
+            $displayErrorField => "off",
+            $errorReportingField => 0
+        );
+
+        $debugMode = SF::$config->get("debug_mode");
+
         foreach ($iniConfigFields as $field)
         {
             $value = SF::$config->get($field);
 
             SF::$logger->logDebug("Setting INI field \"{$field}\" to value: {$value}");
+
+            if (!$debugMode && array_key_exists($field, $debugModeDependentFields))
+                $value = $debugModeDependentFields[$field];
 
             ini_set($field, $value);
         }

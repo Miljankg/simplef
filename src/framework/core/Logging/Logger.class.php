@@ -22,10 +22,12 @@ class Logger implements ILogger
     private $newLine = "\n";
     private $isDebug = false;
 
-    private $prefixError = "== ERROR ==";
-    private $prefixInfo = "== INFO ==";
-    private $prefixWarning = "== WARNING ==";
-    private $prefixDebug = "== DEBUG ==";
+    private $prefixTpl = "==== %s ====";
+
+    private $prefixError = "ERROR";
+    private $prefixInfo = "INFO";
+    private $prefixWarning = "WARNING";
+    private $prefixDebug = "DEBUG";
 
     //</editor-fold>
 
@@ -167,7 +169,7 @@ class Logger implements ILogger
                 throw new Exception("Unsupported prefix type $prefixType.");
         }
 
-        return $prefix . $this->newLine;
+        return sprintf($this->prefixTpl, $prefix) . $this->newLine;
     }
 
     /**

@@ -2,19 +2,21 @@
 
 //<editor-fold desc="php.ini file values">
 
+/**
+ * If debug mode is on, this values can be adjusted to display errors. Otherwise, framework will set error report to 0.
+ */
 $config['display_errors']       = "on";
-$config['error_reporting']      = E_ALL;
+$config['error_reporting']      = 0;
 
 //</editor-fold>
 
 //<editor-fold desc="Debugging">
 
 define("LOG_LEVEL_ALL", "ALL");
-define("LOG_LEVEL_SYSTEM_ONLY", "SYSTEM_ONLY");
 
-$config['log_level']            = LOG_LEVEL_ALL; // Logging level [ ALL | SYSTEM_ONLY | ExceptionType1,ExceptionType2,ExceptionType3... ]
+$config['log_level']            = LOG_LEVEL_ALL; // Logging level [ ALL | ExceptionType1,ExceptionType2,ExceptionType3... ]
 $config['debug_mode']           = true; // Framework debug level [ true | false ]
-$config['system_exception_type']= "SfException";
+$config['system_exception_type']= "Exception";
 
 //</editor-fold>
 
