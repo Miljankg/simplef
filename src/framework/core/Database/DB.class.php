@@ -44,19 +44,26 @@ class DB
 
         foreach ($dbCredVals as $dbIndex => $dbParams)
         {
+            $connectionParameters = array();
+
+            if (isset($dbParams['persistent_connection']) &&
+                $dbParams['persistent_connection'] == true)
+                $connectionParameters[PDO::ATTR_PERSISTENT] = true;
+
             $hndl = $this->connect(
                         $dbParams['db_host'], 
                         $dbParams['db_name'], 
                         $dbParams['db_user'], 
                         $dbParams['db_pass'], 
-                        $dbParams['db_type']
+                        $dbParams['db_type'],
+                        $connectionParameters
                     );                        
             
             $this->dbhs[$dbIndex] = $hndl;
         }        				
     }
 
-    public function connect($host, $db, $user, $pass, $type)
+    public function connect($host, $db, $user, $pass, $type, array $attributes)
     {
         if (!in_array($type, $this->connTypes))
         {
@@ -70,10 +77,10 @@ class DB
             switch ($type)
             {
                 case 'oracle':
-                    $dbh = $this->ConnectToOracle($host, $db, $user, $pass);
+                    $dbh = $this->ConnectToOracle($host, $db, $user, $pass, $attributes);
                     break;
                 case 'mysql':
-                    $dbh = $this->ConnectToMysql($host, $db, $user, $pass);
+                    $dbh = $this->ConnectToMysql($host, $db, $user, $pass, $attributes);
                     break;
             }            
 
@@ -88,16 +95,16 @@ class DB
         return $dbh;
     }   
     
-    private function ConnectToMysql($host, $db, $user, $pass)
+    private function ConnectToMysql($host, $db, $user, $pass, array $attributes)
     { 
-        return new PDO("mysql:host=$host; dbname=$db;charset=utf8", $user, $pass);
+        return new PDO("mysql:host=$host; dbname=$db;charset=utf8", $user, $pass, $attributes);
     }
     
-    private function ConnectToOracle($server, $dbName, $user, $pass)
+    private function ConnectToOracle($server, $dbName, $user, $pass, array $attributes)
     {
         $db = "oci:dbname=//$server/$dbName;charset=AL32UTF8"; //charset=AL32UTF8 for utf-8 characters from DB.
 
-        return new PDO($db,$user,$pass);        
+        return new PDO($db,$user,$pass, $attributes);
     }
 
     private function GetDbInstance($dbIndex) {                

@@ -283,7 +283,7 @@ class SFComponentLoader implements IComponentLoader
         $config = array();
 
         /** @noinspection PhpIncludeInspection */
-        require $configDir . 'config.php';
+        require $configDir . "{$configNamespace}.php";
         
         $configObj = new Config($configNamespace);
         $configObj->addMultipleConfigValues($config);

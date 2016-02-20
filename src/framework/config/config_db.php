@@ -8,7 +8,8 @@ $config['db_config'] = array(
         'db_user' => 'root',
         'db_pass' => 'root',
         'db_host' => 'localhost',
-        'db_name' => 'example_db'
+        'db_name' => 'example_db',
+        'persistent_connection' => false | true
     )*/
 );   // type of DB => [ Currently supported: "mysql", "oracle" ] 
 
