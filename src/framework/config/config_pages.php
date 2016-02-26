@@ -1,58 +1,136 @@
 <?php
 
-//<editor-fold desc="Logic components">
-
-$config['logic_components'] = array(
-    // LOGIC_COMPONENT => array(LOGIC_COMPONENT1, LOGIC_COMPONENT2)
+$config['use_authentication']            = true;
+$config['roles']                         = array (
+  0 => 'logged_in',
 );
-
-//</editor-fold>
-
-//<editor-fold desc="Output components">
-
-$config['output_components']        = array(
-    // OUTPUT_COMPONENT => array(js => true | false, css => true | false)
+$config['users']                         = array (
+  'test_user' => 
+  array (
+    'role' => 'logged_in',
+    'password' => 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3',
+  ),
 );
-
-$config['output_components_logic']  = array(
-    // OUTPUT_COMPONENT => array(LOGIC_COMPONENT1, LOGIC_COMPONENT2)
+$config['db_config']                     = array (
 );
-
-//</editor-fold>
-
-//<editor-fold desc="Pages">
-
-define("PAGE_404", "404");
-define("PAGE_MAINTENANCE", "maintenance");
-define("PAGE_ERROR", "error_page");
-
-$config['pages']                    = array(
-            PAGE_404,
-            PAGE_MAINTENANCE,
-            PAGE_ERROR
-        );
-        
-        
-$config['pages_out_components']     = array(
-            PAGE_404 => array(),
-            PAGE_MAINTENANCE => array(),
-            PAGE_ERROR
-        ); 
-
-$config['pages_templates']          = array(
-            
-        );
-
-//</editor-fold>
-
-//<editor-fold desc="Additional routing configuration">
-
-$config['default_page']             = ""; // Empty = root
-$config['empty_page_index']         = "";
-$config['page_not_found_page']      = PAGE_404;
-$config['page_maintenance']         = PAGE_MAINTENANCE;
-$config['error_page_url']           = $config['main_url'] . PAGE_ERROR;
-$config['wrap_components']          = true;
-$config['common_output_components'] = array();
-
-//</editor-fold>
+$config['output_components_url']         = 'app/templates/out_components/';
+$config['index_url']                     = 'app/templates/index/';
+$config['pages_url']                     = 'app/templates/pages/';
+$config['main_lang_dir']                 = 'C:\\xampp\\htdocs\\simplef\\src\\app\\lang/';
+$config['components_dir']                = 'C:\\xampp\\htdocs\\simplef\\src\\app\\components/';
+$config['output_components_dir']         = 'C:\\xampp\\htdocs\\simplef\\src\\app\\components/output/';
+$config['logic_components_dir']          = 'C:\\xampp\\htdocs\\simplef\\src\\app\\components/logic/';
+$config['config_dir']                    = 'C:\\xampp\\htdocs\\simplef\\src\\framework\\config/';
+$config['ssl_port']                      = 443;
+$config['out_comp_ns']                   = 'Components\\Output\\';
+$config['logic_comp_ns']                 = 'Components\\Logic\\';
+$config['is_cli']                        = '';
+$config['ajax_get_index']                = 'ajax';
+$config['ajax_level']                    = '1';
+$config['enable_session']                = true;
+$config['maintenance_mode']              = false;
+$config['is_site_multilang']             = true;
+$config['default_language']              = 'en';
+$config['available_langs']               = array (
+  0 => 'en',
+);
+$config['disabled_langs']                = array (
+);
+$config['lang_dir']                      = 'C:\\xampp\\htdocs\\simplef\\src\\app\\lang\\';
+$config['sf_libs']                       = array (
+  0 => 'smarty',
+);
+$config['error_log_enabled']             = true;
+$config['log_file']                      = 'C:\\xampp\\htdocs\\simplef\\src\\framework\\log\\sf.log';
+$config['log_time_format']               = '[ Y-m-d H:i:s ]';
+$config['new_line']                      = '
+';
+$config['logic_components']              = array (
+  'auth' => 
+  array (
+  ),
+);
+$config['output_components']             = array (
+  'test' => 
+  array (
+    'js' => true,
+    'css' => true,
+  ),
+  'login' => 
+  array (
+    'js' => true,
+    'css' => true,
+  ),
+);
+$config['output_components_logic']       = array (
+  'test' => 
+  array (
+  ),
+  'login' => 
+  array (
+    0 => 'auth',
+  ),
+);
+$config['pages']                         = array (
+  404 => 
+  array (
+  ),
+  'maintenance' => 
+  array (
+  ),
+  'error_page' => 
+  array (
+  ),
+  'login' => 
+  array (
+  ),
+  'test_page' => 
+  array (
+    'js' => true,
+    'css' => false,
+  ),
+  'test_page_second' => 
+  array (
+  ),
+);
+$config['pages_out_components']          = array (
+  404 => 
+  array (
+  ),
+  'maintenance' => 
+  array (
+  ),
+  'error_page' => 
+  array (
+  ),
+  'login' => 
+  array (
+    0 => 'login',
+  ),
+  'test_page' => 
+  array (
+    0 => 'test',
+  ),
+  'test_page_second' => 
+  array (
+  ),
+);
+$config['pages_templates']               = array (
+);
+$config['pages_access']                  = array (
+  'test_page_second' => 
+  array (
+    0 => 'logged_in',
+  ),
+);
+$config['default_page']                  = '';
+$config['empty_page_index']              = 'test_page';
+$config['page_not_found_page']           = '404';
+$config['page_maintenance']              = 'maintenance';
+$config['error_page_url']                = 'error_page';
+$config['wrap_components']               = true;
+$config['common_output_components']      = array (
+  'test' => 
+  array (
+  ),
+);

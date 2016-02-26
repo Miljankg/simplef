@@ -1,21 +1,28 @@
 <?php
 
-namespace Core;
+namespace Framework\Core;
 
-use Core\Configuration\ConfigLoader;
-use Core\Configuration\Config;
-use Core\Configuration\ConfigLocations;
-use Core\Exception\ExceptionHandler;
-use Core\CLI\CLIUtils;
-use Core\Logging\Logger;
-use Core\Logging\ILogger;
-use Core\Routing\PageLoader;
-use Core\URLUtils\IUrl;
-use Core\URLUtils\Url;
-use Core\Components\SFComponentLoader;
-use Core\Lang\Language;
-use Core\Database\DB;
+require_once 'Loaders\ClassLoader.class.php';
+
+use Framework\Core\FrameworkClasses\Configuration\ConfigLoader;
+use Framework\Core\FrameworkClasses\Configuration\Config;
+use Framework\Core\FrameworkClasses\Configuration\ConfigLocations;
+use Framework\Core\Exception\ExceptionHandler;
+use Framework\Core\CLI\CLIUtils;
+use Framework\Core\FrameworkClasses\Configuration\IConfig;
+use Framework\Core\FrameworkClasses\Logging\Logger;
+use Framework\Core\FrameworkClasses\Logging\ILogger;
+use Framework\Core\FrameworkClasses\Routing\PageLoader;
+use Framework\Core\FrameworkClasses\URLUtils\IUrl;
+use Framework\Core\FrameworkClasses\URLUtils\Url;
+use Framework\Core\FrameworkClasses\Components\SFComponentLoader;
+use Framework\Core\Lang\Language;
+use Framework\Core\Database\DB;
+use Framework\Core\Loaders\ClassLoader;
 use \Exception;
+use Framework\Core\FrameworkClasses\Globals\Get;
+use Framework\Core\FrameworkClasses\Globals\Post;
+use Framework\Core\FrameworkClasses\Session\Session;
 
 
 /**
@@ -29,17 +36,32 @@ class SF implements ISF {
 
     private $db = null;
 
-    /** @var Config */
-    public static $config = null;
+    /** @var IConfig */
+    public $config = null;
 
     /** @var Language */
-    public static $lang = null;
+    public $lang = null;
+
+    /** @var Language */
+    public $langPages = null;
 
     /** @var ILogger */
-    public static $logger = null;
+    public $logger = null;
 
     /** @var IUrl */
-    public static $url = null;
+    public $url = null;
+
+    /** @var Get */
+    public $get = null;
+
+    /** @var Post */
+    public $post = null;
+
+    /** @var Session */
+    public $session = null;
+
+    /** @var ClassLoader */
+    public $frameworkClassLoader = null;
 
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
@@ -88,7 +110,10 @@ class SF implements ISF {
         'wrap_components',
         'output_components_logic',
         'common_output_components',
-        'pages_url'
+        'pages_url',
+        'ajax_get_index',
+        'pages_access',
+        'use_authentication'
     );
 
     /** @noinspection PhpUndefinedClassInspection */
@@ -109,6 +134,62 @@ class SF implements ISF {
     //</editor-fold>
 
     //<editor-fold desc="Interface functions">
+
+    /**
+     * @return Session
+     */
+    public function Session()
+    {
+        return $this->session;
+    }
+
+    /**
+     * @return Get
+     */
+    public function Get()
+    {
+        return $this->get;
+    }
+
+    /**
+     * @return Post
+     */
+    public function Post()
+    {
+        return $this->post;
+    }
+
+    /**
+     * @return Config
+     */
+    public function Config()
+    {
+       return $this->config;
+    }
+
+    /**
+     * @return Language
+     */
+    public function Lang()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @return ILogger
+     */
+    public function Logger()
+    {
+       return $this->logger;
+    }
+
+    /**
+     * @return IUrl
+     */
+    public function Url()
+    {
+        return $this->url;
+    }
     
     /**
      * Executes SF.
@@ -130,6 +211,8 @@ class SF implements ISF {
      */
     private function bootUp() {
 
+        $this->frameworkClassLoader = new ClassLoader($this->mainLoadedConfig['document_root']);
+
         $this->registerAutoload();
 
         $this->setUnhandledExceptionHandler();
@@ -150,12 +233,12 @@ class SF implements ISF {
 
         // Check required fields
         $this->checkRequiredConfigFields(
-                SF::$config->getAllFields(),
+                $this->config->getAllFields(),
                 $this->requiredSystemConfig
                 );                    
         
         // Set up logger
-        if (SF::$config->get('error_log_enabled') == true) {
+        if ($this->config->get('error_log_enabled') == true) {
             
             $this->setUpLogger();                        
             
@@ -163,7 +246,7 @@ class SF implements ISF {
         
         $this->setIniValues();
 
-        $frameworkDir = SF::$config->get('framework_dir');
+        $frameworkDir = $this->config->get('framework_dir');
         
         // Load libs
         $this->loadLibs($frameworkDir);
@@ -171,16 +254,20 @@ class SF implements ISF {
         // Parse URL
         $this->processUrl();
 
-        $this->checkLanguage(SF::$url->getCurrentLanguage());
+        $this->checkLanguage($this->url->getCurrentLanguage());
 
         $this->genConfigValues();
         
         // Init template engine
-        $this->tplEngine = $this->initTplEngine(SF::$config->get('app_dir'));
+        $this->tplEngine = $this->initTplEngine($this->config->get('app_dir'));
         
         $this->assignValsIntoTpl();
 
         $this->connectToDb();
+
+        $this->initGlobalArrays();
+
+        $this->sessionAndAuth($this->config->get('pages_access'));
     }
     
     /**
@@ -196,6 +283,50 @@ class SF implements ISF {
     }
 
     /**
+     * Initializes global arrays.
+     */
+    private function initGlobalArrays()
+    {
+        $this->get = new Get($_GET, false);
+        $this->post = new Post($_POST, false);
+    }
+
+    private function sessionAndAuth(array $pagesAccessConfig)
+    {
+        $useAuth = $this->config->get('use_authentication');
+
+        $session = new Session();
+
+        $this->session = $session;
+
+        if($session->sessionExists())
+            $session->sessionUpdate();
+        else
+            $session->sessionCreate();
+
+        $currentPage = $this->url->getCurrentPageName();
+
+        $userRole = $session->getUserData('role');
+
+        if ($useAuth)
+        {
+            if (!isset($pagesAccessConfig[$currentPage]) ||
+                empty($pagesAccessConfig[$currentPage]) ||
+                in_array($userRole, $pagesAccessConfig[$currentPage])
+            )
+                return;
+            else
+            {
+                $mainUrl = $this->url->getMainUrl();
+
+                $loginPage = $mainUrl . 'login&not_allowed=1';
+
+                $this->url->redirect($loginPage);
+            }
+        }
+    }
+
+    /**
      * Loads class and checks if it implements passed interface.
      *
      * @param string $index Index of a class in a config array.
@@ -204,8 +335,8 @@ class SF implements ISF {
      */
     private function loadClassCheckInterface($index, $interface)
     {
-        $importantClasses = SF::$config->get('important_classes');
-        $frameworkDir = SF::$config->get('framework_dir');
+        $importantClasses = $this->mainLoadedConfig['important_classes'];
+        $rootDir = $this->mainLoadedConfig['app_webroot_dir'];
 
         if (!isset($importantClasses[$index]))
             throw new Exception("There is no important class \"{$index}\"");
@@ -214,23 +345,22 @@ class SF implements ISF {
 
         $interfaces = class_implements($class);
 
-        /** @noinspection PhpIncludeInspection */
-        require_once $frameworkDir . $importantClasses[$index] . '.class.php';
+        $this->frameworkClassLoader->loadClass($class);
 
         if(empty($interfaces) || !in_array($interface, $interfaces))
-            throw new Exception("Class \"{$class}\" does not implements \"{$interface}\"");
+            throw new Exception("Class \"{$class}\" does not implements \"{$interface}\".");
     }
 
     private function processUrl()
     {
-        $this->loadClassCheckInterface('url', 'Core\URLUtils\IUrl');
+        $this->loadClassCheckInterface('url', 'Framework\Core\FrameworkClasses\URLUtils\IUrl');
 
-        SF::$url = new Url(
-            SF::$config->get('is_site_multilang'),
-            SF::$config->get('default_language'),
-            SF::$config->get('default_page'),
-            SF::$config->get('ssl_port'),
-            SF::$config->get('app_webroot_dir')
+        $this->url = new Url(
+            $this->config->get('is_site_multilang'),
+            $this->config->get('default_language'),
+            $this->config->get('default_page'),
+            $this->config->get('ssl_port'),
+            $this->config->get('app_webroot_dir')
         );
     }
     
@@ -265,8 +395,9 @@ class SF implements ISF {
      * @return array Loaded configuration
      */
     private function loadAdditionalConfig($root, $configType, array $loadedConfig) {
-        
-        SF::$config = new Config('SF Global', $loadedConfig);            
+
+        $this->loadClassCheckInterface('config', 'Framework\Core\FrameworkClasses\Configuration\IConfig');
+        $this->config = new Config('SF Global', $loadedConfig);            
         
         $configLoader = new ConfigLoader(
                 $configType
@@ -287,7 +418,7 @@ class SF implements ISF {
                 $dbObj
                 );
 
-        SF::$config->addMultipleConfigValues($newConfigFields);                
+        $this->config->addMultipleConfigValues($newConfigFields);                
     }
 
     /**
@@ -295,8 +426,8 @@ class SF implements ISF {
      */
     private function setUnhandledExceptionHandler()
     {
-        set_exception_handler(array('Core\Exception\ExceptionHandler', 'handleException'));
-        register_shutdown_function(array('Core\SF', 'shutdownFunction'));
+        set_exception_handler(array('Framework\Core\Exception\ExceptionHandler', 'handleException'));
+        register_shutdown_function(array('Framework\Core\SF', 'shutdownFunction'));
     }
 
     public static function shutdownFunction()
@@ -325,10 +456,10 @@ class SF implements ISF {
         
         ExceptionHandler::setParams(
             CLIUtils::isCli(),
-            !SF::$config->get('debug_mode'),
-            SF::$config->get("main_url") . SF::$config->get('error_page_url'),
-            SF::$config->get('log_level'),
-            SF::$config->get('system_exception_type')
+            !$this->config->get('debug_mode'),
+            $this->config->get("main_url") . $this->config->get('error_page_url'),
+            $this->config->get('log_level'),
+            $this->config->get('system_exception_type')
         );
         
     }
@@ -338,16 +469,16 @@ class SF implements ISF {
      */
     private function setUpLogger()
     {
-        $this->loadClassCheckInterface('logger', 'Core\Logging\ILogger');
+        $this->loadClassCheckInterface('logger', 'Framework\Core\FrameworkClasses\Logging\ILogger');
 
-        SF::$logger = new Logger(
-            SF::$config->get('log_file'),
-            SF::$config->get('new_line'),
-            SF::$config->get('log_time_format'),
-            SF::$config->get('debug_mode')
+        $this->logger = new Logger(
+            $this->config->get('log_file'),
+            $this->config->get('new_line'),
+            $this->config->get('log_time_format'),
+            $this->config->get('debug_mode')
         );
 
-        ExceptionHandler::setLogger(SF::$logger);
+        ExceptionHandler::setLogger($this->logger);
         
     }       
     
@@ -356,67 +487,89 @@ class SF implements ISF {
      */
     private function loadPage()
     {
+        $this->lang = new Language("SF Global");
+        $this->langPages = new Language("Pages lang");
+
+        $currLang = $this->url->getCurrentLanguage();
+
+        $this->lang->loadLang($this->config->get('main_lang_dir') . $currLang . "/$currLang.php");
+        $this->langPages->loadLang($this->config->get('main_lang_dir') . $currLang . "/{$currLang}_pages.php");
+
+        $currPageName = $this->url->getCurrentPageName();
+
+        $actualPageName = $this->langPages->getIndex($currPageName);
+
+        if ($actualPageName === null)
+            $actualPageName = $currPageName;
+
         $tplDir = $this->tplEngine->getTemplateDir(0);
 
-        $this->loadClassCheckInterface('component_loader', 'Core\Components\IComponentLoader');
-        $this->loadClassCheckInterface('page_loader', 'Core\Routing\IPageLoader');
+        $this->loadClassCheckInterface('component_loader', 'Framework\Core\FrameworkClasses\Components\IComponentLoader');
+        $this->loadClassCheckInterface('page_loader', 'Framework\Core\FrameworkClasses\Routing\IPageLoader');
 
         $componentLoader = new SFComponentLoader(
-                SF::$config->get('app_dir') . 'components/output/', 
+                $this->config->get('app_dir') . 'components/output/', 
                 $tplDir . 'out_components/', 
-                SF::$config->get('output_components'), 
-                SF::$config->get('out_comp_ns'),
-                SF::$config->get('logic_components'),
-                SF::$config->get('logic_comp_ns'),
+                $this->config->get('output_components'), 
+                $this->config->get('out_comp_ns'),
+                $this->config->get('logic_components'),
+                $this->config->get('logic_comp_ns'),
                 $this->tplEngine,
-                SF::$config->get('config_type'),
-                SF::$url->getCurrentLanguage(),
-                SF::$config->get('wrap_components'),
-                SF::$config->get('logic_components_dir'),
-                SF::$config->get('output_components_logic'),
+                $this->config->get('config_type'),
+                $this->url->getCurrentLanguage(),
+                $this->config->get('wrap_components'),
+                $this->config->get('logic_components_dir'),
+                $this->config->get('output_components_logic'),
                 $this->db,
-                SF::$config->get('common_output_components'),
-                SF::$config->get('current_page'),
-                SF::$logger
+                $this->config->get('common_output_components'),
+                $this->config->get('current_page'),
+                $this->logger,
+                $this
                 );
 
+        $ajaxLevel = $this->getAjaxLevel();
+        $loadSpecificComponent = false;
+
+        if (!is_numeric($ajaxLevel))
+            $loadSpecificComponent = $ajaxLevel;
+
         $pageLoader = new PageLoader(
-                SF::$config->get('pages'),
-                SF::$config->get('pages_out_components'),
-                SF::$config->get('pages_templates'),
-                SF::$config->get('empty_page_index'),
-                SF::$config->get('maintenance_mode'),
+                $this->config->get('pages'),
+                $this->config->get('pages_out_components'),
+                $this->config->get('pages_templates'),
+                $this->config->get('empty_page_index'),
+                $this->config->get('maintenance_mode'),
                 $this->tplEngine,
                 $tplDir . 'pages/',
                 $componentLoader,
-                SF::$logger,
-                SF::$url,
-                SF::$config->get('output_components_url'),
-                SF::$config->get('pages_url')
+                $this->logger,
+                $this->url,
+                $this->config->get('output_components_url'),
+                $this->config->get('pages_url'),
+                $loadSpecificComponent
                 );
 
-        $pageLoader->pageNotFoundPage = SF::$config->get('page_not_found_page');
-        $pageLoader->pageMaintenance = SF::$config->get('page_maintenance');
-        
-        $currPage = SF::$url->getCurrentPageName();
-        
-        /*$this->handlePageTranslations(
-                $currPage, 
-                SF::$config->get('pages'), 
-                $pages->pageNotFoundPage);*/                
+        $pageLoader->pageNotFoundPage = $this->config->get('page_not_found_page');
+        $pageLoader->pageMaintenance = $this->config->get('page_maintenance');
         
         $header = "";
 
         $content = $pageLoader->getCurrentPageContent(
-                $currPage,
+                $actualPageName,
                 $header
-                );                        
-        
+                );
+
+        if ($loadSpecificComponent !== false || $ajaxLevel == 2)
+        {
+            $ajaxData = array(
+                'content' => $content,
+                'header' => $header
+            );
+
+            $this->outputJsonEncoded($ajaxData);
+        }
+
         $header = $this->genHeaderIndex() . $header;
-        
-        SF::$lang = new Language("SF Global");
-        
-        SF::$lang->loadLang(SF::$url->getCurrentLanguage(), SF::$config->get('main_lang_dir'));
         
         $this->tplEngine->assign(
                 'header',
@@ -429,6 +582,18 @@ class SF implements ISF {
                 $content
                 );
     }
+
+    private function getAjaxLevel()
+    {
+        $value = 0;
+
+        $index = $this->config->get('ajax_get_index');
+
+        if (isset($_GET[$index]))
+            $value = $_GET[$index];
+
+        return $value;
+    }
     
     /**
      * Generates index page header.
@@ -437,8 +602,8 @@ class SF implements ISF {
      */
     private function genHeaderIndex() {
         
-        $indexCss = SF::$config->get('index_url') . 'css/index.css';
-        $indexJs = SF::$config->get('index_url') . 'js/index.js';
+        $indexCss = $this->config->get('index_url') . 'css/index.css';
+        $indexJs = $this->config->get('index_url') . 'js/index.js';
 
         $headerIndex = "<link rel=\"stylesheet\" type=\"text/css\" href=\"{$indexCss}\">\n";
         $headerIndex .= "<script src=\"{$indexJs}\"></script>\n";
@@ -446,54 +611,6 @@ class SF implements ISF {
         return $headerIndex;
         
     }
-    
-    /**
-     * Handle page translations.
-     * 
-     * @param string $currPage Current page
-     * @param array $pages Pages from config
-     * @param string $page404
-     */
-    /*private function handlePageTranslations(&$currPage, array $pages, $page404) {
-        
-        if (!empty($currPage)) {
-        
-            foreach ($pages as $page) {
-
-                try {
-
-                    $pageTranslated = Lang\Language::get("page_" . $page);                    
-
-                    if ($pageTranslated == $currPage) {
-
-                        $currPage = $page;
-                        break;
-
-                    }
-
-                } catch (\Exception $ex) {                    
-
-                }
-
-            }                        
-            
-            if ($currPage == URL::getCurrentPage()) {
-                
-                try {
-                    
-                    Lang\Language::get("page_" . $currPage); 
-                    $currPage = $page404;
-                    
-                } catch (\Exception $ex) {
-                    
-                    // move on
-                    
-                }                                
-                
-            }
-        
-        }           
-    }*/
 
     /**
      * Loads SF libraries.
@@ -502,13 +619,13 @@ class SF implements ISF {
      */
     private function loadLibs($documentRoot)
     {
-        $libsToLoad = SF::$config->get('sf_libs');
+        $libsToLoad = $this->config->get('sf_libs');
         
         foreach ($libsToLoad as $library) {
 
             $path = $documentRoot . 'lib/' . $library . '/incl_lib.php';
 
-            SF::$logger->logDebug("Loading lib \"{$library}\", from: \"{$path}\"");
+            $this->logger->logDebug("Loading lib \"{$library}\", from: \"{$path}\"");
 
             /** @noinspection PhpIncludeInspection */
             require_once $path;
@@ -541,9 +658,28 @@ class SF implements ISF {
      * Displays page content.
      */
     private function displayContent() {
-        
-        $this->tplEngine->display('index/index.tpl');
-        
+
+        $indexTpl = 'index/index.tpl';
+
+        $ajaxLevel = $this->getAjaxLevel();
+
+        if ($ajaxLevel == 1)
+        {
+            $this->outputJsonEncoded(array('content' => $this->tplEngine->fetch($indexTpl)));
+        }
+
+        $this->tplEngine->display($indexTpl);
+    }
+
+    /**
+     * Outputs json decoded data.
+     *
+     * @param array $dataToOutput
+     */
+    private function outputJsonEncoded(array $dataToOutput)
+    {
+        echo json_encode($dataToOutput);
+        exit;
     }
     
     /**
@@ -562,23 +698,7 @@ class SF implements ISF {
      */
     private function loadClass($oopElement)
     {
-        $tmp = explode("\\", $oopElement);
-        $oopElementName = end($tmp);
-        $suffix = ".class";
-
-        if(strpos($oopElementName, 'I') === 0 && ctype_upper(substr($oopElementName, 0, 2)))
-            $suffix = ".interface";
-
-        $suffix .= ".php";
-
-        $file =
-                $this->mainLoadedConfig['framework_dir'] . 
-                str_replace('\\', DIRECTORY_SEPARATOR, lcfirst($oopElement)) .
-                $suffix;
-
-        if( is_file($file) && !class_exists($oopElement) )
-            /** @noinspection PhpIncludeInspection */
-            require $file;
+        $this->frameworkClassLoader->loadClass($oopElement);
     }
 
     /**
@@ -599,13 +719,13 @@ class SF implements ISF {
             $errorReportingField => 0
         );
 
-        $debugMode = SF::$config->get("debug_mode");
+        $debugMode = $this->config->get("debug_mode");
 
         foreach ($iniConfigFields as $field)
         {
-            $value = SF::$config->get($field);
+            $value = $this->config->get($field);
 
-            SF::$logger->logDebug("Setting INI field \"{$field}\" to value: {$value}");
+            $this->logger->logDebug("Setting INI field \"{$field}\" to value: {$value}");
 
             if (!$debugMode && array_key_exists($field, $debugModeDependentFields))
                 $value = $debugModeDependentFields[$field];
@@ -619,17 +739,17 @@ class SF implements ISF {
      */
     private function genConfigValues() {         
         
-        $mainUrl = SF::$url->getMainUrlNoLang();
+        $mainUrl = $this->url->getMainUrlNoLang();
         
-        SF::$config->set('main_url', SF::$url->getMainUrl());
-        SF::$config->set('main_url_no_lang', SF::$url->getMainUrlNoLang());
-        SF::$config->set('protocol', SF::$url->getProtocol());
-        SF::$config->set('current_page', SF::$url->getCurrentPageName());
-        SF::$config->set('current_language', SF::$url->getCurrentLanguage());
-        SF::$config->set('url_parts', SF::$url->getUrlParts());
-        SF::$config->set('output_components_url', $mainUrl . SF::$config->get('output_components_url'));
-        SF::$config->set('index_url', $mainUrl . SF::$config->get('index_url'));
-        SF::$config->set('pages_url', $mainUrl . SF::$config->get('pages_url'));
+        $this->config->set('main_url', $this->url->getMainUrl());
+        $this->config->set('main_url_no_lang', $this->url->getMainUrlNoLang());
+        $this->config->set('protocol', $this->url->getProtocol());
+        $this->config->set('current_page', $this->url->getCurrentPageName());
+        $this->config->set('current_language', $this->url->getCurrentLanguage());
+        $this->config->set('url_parts', $this->url->getUrlParts());
+        $this->config->set('output_components_url', $mainUrl . $this->config->get('output_components_url'));
+        $this->config->set('index_url', $mainUrl . $this->config->get('index_url'));
+        $this->config->set('pages_url', $mainUrl . $this->config->get('pages_url'));
         
     }
     
@@ -638,14 +758,14 @@ class SF implements ISF {
      */
     private function assignValsIntoTpl() {
         
-        $this->tplEngine->assign('configMain', SF::$config);        
-        $this->tplEngine->assign('langMain', SF::$lang);                 
+        $this->tplEngine->assign('configMain', $this->config);        
+        $this->tplEngine->assign('langMain', $this->lang);                 
         
     }
     
     private function connectToDb() {
         
-        $dbConfig = SF::$config->get('db_config');
+        $dbConfig = $this->config->get('db_config');
         
         if (is_array($dbConfig) && !empty($dbConfig)) {
             
@@ -657,14 +777,19 @@ class SF implements ISF {
 
     private function checkLanguage($currLanguage) {
 
-        if (!in_array($currLanguage, SF::$config->get('available_langs'))) {
+        if (!in_array($currLanguage, $this->config->get('available_langs'))) {
 
             throw new \Exception("Language \"$currLanguage\" is not configured.");
+
+        }
+
+        if (in_array($currLanguage, $this->config->get('disabled_langs'))) {
+
+            throw new \Exception("Language \"$currLanguage\" is disabled.");
 
         }
 
     }
 
     //</editor-fold>
-
 }

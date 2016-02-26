@@ -1,11 +1,11 @@
 <?php
 
-namespace Core\Exception;
+namespace Framework\Core\Exception;
 
 use \Exception;
 use \NullPointerException;
-use Core\Logging\ILogger;
-use Core\URLUtils\IUrl;
+use Framework\Core\FrameworkClasses\Logging\ILogger;
+use Framework\Core\FrameworkClasses\URLUtils\IUrl;
 
 interface IExceptionHandler
 {

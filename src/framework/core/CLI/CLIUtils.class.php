@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\CLI;
+namespace Framework\Core\CLI;
 
 /**
  * Provides API for CLI

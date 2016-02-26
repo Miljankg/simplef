@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\IO;
+namespace Framework\Core\IO;
 
 /**
  * File operations class.

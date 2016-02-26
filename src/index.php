@@ -11,8 +11,8 @@ require_once 'framework/core/SF.class.php';
 
 // Create instance of the boot class
 
-/** @var \Core\ISF */
-$sf = new \Core\SF($config);
+/** @var Framework\Core\ISF */
+$sf = new Framework\Core\SF($config);
 
 // Start framework
 $sf->execute();

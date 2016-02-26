@@ -1,9 +1,9 @@
 <?php
 
-namespace Core\Exception;
+namespace Framework\Core\Exception;
 
-use Core\Logging\ILogger;
-use Core\URLUtils\IUrl;
+use Framework\Core\FrameworkClasses\Logging\ILogger;
+use Framework\Core\FrameworkClasses\URLUtils\IUrl;
 use \Exception;
 use NullPointerException;
 

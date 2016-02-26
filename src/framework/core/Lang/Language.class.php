@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Lang;
+namespace Framework\Core\Lang;
 
 /**
  * Language API
@@ -27,7 +27,7 @@ class Language {
      * @param string $langToLoad
      * @param string $langRoot
      */
-    public function loadLang($langToLoad, $langRoot) {
+    public function loadLang($langPath) {
         
         if (!empty($this->langArray)) {
             
@@ -37,7 +37,7 @@ class Language {
         
         $lang = array();
         
-        $path = $langRoot . $langToLoad . "/$langToLoad.php";
+        $path = $langPath;
         
         require_once $path;
         
@@ -61,6 +61,25 @@ class Language {
         }        
         
         return $this->langArray[$index];
+    }
+
+    /**
+     * Returns $index of the passed value.
+     *
+     * @param string $value Value to search for.
+     * @return string Language index value or null if nothing is found
+     */
+    public function getIndex($value)
+    {
+        $return = null;
+
+        foreach ($this->langArray as $key => $val)
+        {
+            if ($value == $val)
+                $return = $key;
+        }
+
+        return $return;
     }
     
     /***********************/

@@ -12,17 +12,9 @@ $config['error_reporting']      = E_ALL;
 
 //<editor-fold desc="Debugging">
 
-define("LOG_LEVEL_ALL", "ALL");
-
 $config['log_level']            = LOG_LEVEL_ALL; // Logging level [ ALL | ExceptionType1,ExceptionType2,ExceptionType3... ]
 $config['debug_mode']           = true; // Framework debug level [ true | false ]
 $config['system_exception_type']= "Exception";
-
-//</editor-fold>
-
-//<editor-fold desc="Maintenance">
-
-$config['maintenance_mode']     = true;
 
 //</editor-fold>
 
@@ -41,7 +33,8 @@ $config['app_webroot_dir'] = str_replace(
         ); // Application location within the server webroot
 
 $config['app_webroot_dir']      = ltrim($config['app_webroot_dir'], $config['ds']);
-$config['document_root']        = $_SERVER['DOCUMENT_ROOT'] . $config['ds'] . $config['app_webroot_dir'] . $config['ds'];
+
+$config['document_root']        = ltrim($_SERVER['DOCUMENT_ROOT'] . $config['ds'] . $config['app_webroot_dir'] . $config['ds'], $config['ds']);
 $config['framework_dir']        = $config['document_root'] . 'framework' . $config['ds'];
 $config['app_dir']              = $config['document_root'] . 'app' . $config['ds'];
 
@@ -73,10 +66,11 @@ $config['config_db']            = array(      // In case when framework config i
 //<editor-fold desc="Class loading">
 
 $config['important_classes'] = array(
-    'url' => 'Core\URLUtils\Url',
-    'component_loader' => 'Core\Components\SFComponentLoader',
-    'logger' => 'Core\Logging\Logger',
-    'page_loader' => 'Core\Routing\PageLoader'
+    'url' => 'Framework\Core\FrameworkClasses\URLUtils\Url',
+    'component_loader' => 'Framework\Core\FrameworkClasses\Components\SFComponentLoader',
+    'logger' => 'Framework\Core\FrameworkClasses\Logging\Logger',
+    'page_loader' => 'Framework\Core\FrameworkClasses\Routing\PageLoader',
+    'config' => 'Framework\Core\FrameworkClasses\Configuration\Config'
 );
 
 //</editor-fold>

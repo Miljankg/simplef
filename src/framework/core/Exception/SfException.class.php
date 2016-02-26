@@ -6,7 +6,7 @@
  * Time: 4:55 AM
  */
 
-namespace Core\Exception;
+namespace Framework\Core\Exception;
 
 use \Exception;
 
