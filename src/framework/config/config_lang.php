@@ -7,4 +7,4 @@ $config['available_langs']               = array (
 );
 $config['disabled_langs']                = array (
 );
-$config['lang_dir']                      = '#$app_dir#lang#$ds#';
+$config['lang_dir']                      = '#$app_dir#lang\\';

@@ -5100,3 +5100,989 @@
 [ 2016-02-26 02:36:33 ]  ==== DEBUG ====
                          Loading Output component "test"
 
+[ 2016-02-26 02:41:42 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 02:41:42 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 02:41:42 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 02:41:42 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 02:41:42 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:30:03 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:30:03 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:30:03 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:30:03 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 20:30:03 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:30:55 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:31:01 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:31:16 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:31:16 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:31:16 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:31:16 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 20:31:16 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:31:48 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:31:49 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:36:48 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:36:51 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:36:51 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:36:51 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:36:51 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 20:36:51 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:36:52 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:36:52 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:36:52 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:36:52 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 20:36:52 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:40:10 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:40:10 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:40:10 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:40:10 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 20:40:10 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:40:25 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:40:31 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:40:43 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:41:29 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:41:29 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ require(): Failed opening required 'auth_config.php' (include_path='C:\xampp\php\PEAR') ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   307
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:41:38 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:41:42 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:41:42 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:41:42 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:41:43 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:41:43 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:41:43 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:41:43 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ require(): Failed opening required 'auth_config.php' (include_path='C:\xampp\php\PEAR') ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   307
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:45:10 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:45:29 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:45:47 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:45:47 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:45:47 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:45:47 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:45:47 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:45:54 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:46:13 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:46:33 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:47:03 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:47:24 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:47:41 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:48:01 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:48:26 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:48:43 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:53:11 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:54:22 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:54:42 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:54:42 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:54:42 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:54:42 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ syntax error, unexpected '"' ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   224
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:54:50 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:55:08 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:58:04 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 20:58:04 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Class 'Components\Logic\TestLogic' not found ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   267
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:58:46 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 20:58:46 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Class 'Components\Logic\TestLogic' not found ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   267
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:59:22 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:59:22 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:59:22 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:59:22 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:59:23 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:59:23 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:59:23 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 20:59:23 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Class 'Components\Logic\TestLogic' not found ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\framework\core\FrameworkClasses\Components\SFComponentLoader.class.php
+                         Line:   267
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 20:59:42 ]  ==== DEBUG ====
+                         Loading Logic component "auth"
+
+[ 2016-02-26 20:59:42 ]  ==== ERROR ====
+                         Message: FATAL_ERROR [ Trying to get property of non-object ] 
+                         Code:   0
+                         File:   C:\xampp\htdocs\simplef\src\app\templates_c\3c3cc514b1319fb2db71e23a6bb29a3a6970bab1_0.file.login.tpl.php
+                         Line:   30
+                         Trace:
+                         
+                         #0 [internal function]: Framework\Core\SF::shutdownFunction()
+                         #1 {main}
+                         
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 21:00:17 ]  ==== DEBUG ====
+                         Loading Logic component "auth"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 21:00:28 ]  ==== DEBUG ====
+                         Loading Logic component "auth"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 21:00:34 ]  ==== DEBUG ====
+                         Loading Logic component "auth"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading page "login"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading Output component "login"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading Logic component "test_logic"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading Logic component "auth"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading page "test_page"
+
+[ 2016-02-26 21:00:39 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-26 21:00:44 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-26 21:00:44 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-26 21:00:44 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-26 21:00:44 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-26 21:00:44 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 03:14:19 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 03:14:19 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 03:14:19 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 03:14:19 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 03:14:19 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 04:23:27 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 04:23:27 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 04:23:27 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 04:23:27 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 04:23:27 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 05:12:58 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 05:12:58 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 05:12:58 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 05:12:58 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 05:12:58 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 05:23:32 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 05:23:32 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 05:23:32 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 05:23:32 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 05:23:32 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 07:51:34 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 07:51:34 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 07:51:34 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 07:51:34 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 07:51:34 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 07:51:36 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 07:51:36 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 07:51:36 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 07:51:36 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 07:51:36 ]  ==== DEBUG ====
+                         Loading Output component "test"
+
+[ 2016-02-27 07:51:38 ]  ==== DEBUG ====
+                         Setting INI field "display_errors" to value: on
+
+[ 2016-02-27 07:51:38 ]  ==== DEBUG ====
+                         Setting INI field "error_reporting" to value: 32767
+
+[ 2016-02-27 07:51:38 ]  ==== DEBUG ====
+                         Loading lib "smarty", from: "C:/xampp/htdocs\simplef\src\framework\lib/smarty/incl_lib.php"
+
+[ 2016-02-27 07:51:38 ]  ==== DEBUG ====
+                         Loading page "test_page_second"
+
+[ 2016-02-27 07:51:38 ]  ==== DEBUG ====
+                         Loading Output component "test"
+

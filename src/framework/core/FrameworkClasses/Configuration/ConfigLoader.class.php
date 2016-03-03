@@ -111,15 +111,15 @@ class ConfigLoader {
         $config = $alreadyLoadedConfig;
 
         foreach ($filesToLoad as $fileToLoad)
+        {
             /** @noinspection PhpIncludeInspection */
             require_once $fileToLoad;
 
-        if (is_array($configFileMapping))
-        {
-            foreach ($config as $key => $value)
-            {
-                if (!array_key_exists($key, $alreadyLoadedConfig))
-                    $configFileMapping[$key] = $fileToLoad;
+            if (is_array($configFileMapping)) {
+                foreach ($config as $key => $value) {
+                    if (!array_key_exists($key, $alreadyLoadedConfig) && !array_key_exists($key, $configFileMapping))
+                        $configFileMapping[$key] = $fileToLoad;
+                }
             }
         }
 

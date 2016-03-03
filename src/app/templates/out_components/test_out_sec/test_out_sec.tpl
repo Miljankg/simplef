@@ -1,0 +1,1 @@
+This is component "test_out_sec". Hello!

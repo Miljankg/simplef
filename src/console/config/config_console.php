@@ -60,8 +60,37 @@ $configConsole['action_mapping'] = array(
         'type' => 'Console\\Core\\Action\\LanguageOperation',
         'config_index' => '',
         'allowed_values' => array('add', 'remove', 'disable', 'enable', 'set_default')
+    ),
+    'logic_component' => array(
+        'type' => 'Console\\Core\\Action\\LogicComponentOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency')
+    ),
+    'output_component' => array(
+        'type' => 'Console\\Core\\Action\\OutputComponentOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'enable_js', 'disable_js', 'enable_css', 'disable_css')
+    ),
+    'page' => array(
+        'type' => 'Console\\Core\\Action\\PageOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency')
     )
 );
 
 $configConsole['config_dir']    = 'framework/config/';
 $configConsole['constant_file'] = $configConsole['config_dir'] . 'constants.php';
+
+$configConsole['logic_component_config_index']              = 'logic_components';
+$configConsole['logic_component_type']                      = 'logic';
+$configConsole['logic_component_constant_prefix']           = 'LC_';
+$configConsole['logic_component_directory_config_index']    = 'logic_components_dir';
+$configConsole['logic_dependency_config_index']             = 'logic_components';
+
+$configConsole['output_component_config_index']             = 'output_components';
+$configConsole['output_component_type']                     = 'output';
+$configConsole['output_component_constant_prefix']          = 'OC_';
+$configConsole['output_component_directory_config_index']   = 'output_components_dir';
+$configConsole['output_component_template_dir_config_index']= 'output_components_templates_dir';
+$configConsole['output_component_options_config_index']     = 'output_components_options';
+$configConsole['output_dependency_config_index']            = 'logic_components';

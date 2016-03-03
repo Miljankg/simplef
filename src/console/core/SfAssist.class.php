@@ -67,7 +67,7 @@ class SfAssist
      */
     private function output($text)
     {
-        echo $text;
+        echo rtrim($text, "\n\r");
     }
 
     //</editor-fold>

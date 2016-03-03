@@ -39,7 +39,7 @@ try
     $configLoader = new \Framework\Core\FrameworkClasses\Configuration\ConfigLoader(\Framework\Core\FrameworkClasses\Configuration\ConfigLocations::PHP_FILE);
     $newConfiguration = $configLoader->loadConfiguration($frameworkDir . 'config/', $config, null, $unparsedConfig, $configFileMapping);
 
-    $config = new Console\Core\Config\ConfigFromFile($configDir, $configConsole['constant_file'], $newConfiguration, $unparsedConfig, $configFileMapping);
+    $config = new Console\Core\Config\ConfigFromFile($configDir, $configConsole['constant_file'], $unparsedConfig, $newConfiguration, $configFileMapping);
 
     $sfAssist = new \Console\Core\SfAssist($argv, $config, $configConsole);
 

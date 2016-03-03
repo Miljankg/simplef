@@ -91,7 +91,7 @@ abstract class Operation
      */
     protected abstract function previewValue();
 
-    protected function createPhpFile($path, $content = '')
+    protected function createPhpFile($path, $content = '', $noPhpTag = false)
     {
         if (empty($path))
             throw new \Exception('Path cannot be empty');
@@ -99,7 +99,9 @@ abstract class Operation
         if(!file_exists(dirname($path)))
             mkdir(dirname($path), 0777, true);
 
-        file_put_contents($path, '<?php' . $this->dnl . $content);
+        $content = ($noPhpTag) ? $content : '<?php' . $this->dnl . $content;
+
+        file_put_contents($path, $content);
     }
 
     protected function deleteDirectory($dir)
@@ -122,6 +124,11 @@ abstract class Operation
         rmdir($dir);
     }
 
+    protected function arrToStr(array $array, $separator = ',')
+    {
+        return implode($separator, $array);
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Public functions">
@@ -132,7 +139,6 @@ abstract class Operation
      * @return string Operation output for printing.
      */
     public abstract function perform();
-
 
 
     //</editor-fold>

@@ -11,3 +11,5 @@ define('PAGE_ERROR', 'error_page');
 define('PAGE_TEST', 'test_page');
 define('PAGE_TEST_SECOND', 'test_page_second');
 define('PAGE_LOGIN', 'login');
+define('OC_TEST_OUT', 'test_out');
+define('OC_TEST_OUT_SEC', 'test_out_sec');

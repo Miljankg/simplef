@@ -30,7 +30,7 @@ class SFComponentLoader implements IComponentLoader
     private $wrapComponents = false;
     private $db = null;
     private $logicCompDir = "";
-    private $outCompLogic = "";
+    private $outCompOptions = "";
 
     /** @var LogicComponent[] */
     private $loadedLogicComponents = array();
@@ -132,8 +132,8 @@ class SFComponentLoader implements IComponentLoader
             {
                 $ocData[$ocConfigVal] = true;
 
-                if (isset($this->configuredOutputComponents[$outComponentName][$ocConfigVal]) &&
-                    !$this->configuredOutputComponents[$outComponentName][$ocConfigVal])
+                if (isset($this->outCompOptions[$outComponentName][$ocConfigVal]) &&
+                    !$this->outCompOptions[$outComponentName][$ocConfigVal])
                     $ocData[$ocConfigVal] = false;
             }
 
@@ -160,15 +160,16 @@ class SFComponentLoader implements IComponentLoader
 
             $logicComponents = array();
 
-            if (isset($this->outCompLogic[$outComponentName]) &&
-                is_array($this->outCompLogic[$outComponentName])
+            if (isset($this->configuredOutputComponents[$outComponentName]) &&
+                is_array($this->configuredOutputComponents[$outComponentName])
             )
             {
-                $logicToLoad = $this->outCompLogic[$outComponentName];
+                $logicToLoad = $this->configuredOutputComponents[$outComponentName];
+
                 $logicComponents = $this->loadLogicComponents($logicToLoad);
             }
                                     
-            $className = $this->outputComponentNamespace . $this->getClassName($outComponentName);
+            $className = $this->outputComponentNamespace . SFComponent::getClassName($outComponentName);
 
             $outputComponent = new $className($outComponentName, $configObj, $langObj, $logicComponents, $this->sf);
             
@@ -227,12 +228,15 @@ class SFComponentLoader implements IComponentLoader
 
             $logicDependencies = $this->logicComponentConfig[$logicToLoad];
 
+            $this->loadedLogicComponents[$logicToLoad] = null; // prevent fails due to circular dependency.
+
             if (is_array($logicDependencies) && !empty($logicDependencies))
             {
                 $logicDependencies = $this->loadLogicComponents($logicDependencies);
             }
 
             $logicForReturn[$logicToLoad] = $this->loadLogicComponent($logicToLoad, $logicDependencies);
+
         }
         
         return $logicForReturn;
@@ -258,7 +262,7 @@ class SFComponentLoader implements IComponentLoader
 
         $configObj = $this->loadComponentConfig($logicCompConfigDir, $logicToLoad);
 
-        $className = $this->logicComponentNamespace . $this->getClassName($logicToLoad);
+        $className = $this->logicComponentNamespace . SFComponent::getClassName($logicToLoad);
 
         $logicComponentObj = new $className($logicToLoad, $configObj, $this->db, $logicComponentDependencies, $this->sf);
 

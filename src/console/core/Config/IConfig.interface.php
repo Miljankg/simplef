@@ -16,4 +16,5 @@ interface IConfig
     public function get($index);
     public function set($key, $value);
     public function saveChanges();
+    public function queueConstantForRemoval($constantName);
 }

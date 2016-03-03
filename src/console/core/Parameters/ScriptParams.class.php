@@ -53,7 +53,7 @@ class ScriptParams
             fclose($handle);
             echo PHP_EOL;
 
-            $line = trim($line);
+            $line = trim($line, " \t\n\r\0\x0B");
 
             if (empty($allowedAnswers) || in_array($line, $allowedAnswers))
                 $stop = true;

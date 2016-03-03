@@ -63,5 +63,23 @@ abstract class SFComponent
         return $this->logicComponents[$logicComponentName];
     }
 
+    /**
+     * Retrieves class name from component name.
+     *
+     * @param string $componentName Component name.
+     * @return string Class name.
+     */
+    public static function getClassName($componentName)
+    {
+        $separator = "_";
+        $compNameArr = explode($separator, $componentName);
+        $className = "";
+
+        foreach ($compNameArr as $compNameArrElement)
+            $className .= ucfirst($compNameArrElement);
+
+        return $className;
+    }
+
     //</editor-fold>
 }

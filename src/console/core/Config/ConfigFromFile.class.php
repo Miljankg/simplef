@@ -18,6 +18,7 @@ class ConfigFromFile implements IConfig
     private $loadedConfigParsed = array();
     private $rootDir;
     private $constantsFile;
+    private $constantsToRemove = array();
 
     //</editor-fold>
 
@@ -28,6 +29,11 @@ class ConfigFromFile implements IConfig
         $this->loadedConfig = $config;
         $this->loadedConfigParsed = $configParsed;
         $this->configFileMapping = $configFileMapping;
+    }
+
+    public function queueConstantForRemoval($constantName)
+    {
+        array_push($this->constantsToRemove, $constantName);
     }
 
     //<editor-fold desc="IConfig functions">
@@ -114,6 +120,9 @@ class ConfigFromFile implements IConfig
 
         foreach ($definedConstants['user'] as $constantName => $constantValue)
         {
+            if (in_array($constantName, $this->constantsToRemove))
+                continue;
+
             $varStr = var_export($constantValue, true);
 
             $string = "define('$constantName', $varStr);" . PHP_EOL;
