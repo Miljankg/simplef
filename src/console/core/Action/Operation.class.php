@@ -124,7 +124,7 @@ abstract class Operation
         rmdir($dir);
     }
 
-    protected function arrToStr(array $array, $separator = ',')
+    protected function arrToStr(array $array, $separator = ', ')
     {
         return implode($separator, $array);
     }

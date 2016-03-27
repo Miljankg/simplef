@@ -31,8 +31,6 @@ abstract class ComponentOperation extends Operation
         if ($this->previewValueValue != $this->value)
             return false;
 
-        return true;
-
         $components = $this->components;
 
         $str = '';
@@ -108,20 +106,22 @@ abstract class ComponentOperation extends Operation
         return "$typeName component successfully added.";
     }
 
-    protected function removeComponent($name, array $directoriesToRemove)
+    protected function removeComponent($name, array $directoriesToRemove, $askSecQuestion = true)
     {
         $components = $this->components;
-        $componentsDir = $this->config->get($this->componentDirConfigIndex);
 
         if (!array_key_exists($name, $components))
             throw new \Exception("$this->componentTypeName component \"$name\" is not configured.");
 
-        $areYouSure = "Are you sure that you want to delete $this->componentType component $name (yes|no)?";
+        if ($askSecQuestion)
+        {
+            $areYouSure = "Are you sure that you want to delete $this->componentType component $name (yes|no)?";
 
-        $sure = $this->scriptParams->askForUserInput($areYouSure, array('yes', 'no'));
+            $sure = $this->scriptParams->askForUserInput($areYouSure, array('yes', 'no'));
 
-        if ($sure == 'no')
-            return "Giving up on removing $this->componentType component.";
+            if ($sure == 'no')
+                return "Giving up on removing $this->componentType component.";
+        }
 
         unset($components[$name]);
 

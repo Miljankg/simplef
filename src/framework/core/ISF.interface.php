@@ -7,6 +7,7 @@ use Framework\Core\FrameworkClasses\Session\ISession;
 use Framework\Core\FrameworkClasses\URLUtils\IUrl;
 use Framework\Core\FrameworkClasses\Globals\Get;
 use Framework\Core\FrameworkClasses\Globals\Post;
+use Framework\Core\Database;
 use Framework\Core\Lang\Language;
 
 /**
@@ -18,6 +19,11 @@ interface ISF
      * Executes SF.
      */
     public function execute();
+
+    /**
+     * @return IDbFactory
+     */
+    public function DbFactory();
 
     /**
      * @return ISession

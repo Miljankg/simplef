@@ -52,7 +52,7 @@ abstract class SFComponent
      * Retrieves logic component.
      *
      * @param string $logicComponentName
-     * @return LogicComponent
+     * @return mixed
      * @throws Exception If logic component does not exists
      */
     protected function getLogicComponent($logicComponentName)

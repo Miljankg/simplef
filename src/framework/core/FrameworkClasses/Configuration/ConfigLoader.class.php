@@ -61,7 +61,6 @@ class ConfigLoader {
         $this->parseConfigValues($config);
 
         return $config;
-
     }
             
     

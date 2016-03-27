@@ -3,39 +3,15 @@
 $config['logic_components']              = array (
   'auth' => 
   array (
-    0 => 'test_logic',
-  ),
-  'test_auth' => 
-  array (
   ),
 );
 $config['output_components']             = array (
-  'test' => 
-  array (
-  ),
   'login' => 
-  array (
-    0 => 'auth',
-  ),
-  'test_out' => 
-  array (
-  ),
-  'test_out_sec' => 
   array (
     0 => 'auth',
   ),
 );
 $config['output_components_options']     = array (
-  'test_out' => 
-  array (
-    'css' => true,
-    'js' => true,
-  ),
-  'test_out_sec' => 
-  array (
-    'css' => false,
-    'js' => true,
-  ),
 );
 $config['pages']                         = array (
   404 => 
@@ -48,14 +24,6 @@ $config['pages']                         = array (
   array (
   ),
   'login' => 
-  array (
-  ),
-  'test_page' => 
-  array (
-    'js' => true,
-    'css' => false,
-  ),
-  'test_page_second' => 
   array (
   ),
 );
@@ -75,7 +43,6 @@ $config['pages_out_components']          = array (
   ),
   'test_page' => 
   array (
-    0 => 'test',
   ),
   'test_page_second' => 
   array (
@@ -87,6 +54,9 @@ $config['pages_access']                  = array (
   'test_page_second' => 
   array (
     0 => 'logged_in',
+  ),
+  'test_page' => 
+  array (
   ),
 );
 $config['default_page']                  = '';

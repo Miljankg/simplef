@@ -14,7 +14,7 @@ class Session extends ResourceArray
 {
     //<editor-fold desc="Constructor">
 
-    public function __construct(array $data, $overwriteAllowed)
+    public function __construct(array &$data, $overwriteAllowed)
     {
         $name = '$_SESSION';
 

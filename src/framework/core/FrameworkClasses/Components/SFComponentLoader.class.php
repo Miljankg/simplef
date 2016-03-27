@@ -2,6 +2,7 @@
 
 namespace Framework\Core\FrameworkClasses\Components;
 
+use Framework\Core\Database\IDbFactory;
 use Framework\Core\FrameworkClasses\Configuration\Config;
 use Framework\Core\ISF;
 use Framework\Core\Lang\Language;
@@ -28,7 +29,7 @@ class SFComponentLoader implements IComponentLoader
     private $configType = null;
     private $currLang = "";
     private $wrapComponents = false;
-    private $db = null;
+    private $dbFactory = null;
     private $logicCompDir = "";
     private $outCompOptions = "";
 
@@ -64,7 +65,7 @@ class SFComponentLoader implements IComponentLoader
         $wrapComponents,
         $logicCompDir,
         $outCompLogic,
-        DB $db = null,
+        IDbFactory $dbFactory = null,
         $commonComponents,
         $currPageName,
         ILogger $logger,
@@ -78,7 +79,7 @@ class SFComponentLoader implements IComponentLoader
         $this->outputComponentNamespace = $outputComponentNamespace;
         $this->currLang = $currLang;
         $this->wrapComponents = $wrapComponents;
-        $this->db = $db;
+        $this->dbFactory = $dbFactory;
         $this->logicCompDir = $logicCompDir;
         $this->outCompLogic = $outCompLogic;
         $this->logicComponentNamespace = $logicComponentNamespace;
@@ -264,7 +265,7 @@ class SFComponentLoader implements IComponentLoader
 
         $className = $this->logicComponentNamespace . SFComponent::getClassName($logicToLoad);
 
-        $logicComponentObj = new $className($logicToLoad, $configObj, $this->db, $logicComponentDependencies, $this->sf);
+        $logicComponentObj = new $className($logicToLoad, $configObj, $this->dbFactory, $logicComponentDependencies, $this->sf);
 
         if (!$logicComponentObj instanceof LogicComponent)
             throw new Exception("Component \"$logicToLoad\" is not an instance of LogicComponent.");

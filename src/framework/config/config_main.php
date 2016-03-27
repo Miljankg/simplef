@@ -1,23 +1,5 @@
 <?php
 
-//<editor-fold desc="php.ini file values">
-
-/**
- * If debug mode is on, this values can be adjusted to display errors. Otherwise, framework will set error report to 0.
- */
-$config['display_errors']       = "on";
-$config['error_reporting']      = E_ALL;
-
-//</editor-fold>
-
-//<editor-fold desc="Debugging">
-
-$config['log_level']            = LOG_LEVEL_ALL; // Logging level [ ALL | ExceptionType1,ExceptionType2,ExceptionType3... ]
-$config['debug_mode']           = true; // Framework debug level [ true | false ]
-$config['system_exception_type']= "Exception";
-
-//</editor-fold>
-
 //<editor-fold desc="Paths">
 
 $config['ds']                   = DIRECTORY_SEPARATOR;
@@ -70,7 +52,8 @@ $config['important_classes'] = array(
     'component_loader' => 'Framework\Core\FrameworkClasses\Components\SFComponentLoader',
     'logger' => 'Framework\Core\FrameworkClasses\Logging\Logger',
     'page_loader' => 'Framework\Core\FrameworkClasses\Routing\PageLoader',
-    'config' => 'Framework\Core\FrameworkClasses\Configuration\Config'
+    'config' => 'Framework\Core\FrameworkClasses\Configuration\Config',
+    'db_factory' => 'Framework\Core\Database\DbFactory'
 );
 
 //</editor-fold>

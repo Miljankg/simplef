@@ -4,6 +4,7 @@ namespace Framework\Core;
 
 require_once 'Loaders\ClassLoader.class.php';
 
+use Framework\Core\Database\DbFactory;
 use Framework\Core\FrameworkClasses\Configuration\ConfigLoader;
 use Framework\Core\FrameworkClasses\Configuration\Config;
 use Framework\Core\FrameworkClasses\Configuration\ConfigLocations;
@@ -34,40 +35,38 @@ class SF implements ISF {
 
     //<editor-fold desc="Members">
 
-    private $db = null;
+    /** @var IDbFactory */
+    private $dbFactory = null;
 
     /** @var IConfig */
-    public $config = null;
+    private $config = null;
 
     /** @var Language */
-    public $lang = null;
+    private $lang = null;
 
     /** @var Language */
-    public $langPages = null;
+    private $langPages = null;
 
     /** @var ILogger */
-    public $logger = null;
+    private $logger = null;
 
     /** @var IUrl */
-    public $url = null;
+    private $url = null;
 
     /** @var Get */
-    public $get = null;
+    private $get = null;
 
     /** @var Post */
-    public $post = null;
+    private $post = null;
 
     /** @var Session */
-    public $session = null;
+    private $session = null;
 
     /** @var ClassLoader */
-    public $frameworkClassLoader = null;
+    private $frameworkClassLoader = null;
 
     private $mainLoadedConfig;
     private $requiredMainConfig = array(
-        'display_errors',
-        'error_reporting',
-        'debug_mode',
         'ds',
         'app_webroot_dir',
         'document_root',
@@ -85,6 +84,9 @@ class SF implements ISF {
     );
 
     private $requiredSystemConfig = array(
+        'display_errors',
+        'debug_mode',
+        'error_reporting',
         'output_components_url',
         'index_url',
         'main_lang_dir',
@@ -134,6 +136,14 @@ class SF implements ISF {
     //</editor-fold>
 
     //<editor-fold desc="Interface functions">
+
+    /**
+     * @return IDbFactory
+     */
+    public function DbFactory()
+    {
+        return $this->dbFactory;
+    }
 
     /**
      * @return Session
@@ -238,11 +248,8 @@ class SF implements ISF {
                 );                    
         
         // Set up logger
-        if ($this->config->get('error_log_enabled') == true) {
-            
-            $this->setUpLogger();                        
-            
-        }                   
+        if ($this->config->get('error_log_enabled') == true)
+            $this->setUpLogger();
         
         $this->setIniValues();
 
@@ -273,13 +280,12 @@ class SF implements ISF {
     /**
      * Displays content.
      */
-    private function display() {
-        
+    private function display()
+    {
         // Load page
         $this->loadPage();
         
         $this->displayContent();
-        
     }
 
     /**
@@ -520,7 +526,7 @@ class SF implements ISF {
                 $this->config->get('wrap_components'),
                 $this->config->get('logic_components_dir'),
                 $this->config->get('output_components_options'),
-                $this->db,
+                $this->dbFactory,
                 $this->config->get('common_output_components'),
                 $this->config->get('current_page'),
                 $this->logger,
@@ -762,17 +768,18 @@ class SF implements ISF {
         $this->tplEngine->assign('langMain', $this->lang);                 
         
     }
-    
-    private function connectToDb() {
-        
+
+    /**
+     * Connect to configured DBs.
+     */
+    private function connectToDb()
+    {
         $dbConfig = $this->config->get('db_config');
-        
-        if (is_array($dbConfig) && !empty($dbConfig)) {
-            
-            $this->db = new DB($dbConfig);
-            
-        }        
-        
+
+        $this->loadClassCheckInterface('db_factory', 'Framework\Core\Database\IDbFactory');
+
+        if (is_array($dbConfig) && !empty($dbConfig))
+            $this->dbFactory = new DbFactory($dbConfig);
     }
 
     private function checkLanguage($currLanguage) {

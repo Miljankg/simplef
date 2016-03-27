@@ -6,136 +6,45 @@ use \Exception;
 use \PDO;
 use \PDOException;
 
-class DB
+abstract class DB implements IDB
 {
-    public $dbh = null;
-    private $dbhs = array();
+    //<editor-fold desc="Members">
 
-    private $queryTypes     = array('table', 'scalar', 'non-select');
-    private $connTypes      = array('oracle', 'mysql');
+    private $dbh = null;
 
-    public function __construct(array $configData) 
-    {		
-        $dbCredFields = array(
-            'db_user',
-            'db_name',
-            'db_host',
-            'db_pass',
-            'db_type'
-        );
-        
-        $dbCredVals = array();
-        
-        foreach ($configData as $dbIndex => $dbConfigData) {
-            
-            foreach ($dbCredFields as $dbCredField) {
-                
-                if (!isset($dbConfigData[$dbCredField])) {
-                    
-                    throw new Exception("Database: $dbIndex => There is no field: $dbCredField");
-                    
-                }
-                
-                $dbCredVals[$dbIndex][$dbCredField] = $dbConfigData[$dbCredField];
-                
-            }
-            
-        }
+    //</editor-fold>
 
-        foreach ($dbCredVals as $dbIndex => $dbParams)
-        {
-            $connectionParameters = array();
+    //<editor-fold desc="Constructors">
 
-            if (isset($dbParams['persistent_connection']) &&
-                $dbParams['persistent_connection'] == true)
-                $connectionParameters[PDO::ATTR_PERSISTENT] = true;
-
-            $hndl = $this->connect(
-                        $dbParams['db_host'], 
-                        $dbParams['db_name'], 
-                        $dbParams['db_user'], 
-                        $dbParams['db_pass'], 
-                        $dbParams['db_type'],
-                        $connectionParameters
-                    );                        
-            
-            $this->dbhs[$dbIndex] = $hndl;
-        }        				
-    }
-
-    public function connect($host, $db, $user, $pass, $type, array $attributes)
+    public function __construct($host, $db, $user, $pass, array $attributes)
     {
-        if (!in_array($type, $this->connTypes))
-        {
-            throw new Exception("Invalid DB connection type $type.");
-        }
-        
         try
         {
-            $dbh = null;
-            
-            switch ($type)
-            {
-                case 'oracle':
-                    $dbh = $this->ConnectToOracle($host, $db, $user, $pass, $attributes);
-                    break;
-                case 'mysql':
-                    $dbh = $this->ConnectToMysql($host, $db, $user, $pass, $attributes);
-                    break;
-            }            
+            $this->dbh = $this->connect($host, $db, $user, $pass, $attributes);
 
-            $dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            $this->dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
         catch (PDOException $e)
         {
             print "Database connection failed! Error: " . $e->getMessage() . "<br/>";
             exit;
         }
-        
-        return $dbh;
-    }   
-    
-    private function ConnectToMysql($host, $db, $user, $pass, array $attributes)
-    { 
-        return new PDO("mysql:host=$host; dbname=$db;charset=utf8", $user, $pass, $attributes);
     }
-    
-    private function ConnectToOracle($server, $dbName, $user, $pass, array $attributes)
+
+    //</editor-fold>
+
+    //<editor-fold desc="Internal functions">
+
+    private function ExecuteQry($query)
     {
-        $db = "oci:dbname=//$server/$dbName;charset=AL32UTF8"; //charset=AL32UTF8 for utf-8 characters from DB.
-
-        return new PDO($db,$user,$pass, $attributes);
-    }
-
-    private function GetDbInstance($dbIndex) {                
-        
-        if ($dbIndex !== null) {
-            
-            if (isset($this->dbhs[$dbIndex])) {
-                
-                $db = $this->dbhs[$dbIndex];
-                
-            } else {
-                
-                throw new Exception("No $dbIndex instance defined.");
-                
-            }
-        } else {
-            
-            throw new Exception("DB Index cannot be null.");
-            
+        if (empty($query))
+        {
+            throw new Exception("Invalid direct query: $query");
         }
-        
-        return $db;
-    }
-
-    public function ExecuteQry($query, $dbIndex = null)
-    {
-        $db = $this->GetDbInstance($dbIndex);
         
         try
         {
-            $handler = $db->prepare($query);            
+            $handler = $this->dbh->prepare($query);
 
             $handler->execute();
         }
@@ -145,30 +54,32 @@ class DB
         }
 
         return $handler;
-    }    
-    
-    public function ExecuteDirectQuery($query, $type, $dbIndex = null)
-    {
-        if (empty($query))
-        {
-            throw new Exception("Invalid direct query: $query");
-        }
-        
-        if (!in_array($type, $this->queryTypes))
-        {
-            throw new Exception("Invalid query type [ $type ]");
-        }
-        
-        $handler = $this->ExecuteQry($query, $dbIndex);
-        
-        switch ($type)
-        {
-            case 'table':
-                return $handler->fetchAll(PDO::FETCH_ASSOC);
-            case 'scalar':
-                return $handler->fetch(PDO::FETCH_COLUMN);
-            default:
-                break;
-        }                
     }
+
+    //</editor-fold>
+
+    //<editor-fold desc="IDB functions">
+
+    protected abstract function connect($host, $db, $user, $pass, array $attributes);
+
+    public function ExecuteTableQuery($query)
+    {
+        $handler = $this->ExecuteQry($query);
+
+        return $handler->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function ExecuteScalarQuery($query)
+    {
+        $handler = $this->ExecuteQry($query);
+
+        return $handler->fetch(PDO::FETCH_COLUMN);
+    }
+
+    public function ExecuteNonQuery($query)
+    {
+        $this->ExecuteQry($query);
+    }
+
+    //</editor-fold>
 }

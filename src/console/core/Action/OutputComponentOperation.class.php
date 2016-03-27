@@ -66,7 +66,48 @@ class OutputComponentOperation extends ComponentOperation
 
     protected function removeComponent($name, array $directoriesToRemove)
     {
-        $statusText = parent::removeComponent($name, $directoriesToRemove);
+        $pagesOutComponents = $this->config->getParsed('pages_out_components');
+
+        $pagesToUpdate = array();
+
+        foreach ($pagesOutComponents as $pageName => $outComponents)
+        {
+            if (in_array($name, $outComponents))
+            {
+                $pagesToUpdate[] = $pageName;
+            }
+        }
+
+        $question = "Are you sure that you want to delete $this->componentType component $name (yes|no)?";
+
+        if (!empty($pagesToUpdate))
+        {
+            $question = "Do you really want to remove output component \"$name\", it is a dependency for next pages (pages will be updated, also)(yes|no)\: " . $this->arrToStr($pagesToUpdate);
+        }
+
+        $answer = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
+
+        if ($answer == 'no')
+        {
+            return "Giving up on removing output component.";
+        }
+
+        $pagesDependencies = $this->config->get('pages_out_components');
+
+        foreach ($pagesToUpdate as $pageName)
+        {
+            if (!in_array($name, $pagesDependencies[$pageName]))
+                throw new \Exception("Page \"$pageName\" does not have output component \"$name\" as its dependency.");
+
+            if(($key = array_search($name, $pagesDependencies[$pageName])) !== false)
+            {
+                unset($pagesDependencies[$pageName][$key]);
+            }
+        }
+
+        $this->config->set('pages_out_components', $pagesDependencies);
+
+        $statusText = parent::removeComponent($name, $directoriesToRemove, false);
 
         $ocOptions = $this->outputComponentsOptions;
 
@@ -108,7 +149,7 @@ class OutputComponentOperation extends ComponentOperation
 
         $files = array();
 
-        $files[$outputComponentDirectory . "$componentName/$componentName.php"] = "namespace Components\Output;\nuse Framework\Core\FrameworkClasses\Components\OutputComponent;\nclass {$className} extends OutputComponent\n{\n    protected function execute()\n    {\n    }\n}";
+        $files[$outputComponentDirectory . "$componentName/$componentName.php"] = "namespace Components\Output;\n\nuse Framework\Core\FrameworkClasses\Components\OutputComponent;\n\nclass {$className} extends OutputComponent\n{\n    protected function execute()\n    {\n    }\n}";
         $files[$outputComponentDirectory . "$componentName/config/{$componentName}_config.php"] = "";
 
         foreach ($languages as $language)

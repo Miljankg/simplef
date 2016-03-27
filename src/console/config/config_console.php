@@ -31,6 +31,11 @@ $configConsole['action_mapping'] = array(
         'config_index' => 'log_time_format',
         'allowed_values' => array()
     ),
+    'use_authentication' => array(
+        'type' => 'Console\\Core\\Action\\BoolOperation',
+        'config_index' => 'use_authentication',
+        'allowed_values' => array()
+    ),
     'error_logging' => array(
         'type' => 'Console\\Core\\Action\\BoolOperation',
         'config_index' => 'error_log_enabled',
@@ -74,7 +79,22 @@ $configConsole['action_mapping'] = array(
     'page' => array(
         'type' => 'Console\\Core\\Action\\PageOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency')
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'add_role', 'remove_role')
+    ),
+    'roles' => array(
+        'type' => 'Console\\Core\\Action\\RolesOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove')
+    ),
+    'users' => array(
+        'type' => 'Console\\Core\\Action\\UsersOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove', 'change_password', 'change_role')
+    ),
+    'db_connection' => array(
+        'type' => 'Console\\Core\\Action\\DbConnectionOperation',
+        'config_index' => '',
+        'allowed_values' => array('add', 'remove', 'update')
     )
 );
 
@@ -94,3 +114,5 @@ $configConsole['output_component_directory_config_index']   = 'output_components
 $configConsole['output_component_template_dir_config_index']= 'output_components_templates_dir';
 $configConsole['output_component_options_config_index']     = 'output_components_options';
 $configConsole['output_dependency_config_index']            = 'logic_components';
+
+$configConsole['db_fields']                                 = array('db_type', 'db_user', 'db_pass', 'db_host', 'db_name');

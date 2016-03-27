@@ -23,14 +23,12 @@ class PageOperation extends Operation
         if ($this->previewValueValue != $this->value)
             return false;
 
-        return true;
-
-        $pages = $this->pages;
+        $pages = $this->config->get('pages');
 
         $str = '';
 
         $pageName = $this->scriptParams->askForUserInput(
-            "Please enter $this->componentType component name if you want to filter output (or enter for full report): "
+            "Please enter page name if you want to filter output (or just press enter for full report): "
         );
 
         if (!empty($pageName))
@@ -42,10 +40,29 @@ class PageOperation extends Operation
             );
         }
 
-        foreach ($pages as $page => $pageDependencies)
+        foreach ($pages as $page => $pageConfig)
         {
+            $pageConfigParsed = array();
+
+            foreach ($pageConfig as $configIndex => $value)
+            {
+                $valueStr = ($value) ? 'true' : 'false';
+
+                $pageConfigParsed[] = $configIndex . ' = ' . $valueStr;
+            }
+
+            $pagesDependencies = $this->config->get('pages_out_components');
+
+            $pageDependencies = array();
+
+            if (isset($pagesDependencies[$page]) || is_array($pagesDependencies[$page]))
+            {
+                $pageDependencies = $this->arrToStr($pagesDependencies[$page]);
+            }
+
             $str .= 'Name: ' . $page . $this->nl;
-            $str .= 'Dependencies: [ ' . $this->arrToStr($pageDependencies) . ' ] ' . $this->dnl;
+            $str .= 'Config: [ ' . $this->arrToStr($pageConfigParsed) . ' ] ' . $this->nl;
+            $str .= 'Dependencies: [ ' . $pageDependencies . ' ] ' . $this->dnl;
         }
 
         return $str;
@@ -54,7 +71,7 @@ class PageOperation extends Operation
     protected function addPage($filesToAdd, $name)
     {
         $typeName = ucfirst('page');
-        $pages = $this->pages;
+        $pages = $this->config->get('pages');
 
         if (array_key_exists($name, $pages))
             throw new \Exception("$typeName \"$name\" is already configured.");
@@ -100,9 +117,9 @@ class PageOperation extends Operation
         return "Page \"$name\" successfully added.";
     }
 
-    protected function removeComponent($name, array $directoriesToRemove)
+    protected function removePage($name, array $directoriesToRemove)
     {
-        $pages = $this->pages;
+        $pages = $this->config->get('pages');
 
         if (!array_key_exists($name, $pages))
             throw new \Exception("Page \"$name\" is not configured.");
@@ -131,8 +148,6 @@ class PageOperation extends Operation
 
     protected function addDependency($name)
     {
-        $pages = $this->pages;
-
         $this->checkIfComponentOrPageExists($name, true, 'pages');
 
         $dependency = $this->scriptParams->askForUserInput(
@@ -141,37 +156,39 @@ class PageOperation extends Operation
 
         $this->checkIfComponentOrPageExists($dependency, true, 'output_components');
 
-        if (isset($pages[$name]) && in_array($dependency, $pages[$name]))
+        $pagesDependencies = $this->config->get('pages_out_components');
+
+        if (isset($pagesDependencies[$name]) && in_array($dependency, $pagesDependencies[$name]))
             throw new \Exception("Page \"$name\" already has output component \"$dependency\" as its dependency.");
 
-        array_push($pages[$name], $dependency);
+        array_push($pagesDependencies[$name], $dependency);
 
-        $this->config->set('pages', $pages);
+        $this->config->set('pages_out_components', $pagesDependencies);
 
         return "Output component \"$dependency\" added as dependency for \"$name\" page.";
     }
 
     protected function removeDependency($name)
     {
-        $pages = $this->pages;
-
-        $this->checkIfComponentOrPageExists($name);
+        $this->checkIfComponentOrPageExists($name, true, 'pages');
 
         $dependency = $this->scriptParams->askForUserInput(
-            "Enter the name of the logic component to remove as dependency:"
+            "Enter the name of the output component to remove as dependency:"
         );
 
         $this->checkIfComponentOrPageExists($dependency, true, 'output_components');
 
-        if (!in_array($dependency, $pages[$name]))
+        $pagesDependencies = $this->config->get('pages_out_components');
+
+        if (!in_array($dependency, $pagesDependencies[$name]))
             throw new \Exception("Page \"$name\" does not have output component \"$dependency\" as its dependency.");
 
-        if(($key = array_search($dependency, $pages[$name])) !== false)
+        if(($key = array_search($dependency, $pagesDependencies[$name])) !== false)
         {
-            unset($pages[$name][$key]);
+            unset($pagesDependencies[$name][$key]);
         }
 
-        $this->config->set('pages', $pages);
+        $this->config->set('pages_out_components', $pagesDependencies);
 
         return "Output component \"$dependency\" removed as dependency for \"$name\" page.";
     }
@@ -183,7 +200,7 @@ class PageOperation extends Operation
         if (!empty($configIndexToCheck))
             $objects = $this->config->getParsed($configIndexToCheck);
 
-        $word = (substr($configIndexToCheck, 5) == 'pages') ? 'Page' : 'Component';
+        $word = (substr($configIndexToCheck, 0, 5) == 'pages') ? 'Page' : 'Component';
         $wordPl = ($word == 'Page') ? 'Pages' : 'Components';
 
         if (!isset($objects[$componentName]))
@@ -197,36 +214,109 @@ class PageOperation extends Operation
         return true;
     }
 
-    protected function genArrayOfComponentFiles($componentName)
+    protected function genArrayOfPageFiles($pageName)
     {
         $pageTemplateDirectory = $this->config->getParsed('page_template_directory');
 
         $files = array();
 
-        $files[$outputComponentTemplateDirectory . "$componentName/$componentName.tpl"] = "This is component \"$componentName\". Hello!";
-        $files[$outputComponentTemplateDirectory . "$componentName/css/$componentName.css"] = "";
-        $files[$outputComponentTemplateDirectory . "$componentName/js/$componentName.js"] = "";
+        $files[$pageTemplateDirectory . "$pageName/$pageName.tpl"] = "This is page \"$pageName\". Hello!";
+        $files[$pageTemplateDirectory . "$pageName/css/$pageName.css"] = "";
+        $files[$pageTemplateDirectory . "$pageName/js/$pageName.js"] = "";
 
         return $files;
     }
 
-    protected function genArrayOfComponentDirectories($componentName)
+    protected function genArrayOfPageDirectories($pageName)
     {
-        $outputComponentDirectory = $this->componentDirectory;
-        $outputComponentTemplateDirectory = $this->outputComponentTemplateDirectory;
+        $pageTemplateDirectory = $this->config->getParsed('page_template_directory');
 
         $directories = array();
 
-        array_push($directories, $outputComponentDirectory . "$componentName/");
-        array_push($directories, $outputComponentTemplateDirectory . "$componentName/");
+        array_push($directories, $pageTemplateDirectory . "$pageName/");
 
         return $directories;
+    }
+
+    private function addRole($pageName)
+    {
+        $pages = $this->config->get('pages');
+
+        if (!isset($pages[$pageName]))
+            throw new \Exception("Page \"$pageName\" does not exists.");
+
+        $pagesAccess = $this->config->get('pages_access');
+
+        $pageRoles = array();
+
+        if (isset($pagesAccess[$pageName]) && is_array($pagesAccess[$pageName]))
+            $pageRoles = $pagesAccess[$pageName];
+
+        $question = "Please, enter the role name: ";
+
+        $roleName = $this->scriptParams->askForUserInput($question);
+
+        if (empty($roleName))
+            throw new \Exception("Role name cannot be empty.");
+
+        if (in_array($roleName, $pageRoles))
+            throw new \Exception("Role \"$roleName\" already exists for page \"$pageName\".");
+
+        $roles = $this->config->get('roles');
+
+        if (!in_array($roleName, $roles))
+            throw new \Exception("Role \"$roleName\" does not exists.");
+
+        array_push($pageRoles, $roleName);
+
+        $pagesAccess[$pageName] = $pageRoles;
+
+        $this->config->set('pages_access', $pagesAccess);
+
+        return "Role \"$roleName\" added for page \"$pageName\"";
+    }
+
+    private function removeRole($pageName)
+    {
+        $pages = $this->config->get('pages');
+
+        if (!isset($pages[$pageName]))
+            throw new \Exception("Page \"$pageName\" does not exists.");
+
+        $pagesAccess = $this->config->get('pages_access');
+
+        $question = "Please, enter the role name: ";
+
+        $roleName = $this->scriptParams->askForUserInput($question);
+
+        if (empty($roleName))
+            throw new \Exception("Role name cannot be empty.");
+
+        $roles = $this->config->get('roles');
+
+        if (!in_array($roleName, $roles))
+            throw new \Exception("Role \"$roleName\" does not exists.");
+
+        if (!isset($pagesAccess[$pageName]) || !in_array($roleName, $pagesAccess[$pageName]))
+        {
+            throw new \Exception("Role \"$roleName\" is not configured for page \"$pageName\".");
+        }
+
+        if(($key = array_search($roleName, $pagesAccess[$pageName])) !== false)
+        {
+            unset($pagesAccess[$pageName][$key]);
+        }
+
+        $this->config->set('pages_access', $pagesAccess);
+
+        return "Role \"$roleName\" removed successfully for page \"$pageName\".";
     }
 
     /**
      * Performs operation.
      *
      * @return string Operation output for printing.
+     * @throws \Exception If page name is empty.
      */
     public function perform()
     {
@@ -235,31 +325,37 @@ class PageOperation extends Operation
         if ($previewValue !== false)
             return $previewValue;
 
-        $componentName = $this->scriptParams->askForUserInput(
+        $pageName = $this->scriptParams->askForUserInput(
             'Please enter page name: '
         );
 
-        if (empty($componentName))
+        if (empty($pageName))
             throw new \Exception('Page name cannot be empty.');
 
-        $componentFiles = $this->genArrayOfComponentFiles($componentName);
-        $directories = $this->genArrayOfComponentDirectories($componentName);
+        $pageFiles = $this->genArrayOfPageFiles($pageName);
+        $directories = $this->genArrayOfPageDirectories($pageName);
 
         $output = '';
 
         switch ($this->value)
         {
             case 'add':
-                $output = $this->addComponent($componentFiles, $componentName);
+                $output = $this->addPage($pageFiles, $pageName);
                 break;
             case 'remove':
-                $output = $this->removeComponent($componentName, $directories);
+                $output = $this->removePage($pageName, $directories);
                 break;
             case 'add_dependency':
-                $output = $this->addDependency($componentName);
+                $output = $this->addDependency($pageName);
                 break;
             case 'remove_dependency':
-                $output = $this->removeDependency($componentName);
+                $output = $this->removeDependency($pageName);
+                break;
+            case 'add_role':
+                $output = $this->addRole($pageName);
+                break;
+            case 'remove_role':
+                $output = $this->removeRole($pageName);
                 break;
         }
 

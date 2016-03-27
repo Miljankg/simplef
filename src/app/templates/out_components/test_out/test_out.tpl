@@ -1,1 +1,0 @@
-This is component "test_out". Hello!

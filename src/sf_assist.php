@@ -6,7 +6,8 @@ require_once 'console\\config\\config_console.php';
 
 $rootDir = '';
 
-$separator = '==================================================';
+$separatorStart = '==================== ACTION STARTED ====================';
+$separatorEnd   = '===================== ACTION ENDED =====================';
 $nl = PHP_EOL;
 $dnl = $nl . $nl;
 $configDir = $configConsole['config_dir'];
@@ -27,7 +28,7 @@ $classLoader = new Framework\Core\Loaders\ClassLoader($rootDir);
 
 spl_autoload_register(array($classLoader, 'loadClass'));
 
-echo $nl . $separator . $dnl;
+echo $nl . $separatorStart . $dnl;
 
 try
 {
@@ -51,4 +52,4 @@ catch (Exception $ex)
     echo '### ERROR ###  ' . PHP_EOL . PHP_EOL . $ex->getMessage() . PHP_EOL . PHP_EOL . '#############';
 }
 
-echo $dnl . $separator . $nl;
+echo $dnl . $separatorEnd . $nl;

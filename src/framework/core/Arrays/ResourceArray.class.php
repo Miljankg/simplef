@@ -27,7 +27,7 @@ class ResourceArray
 
     //<editor-fold desc="Constructor">
 
-    public function __construct($name, array $data = array(), $overwriteAllowed)
+    public function __construct($name, array &$data = array(), $overwriteAllowed)
     {
         $this->name = $name;
         $this->array = $data;
@@ -35,6 +35,12 @@ class ResourceArray
     }
 
     //</editor-fold>
+
+    protected function checkIfExists($index)
+    {
+        if (!isset($this->array[$index]))
+            throw new Exception("There is no index \"$index\" in array {$this->name}");
+    }
 
     //<editor-fold desc="Public functions">
 
@@ -52,8 +58,7 @@ class ResourceArray
      */
     public function get($index)
     {
-        if (!isset($this->array[$index]))
-            throw new Exception("There is no index \"$index\" in array {$this->name}");
+        $this->checkIfExists($index);
 
         return $this->array[$index];
     }
