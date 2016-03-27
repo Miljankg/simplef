@@ -78,11 +78,29 @@ class OutputComponentOperation extends ComponentOperation
             }
         }
 
-        $question = "Are you sure that you want to delete $this->componentType component $name (yes|no)?";
+        $question = "Are you sure that you want to delete $this->componentType component $name? ";
+
+        $questionAppendix = "";
+
+        $commonComponents = $this->config->get('common_output_components');
+
+        if (isset($commonComponents[$name]))
+        {
+            $questionAppendix .= "\nComponent is enlisted as common component.\n";
+        }
 
         if (!empty($pagesToUpdate))
         {
-            $question = "Do you really want to remove output component \"$name\", it is a dependency for next pages (pages will be updated, also)(yes|no)\: " . $this->arrToStr($pagesToUpdate);
+            $questionAppendix .= "\nIt is a dependency for next pages (pages will be updated, also): " . $this->arrToStr($pagesToUpdate) . "\n";
+        }
+
+        if (!empty($questionAppendix))
+        {
+            $question .= "\n$questionAppendix\nAnswer? (yes|no): ";
+        }
+        else
+        {
+            $question .= "(yes|no)";
         }
 
         $answer = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
@@ -106,6 +124,11 @@ class OutputComponentOperation extends ComponentOperation
         }
 
         $this->config->set('pages_out_components', $pagesDependencies);
+
+        if (isset($commonComponents[$name]))
+            unset($commonComponents[$name]);
+
+        $this->config->set('common_output_components', $commonComponents);
 
         $statusText = parent::removeComponent($name, $directoriesToRemove, false);
 
@@ -177,6 +200,41 @@ class OutputComponentOperation extends ComponentOperation
         return $directories;
     }
 
+    private function addToCommon($componentName)
+    {
+        $this->checkIfComponentExists($componentName, true, 'output_components');
+
+        $commonComponents = $this->config->get('common_output_components');
+
+        if (in_array($componentName, $commonComponents))
+            throw new \Exception("Output component \"$componentName\" is already listed as common.");
+
+        array_push($commonComponents, $componentName);
+
+        $this->config->set('common_output_components', $commonComponents);
+
+        return "Component \"$componentName\" successfully added to common components.";
+    }
+
+    private function removeFromCommon($componentName)
+    {
+        $this->checkIfComponentExists($componentName, true, 'output_components');
+
+        $commonComponents = $this->config->get('common_output_components');
+
+        if (!in_array($componentName, $commonComponents))
+            throw new \Exception("Output component \"$componentName\" is already not listed as common.");
+
+        if(($key = array_search($componentName, $commonComponents)) !== false)
+        {
+            unset($commonComponents[$key]);
+        }
+
+        $this->config->set('common_output_components', $commonComponents);
+
+        return "Component \"$componentName\" successfully removed from common components.";
+    }
+
     public function perform()
     {
         $previewValue = $this->previewValue();
@@ -221,6 +279,12 @@ class OutputComponentOperation extends ComponentOperation
                 break;
             case 'disable_css':
                 $output = $this->editOutputComponentOptions($componentName, 'css', false);
+                break;
+            case 'add_to_common':
+                $output = $this->addToCommon($componentName);
+                break;
+            case 'remove_from_common':
+                $output = $this->removeFromCommon($componentName);
                 break;
         }
 

@@ -11,6 +11,11 @@ $configConsole['action_mapping'] = array(
         'config_index' => 'error_log_enabled',
         'allowed_values' => array()
     ),
+    'wrap_components' => array(
+        'type' => 'Console\\Core\\Action\\BoolOperation',
+        'config_index' => 'wrap_components',
+        'allowed_values' => array()
+    ),
     'ajax_get_index' => array(
         'type' => 'Console\\Core\\Action\\StringOperation',
         'config_index' => 'ajax_get_index',
@@ -74,12 +79,12 @@ $configConsole['action_mapping'] = array(
     'output_component' => array(
         'type' => 'Console\\Core\\Action\\OutputComponentOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'enable_js', 'disable_js', 'enable_css', 'disable_css')
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'enable_js', 'disable_js', 'enable_css', 'disable_css', 'add_to_common', 'remove_from_common')
     ),
     'page' => array(
         'type' => 'Console\\Core\\Action\\PageOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'add_role', 'remove_role')
+        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'add_role', 'remove_role', 'set_template', 'set_default_page', 'set_empty_page_index', 'set_page_not_found_page', 'set_page_maintenance', 'set_error_page_url')
     ),
     'roles' => array(
         'type' => 'Console\\Core\\Action\\RolesOperation',

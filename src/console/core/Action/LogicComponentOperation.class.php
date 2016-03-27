@@ -46,9 +46,98 @@ class LogicComponentOperation extends ComponentOperation
 
     protected function genArrayOfComponentDirectories($componentName)
     {
-        $componentsDir = $this->config->get($this->componentDirConfigIndex);
+        $componentsDir = $this->config->getParsed($this->componentDirConfigIndex);
 
         return array($componentsDir . $componentName . '/');
+    }
+
+    protected function removeComponent($name, array $directoriesToRemove, $askSecQuestion = true)
+    {
+        $question = "Are you sure that you want to delete logic component \"$name\" ";
+
+        $outputComponents = $this->config->get('output_components');
+
+        $outputComponentsToUpdate = array();
+
+        foreach ($outputComponents as $ocName => $logicDependencies)
+        {
+            if (in_array($name, $logicDependencies))
+            {
+                $outputComponentsToUpdate[] = $ocName;
+            }
+        }
+
+        $logicComponents = $this->config->get('logic_components');
+
+        $logicComponentsToUpdate = array();
+
+        foreach ($logicComponents as $lcName => $logicDependencies)
+        {
+            if (in_array($name, $logicDependencies))
+            {
+                $logicComponentsToUpdate[] = $lcName;
+            }
+        }
+
+        $questionAppendix = "";
+
+        if (!empty($outputComponentsToUpdate))
+        {
+            $outputComponentsToUpdateStr = $this->arrToStr($outputComponentsToUpdate);
+
+            $questionAppendix .= "\nListed as dependency on next output components: $outputComponentsToUpdateStr\n";
+        }
+
+        if (!empty($logicComponentsToUpdate))
+        {
+            $logicComponentsToUpdateStr = $this->arrToStr($logicComponentsToUpdate);
+
+            $questionAppendix .= "\nListed as dependency on next logic components: $logicComponentsToUpdateStr\n";
+        }
+
+        if (!empty($questionAppendix))
+        {
+            $question .= "\n$questionAppendix\nAnswer? (yes|no): ";
+        }
+        else
+        {
+            $question .= "(yes|no)";
+        }
+
+        $answer = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
+
+        if ($answer == 'no')
+        {
+            return "Giving up on deleting component.";
+        }
+
+        foreach ($outputComponentsToUpdate as $ocName)
+        {
+            if (!in_array($name, $outputComponents[$ocName]))
+                throw new \Exception("Component \"$ocName\" does not have logic component \"$name\" as its dependency.");
+
+            if(($key = array_search($name, $outputComponents[$ocName])) !== false)
+            {
+                unset($outputComponents[$ocName][$key]);
+            }
+        }
+
+        $this->config->set('output_components', $outputComponents);
+
+        foreach ($logicComponentsToUpdate as $lcName)
+        {
+            if (!in_array($name, $logicComponents[$lcName]))
+                throw new \Exception("Logic component \"$lcName\" does not have logic component \"$name\" as its dependency.");
+
+            if(($key = array_search($name, $logicComponents[$lcName])) !== false)
+            {
+                unset($logicComponents[$lcName][$key]);
+            }
+        }
+
+        $this->config->set('logic_components', $logicComponents);
+
+        return parent::removeComponent($name, $directoriesToRemove, false);
     }
 
     public function perform()

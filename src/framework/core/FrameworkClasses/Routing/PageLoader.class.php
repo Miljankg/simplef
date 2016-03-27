@@ -243,7 +243,7 @@ class PageLoader implements IPageLoader
             $tplName = $pageName;
 
             // Handle template
-            if (isset($configuredTemplates[$pageName]))
+            if (isset($configuredTemplates[$pageName]) && !empty($configuredTemplates[$pageName]))
             {
                 $tplName = $configuredTemplates[$pageName];
                 $tplToLoad = $configuredTemplates[$pageName] . '/' . $configuredTemplates[$pageName] . ".tpl";

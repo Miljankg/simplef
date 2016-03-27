@@ -53,16 +53,32 @@ class PageOperation extends Operation
 
             $pagesDependencies = $this->config->get('pages_out_components');
 
-            $pageDependencies = array();
+            $pageDependencies = "";
 
-            if (isset($pagesDependencies[$page]) || is_array($pagesDependencies[$page]))
+            if (isset($pagesDependencies[$page]) && is_array($pagesDependencies[$page]))
             {
                 $pageDependencies = $this->arrToStr($pagesDependencies[$page]);
             }
 
+            $pagesTemplates = $this->config->get('pages_templates');
+
+            $template = 'default';
+
+            if (isset($pagesTemplates[$page]) && !empty($pagesTemplates[$page]))
+                $template = $pagesTemplates[$page];
+
+            $pagesAccess = $this->config->get('pages_access');
+
+            $roles = array();
+
+            if (isset($pagesAccess[$page]) && !empty($pagesAccess[$page]))
+                $roles = $pagesAccess[$page];
+
             $str .= 'Name: ' . $page . $this->nl;
             $str .= 'Config: [ ' . $this->arrToStr($pageConfigParsed) . ' ] ' . $this->nl;
-            $str .= 'Dependencies: [ ' . $pageDependencies . ' ] ' . $this->dnl;
+            $str .= 'Dependencies: [ ' . $pageDependencies . ' ] ' . $this->nl;
+            $str .= 'Template: ' . $template . $this->nl;
+            $str .= 'Roles assigned: [ ' . $this->arrToStr($roles) .' ] '. $this->dnl;
         }
 
         return $str;
@@ -138,6 +154,25 @@ class PageOperation extends Operation
         foreach ($directoriesToRemove as $directory)
             $this->deleteDirectory($directory);
 
+        $pagesDependencies = $this->config->get('pages_out_components');
+
+        if (isset($pagesDependencies[$name]))
+            unset($pagesDependencies[$name]);
+
+        $pagesAccess = $this->config->get('pages_access');
+
+        if (isset($pagesAccess[$name]))
+            unset($pagesAccess[$name]);
+
+        $pagesTemplates = $this->config->get('pages_templates');
+
+        if (isset($pagesTemplates[$name]))
+            unset($pagesTemplates[$name]);
+
+        $this->config->set('pages_templates', $pagesTemplates);
+        $this->config->set('pages_access', $pagesAccess);
+        $this->config->set('pages_out_components', $pagesDependencies);
+
         $constant = 'PAGE_' . strtoupper($name);
 
         if (defined($constant))
@@ -180,7 +215,7 @@ class PageOperation extends Operation
 
         $pagesDependencies = $this->config->get('pages_out_components');
 
-        if (!in_array($dependency, $pagesDependencies[$name]))
+        if (!isset($pagesDependencies[$name]) || !in_array($dependency, $pagesDependencies[$name]))
             throw new \Exception("Page \"$name\" does not have output component \"$dependency\" as its dependency.");
 
         if(($key = array_search($dependency, $pagesDependencies[$name])) !== false)
@@ -312,6 +347,56 @@ class PageOperation extends Operation
         return "Role \"$roleName\" removed successfully for page \"$pageName\".";
     }
 
+    private function setTemplate($pageName)
+    {
+        $pagesTemplates = $this->config->get('pages_templates');
+
+        $currentTpl = 'default';
+
+        if (isset($pagesTemplates[$pageName]) && !empty($pagesTemplates[$pageName]))
+            $currentTpl = $pagesTemplates[$pageName];
+
+        $question = "Please enter template file name without extension to load for this page, or \"default\" (no quotes), for default template. (current: $currentTpl): ";
+
+        $tplName = $this->scriptParams->askForUserInput($question);
+
+        $tplDir = $this->config->getParsed('page_template_directory');
+
+        $tplFullPath = $tplDir . "$tplName/$tplName.tpl";
+
+        if ($tplName == 'default')
+            $tplName = '';
+
+        if (!empty($tplName) && !file_exists($tplFullPath))
+            throw new \Exception("Template does not exists. Given path: $tplFullPath");
+
+        $pagesTemplates[$pageName] = $tplName;
+
+        $this->config->set('pages_templates', $pagesTemplates);
+
+        if (empty($tplName))
+            $tplName = 'default';
+
+        return "Page $pageName set to use $tplName template.";
+    }
+
+    private function setValue($pageName, $indexToSet, $allowEmpty = false)
+    {
+        if (!$allowEmpty)
+            $this->checkIfComponentOrPageExists($pageName, true, 'pages');
+
+        $configValue = $this->config->getParsed($indexToSet);
+
+        if (!$allowEmpty && $configValue == $pageName)
+            throw new \Exception("Page \"$pageName\" already set as $indexToSet");
+
+        $configValue = $pageName;
+
+        $this->config->set($indexToSet, $configValue);
+
+        return "Page \"$pageName\" set successfully as $indexToSet";
+    }
+
     /**
      * Performs operation.
      *
@@ -356,6 +441,24 @@ class PageOperation extends Operation
                 break;
             case 'remove_role':
                 $output = $this->removeRole($pageName);
+                break;
+            case 'set_template':
+                $output = $this->setTemplate($pageName);
+                break;
+            case 'set_default_page':
+                $output = $this->setValue($pageName, 'default_page', true);
+                break;
+            case 'set_empty_page_index':
+                $output = $this->setValue($pageName, 'empty_page_index');
+                break;
+            case 'set_page_not_found_page':
+                $output = $this->setValue($pageName, 'page_not_found_page');
+                break;
+            case 'set_page_maintenance':
+                $output = $this->setValue($pageName, 'page_maintenance');
+                break;
+            case 'set_error_page_url':
+                $output = $this->setValue($pageName, 'error_page_url');
                 break;
         }
 
