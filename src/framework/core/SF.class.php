@@ -316,9 +316,12 @@ class SF implements ISF {
             $session->sessionCreate();
 
         $currentPage = $this->url->getCurrentPageName();
-
+		
         $userRole = $session->getUserData('role');
-
+		
+		if ($currentPage == '')
+			$currentPage = $this->config->get('empty_page_index');		
+		
         if ($useAuth)
         {
             if (!isset($pagesAccessConfig[$currentPage]) ||
