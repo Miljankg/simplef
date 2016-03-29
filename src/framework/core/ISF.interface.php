@@ -51,6 +51,11 @@ interface ISF
     public function Lang();
 
     /**
+     * @return LanguagePages
+     */
+    public function LangPages();
+
+    /**
      * @return ILogger
      */
     public function Logger();

@@ -185,6 +185,11 @@ class SF implements ISF {
         return $this->lang;
     }
 
+    public function LangPages()
+    {
+        return $this->langPages;
+    }
+
     /**
      * @return ILogger
      */

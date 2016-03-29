@@ -113,9 +113,14 @@ class PageOperation extends Operation
 
             $dependenciesArr[$key] = trim($dependency);
         }
+		
+		$pagesDependencies = $this->config->get('pages_out_components');		
+		
+        $pages[$name] = array();
+		
+		$pagesDependencies[$name] = $dependenciesArr;
 
-        $pages[$name] = $dependenciesArr;
-
+		$this->config->set('pages_out_components', $pagesDependencies);
         $this->config->set('pages', $pages);
 
         foreach ($filesToAdd as $file => $content)

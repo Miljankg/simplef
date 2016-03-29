@@ -114,7 +114,7 @@ class SFComponentLoader implements IComponentLoader
         foreach ($this->commonComponents as $component => $exceptionPage)
             if ($this->currPageName != $exceptionPage)
                 array_unshift($outputComponentsToLoad, $component);
-        
+
         foreach ($outputComponentsToLoad as $outComponentName)
         {
             if (!isset($this->configuredOutputComponents[$outComponentName]))

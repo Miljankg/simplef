@@ -206,10 +206,10 @@ class OutputComponentOperation extends ComponentOperation
 
         $commonComponents = $this->config->get('common_output_components');
 
-        if (in_array($componentName, $commonComponents))
+        if (isset($commonComponents[$componentName]))
             throw new \Exception("Output component \"$componentName\" is already listed as common.");
 
-        array_push($commonComponents, $componentName);
+        $commonComponents[$componentName] = array();
 
         $this->config->set('common_output_components', $commonComponents);
 
@@ -222,13 +222,10 @@ class OutputComponentOperation extends ComponentOperation
 
         $commonComponents = $this->config->get('common_output_components');
 
-        if (!in_array($componentName, $commonComponents))
+        if (!isset($commonComponents[$componentName]))
             throw new \Exception("Output component \"$componentName\" is already not listed as common.");
 
-        if(($key = array_search($componentName, $commonComponents)) !== false)
-        {
-            unset($commonComponents[$key]);
-        }
+        unset($commonComponents[$componentName]);
 
         $this->config->set('common_output_components', $commonComponents);
 

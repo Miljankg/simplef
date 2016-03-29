@@ -82,7 +82,7 @@ class DbConnectionOperation extends Operation
         $dbConnections = $this->config->get('db_config');
 
         if (isset($dbConnections[$dbConnectionName]))
-            throw new \Exception("Db connection \"$dbConnections\" already exists.");
+            throw new \Exception("Db connection \"$dbConnectionName\" already exists.");
 
         $dbConnections[$dbConnectionName] = array();
 
