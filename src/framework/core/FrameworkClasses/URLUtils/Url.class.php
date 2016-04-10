@@ -188,7 +188,9 @@ class Url implements IUrl
 		
 	protected function getUrlStr()
 	{
-		return htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');	
+		$pageName = (isset($_GET['pageName'])) ? $_GET['pageName'] : '';
+		
+		return htmlentities(addslashes($pageName), ENT_NOQUOTES, 'UTF-8');	
 	}
 	
 	protected function generateCurrentUrl($mainUrlNoLang)

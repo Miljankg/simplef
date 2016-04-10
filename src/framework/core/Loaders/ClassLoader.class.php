@@ -21,7 +21,8 @@ class ClassLoader
     public function loadClass($oopElement)
     {
         $ds = DIRECTORY_SEPARATOR;
-        $oopElement = str_replace(array('\\', '/'), array($ds), $oopElement);
+		$oopElementOriginal = $oopElement;
+        $oopElement = str_replace(array('\\', '/'), array($ds, $ds), $oopElement);
         $tmp = explode($ds, $oopElement);
         $oopElementName = end($tmp);
         $suffix = ".class";
@@ -44,7 +45,7 @@ class ClassLoader
             str_replace('\\', $ds, $oopElement) .
             $suffix;
 
-        if( is_file($file) && !class_exists($oopElement) )
+        if( is_file($file) && !class_exists($oopElementOriginal) )
             /** @noinspection PhpIncludeInspection */
             require $file;
     }

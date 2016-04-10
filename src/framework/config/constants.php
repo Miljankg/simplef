@@ -9,4 +9,3 @@ define('PAGE_MAINTENANCE', 'maintenance');
 define('PAGE_ERROR', 'error_page');
 define('PAGE_TEST', 'test_page');
 define('PAGE_LOGIN', 'login');
-define('DB_EXAMPLE', 'example');
