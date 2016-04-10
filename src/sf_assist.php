@@ -2,7 +2,7 @@
 
 $configConsole = array();
 
-require_once 'console\\config\\config_console.php';
+require_once __DIR__ . '/console/config/config_console.php';
 
 $rootDir = '';
 
