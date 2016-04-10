@@ -2,7 +2,7 @@
 
 namespace Framework\Core;
 
-require_once 'loaders\ClassLoader.class.php';
+require_once _DIR_ . 'loaders\ClassLoader.class.php';
 
 use Framework\Core\Database\DbFactory;
 use Framework\Core\FrameworkClasses\Configuration\ConfigLoader;
