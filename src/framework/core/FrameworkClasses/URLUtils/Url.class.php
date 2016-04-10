@@ -11,6 +11,7 @@ class Url implements IUrl
 {
     //<editor-fold desc="Members">
 
+	protected $currentUrl = "";	
     protected $pageName = "";
     protected $currLang = "";
     protected $protocol = "";
@@ -111,6 +112,16 @@ class Url implements IUrl
     {
         return $this->urlParts;
     }
+	
+	/**
+     * Retrieves current URL.
+     *
+     * @return array current URL.
+     */
+    public function getCurrentUrl()
+    {
+        return $this->currentUrl;
+    }
 
     /**
      * Redirects to a given location.
@@ -172,7 +183,20 @@ class Url implements IUrl
         $this->parseUrl($multilingual, $defaultLanguage, $defaultPage);
         $this->protocol = $this->determineProtocol($sslPort);
         $this->generateMainUrlValues($this->protocol, $siteName, $this->currLang);
+		$this->generateCurrentUrl($this->mainUrlNoLang);
     }
+		
+	protected function getUrlStr()
+	{
+		return htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');	
+	}
+	
+	protected function generateCurrentUrl($mainUrlNoLang)
+	{
+		$urlStr = $this->getUrlStr();
+		
+		$this->currentUrl = $mainUrlNoLang . $urlStr;
+	}
 
     /**
      * Parses URL and populates URL class internal fields.
@@ -192,8 +216,8 @@ class Url implements IUrl
         $pageName = '';
 
         if (isset($_GET['pageName']))
-            $urlStr = htmlentities(addslashes($_GET['pageName']), ENT_NOQUOTES, 'UTF-8');
-
+            $urlStr = $this->getUrlStr();
+		
         $urlArr = explode("/", $urlStr);
 
         if ($multilingual)
@@ -229,7 +253,7 @@ class Url implements IUrl
             $this->urlParts[] = $urlArr[$i];
 
         $this->currLang = $language;
-        $this->pageName = $pageName;
+        $this->pageName = $pageName;		
     }
 
     /**
@@ -248,7 +272,7 @@ class Url implements IUrl
             str_replace('\\', '/', $siteName) .
             '/';
 
-        $this->mainUrl = $this->mainUrlNoLang . $currLang . "/";
+        $this->mainUrl = $this->mainUrlNoLang . $currLang . "/";		
     }
 
     //</editor-fold>

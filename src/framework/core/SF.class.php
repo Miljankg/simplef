@@ -331,6 +331,8 @@ class SF implements ISF {
                 return;
             else
             {
+				$this->session->setUserData('PAGE_BEFORE_LOGIN', $this->url->getCurrentUrl());
+				
                 $mainUrl = $this->url->getMainUrl();
 
                 $loginPage = $mainUrl . 'login&not_allowed=1';

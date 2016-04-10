@@ -20,6 +20,10 @@ class Login extends OutputComponent
 
         $arrayToUse = $this->sf->Post();
 
+		$pageBeforeLogin = $this->sf->Session()->getUserData('PAGE_BEFORE_LOGIN');
+		
+		$refererPage = (isset($pageBeforeLogin) && !empty($pageBeforeLogin)) ? $pageBeforeLogin : $this->sf->Url->getMainUrl();
+
         if ($arrayToUse->hasKey($loginFormIndex))
         {
             $formSubmitted = true;
@@ -29,14 +33,16 @@ class Login extends OutputComponent
         {
             $username = $arrayToUse->get('username');
             $password = $arrayToUse->get('password');
+			
+			$refererPage = $arrayToUse->get('referer_page');
 
             /** @var Auth */
             $logicAuth = $this->getLogicComponent(LOGIC_AUTH);
 
             if ($logicAuth->authUser($username, $password) === true)
-            {
+            {							
                 $this->sf->Url()->redirect(
-                    $this->sf->Url()->getMainUrl()
+                    $refererPage
                 );
             }
             else
@@ -45,6 +51,7 @@ class Login extends OutputComponent
             }
         }
 
+		$this->tplEngine->assign('refererPage', $refererPage);
         $this->tplEngine->assign('username', $username);
     }
 }
