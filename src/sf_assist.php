@@ -19,8 +19,8 @@ require_once $configDir . 'config_main.php';
 
 $frameworkDir = $config['framework_dir'];
 
-require_once __DIR__ . 'framework/core/Loaders/ClassLoader.class.php';
-require_once __DIR__ . 'console/Core/Parameters/ScriptParams.class.php';
+require_once __DIR__ . '/framework/core/Loaders/ClassLoader.class.php';
+require_once __DIR__ . '/console/Core/Parameters/ScriptParams.class.php';
 require_once $frameworkDir . 'core/FrameworkClasses/Configuration/ConfigLocations.class.php';
 require_once $frameworkDir . 'core/FrameworkClasses/Configuration/ConfigLoader.class.php';
 
