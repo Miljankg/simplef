@@ -16,7 +16,9 @@ $config['app_webroot_dir'] = str_replace(
 
 $config['app_webroot_dir']      = ltrim($config['app_webroot_dir'], $config['ds']);
 
-$config['document_root']        = $_SERVER['DOCUMENT_ROOT'] . $config['ds'] . $config['app_webroot_dir'] . $config['ds'];
+$docRootTmp = (empty($_SERVER['DOCUMENT_ROOT'])) ? "" : $_SERVER['DOCUMENT_ROOT'] . $config['ds'];
+
+$config['document_root']        = $docRootTmp . $config['app_webroot_dir'] . $config['ds'];
 $config['framework_dir']        = $config['document_root'] . 'framework' . $config['ds'];
 $config['app_dir']              = $config['document_root'] . 'app' . $config['ds'];
 

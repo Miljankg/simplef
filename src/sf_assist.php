@@ -30,6 +30,13 @@ spl_autoload_register(array($classLoader, 'loadClass'));
 
 echo $nl . $separatorStart . $dnl;
 
+$opts = array("test:", "test1");
+
+$options = getopt("", $opts);
+
+var_dump($options);
+
+
 try
 {
     /** @var \Framework\Core\FrameworkClasses\Configuration\ConfigLoader */

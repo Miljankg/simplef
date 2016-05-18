@@ -15,7 +15,7 @@ class ScriptParams
     private $action;
     private $value;
 
-    public function __construct(array $arguments)
+    public function __construct(array $arguments, $consoleConfig)
     {
         if (!isset($arguments[1]))
             throw new Exception('No action specified');
@@ -25,6 +25,22 @@ class ScriptParams
 
         $this->action = $arguments[1];
         $this->value = $arguments[2];
+
+        $expectedParameters = array();
+
+        if (isset($consoleConfig[$this->action]['allowed_values'][$this->value]))
+            $expectedParameters = $consoleConfig[$this->action]['allowed_values'][$this->value];
+
+        $expectedParametersParsed = array();
+
+        foreach ($expectedParameters as $param)
+            $expectedParametersParsed[] = $param . ':';
+
+        print_r($expectedParametersParsed);
+
+        $parameterValues = getopt('', array("test:", "test1"));
+
+        var_dump($parameterValues);exit;
     }
 
     public function getAction()

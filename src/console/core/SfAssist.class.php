@@ -28,7 +28,7 @@ class SfAssist
      */
     public function __construct(array $arguments, IConfig $config, array $consoleConfig)
     {
-        $this->scriptParams = new ScriptParams($arguments);
+        $this->scriptParams = new ScriptParams($arguments, $consoleConfig['action_mapping']);
         $this->config = $config;
         $this->consoleConfig = $consoleConfig;
     }

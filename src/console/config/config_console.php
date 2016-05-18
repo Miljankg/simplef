@@ -94,7 +94,7 @@ $configConsole['action_mapping'] = array(
     'users' => array(
         'type' => 'Console\\Core\\Action\\UsersOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'change_password', 'change_role')
+        'allowed_values' => array('add' => array('username', 'role', 'password'), 'remove', 'change_password', 'change_role')
     ),
     'db_connection' => array(
         'type' => 'Console\\Core\\Action\\DbConnectionOperation',
