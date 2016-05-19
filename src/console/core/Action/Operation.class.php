@@ -59,7 +59,7 @@ abstract class Operation
         $this->value = $value;
         $this->config = $config;
         $this->index = $index;
-        $this->allowedValues = $allowedValues;
+        $this->allowedValues = array_keys($allowedValues);
         $this->scriptParams = $scriptParams;
         $this->consoleConfig = $consoleConfig;
         $this->dnl = $this->nl . $this->nl;

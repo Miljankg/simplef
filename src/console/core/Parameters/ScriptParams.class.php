@@ -14,33 +14,62 @@ class ScriptParams
 {
     private $action;
     private $value;
+    private $scriptParameters = array();
 
     public function __construct(array $arguments, $consoleConfig)
     {
-        if (!isset($arguments[1]))
+        $scriptParameters = $this->parseScriptParameters($arguments);
+
+        if (!isset($scriptParameters['action']))
             throw new Exception('No action specified');
 
-        if (!isset($arguments[2]))
+        if (!isset($scriptParameters['value']))
             throw new Exception('No value specified');
 
-        $this->action = $arguments[1];
-        $this->value = $arguments[2];
+        $this->action = $scriptParameters['action'];
+        $this->value = $scriptParameters['value'];
 
         $expectedParameters = array();
 
         if (isset($consoleConfig[$this->action]['allowed_values'][$this->value]))
             $expectedParameters = $consoleConfig[$this->action]['allowed_values'][$this->value];
 
-        $expectedParametersParsed = array();
+        foreach ($expectedParameters as $parameter)
+        {
+            if (!isset($scriptParameters[$parameter]))
+            {
+                if (array_key_exists('do-not-ask', $scriptParameters))
+                    throw new Exception("Parameter $parameter is not set.");
+            }
+        }
 
-        foreach ($expectedParameters as $param)
-            $expectedParametersParsed[] = $param . ':';
+        $this->scriptParameters = $scriptParameters;
+    }
 
-        print_r($expectedParametersParsed);
+    public function parseScriptParameters(array $argv)
+    {
+        $previousKey = null;
 
-        $parameterValues = getopt('', array("test:", "test1"));
+        $parsedParameters = array();
 
-        var_dump($parameterValues);exit;
+        foreach ($argv as $key => $value)
+        {
+            if ($key < 1)
+                continue;
+
+            if (substr( $value, 0, 2 ) === "--")
+            {
+                $previousKey = substr( $value, 2, strlen($value) );
+
+                $parsedParameters[$previousKey] = null;
+            }
+            else
+            {
+                $parsedParameters[$previousKey] = $value;
+            }
+        }
+
+        return $parsedParameters;
     }
 
     public function getAction()
@@ -53,8 +82,14 @@ class ScriptParams
         return $this->value;
     }
 
-    public function askForUserInput($question, $allowedAnswers = array())
+    public function askForUserInput($question, $allowedAnswers = array(), $paramToCheck = "")
     {
+        if ($paramToCheck !== "")
+        {
+            if (isset($this->scriptParameters[$paramToCheck]))
+                return $this->scriptParameters[$paramToCheck];
+        }
+
         $stop = false;
         $count = 0;
         $maxTries = 3;
@@ -81,5 +116,15 @@ class ScriptParams
             throw new Exception('To many wrong answers.');
 
         return $line;
+    }
+
+    public function askYesNo($question)
+    {
+        if (array_key_exists('all-yes', $this->scriptParameters))
+        {
+            return 'yes';
+        }
+
+        return $this->askForUserInput($question, array('yes', 'no'));
     }
 }

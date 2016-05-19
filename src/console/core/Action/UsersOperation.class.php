@@ -18,7 +18,7 @@ class UsersOperation extends Operation
 
         $question = "Enter username to filter output, or just press enter: ";
 
-        $answer = $this->scriptParams->askForUserInput($question);
+        $answer = $this->scriptParams->askForUserInput($question, array(), 'username');
 
         $users = $this->config->get('users');
 
@@ -56,7 +56,7 @@ class UsersOperation extends Operation
         if (in_array($userName, $users))
             throw new \Exception("User \"$userName\" already exists.");
 
-        $role = $this->scriptParams->askForUserInput("Enter role: ");
+        $role = $this->scriptParams->askForUserInput("Enter role: ", array(), "role");
 
         $roles = $this->config->get("roles");
 
@@ -68,7 +68,7 @@ class UsersOperation extends Operation
 
         $users[$userName] = array('role' => $role);
 
-        $password = $this->scriptParams->askForUserInput("Enter password: ");
+        $password = $this->scriptParams->askForUserInput("Enter password: ", array(), "password");
 
         if (empty($password))
             throw new \Exception("Password cannot be empty.");
@@ -108,7 +108,7 @@ class UsersOperation extends Operation
         if (!isset($users[$userName]))
             throw new \Exception("User \"$userName\" does not exists.");
 
-        $password = $this->scriptParams->askForUserInput("Enter password: ");
+        $password = $this->scriptParams->askForUserInput("Enter password: ", array(), 'password');
 
         if (empty($password))
             throw new \Exception("Password cannot be empty.");
@@ -127,7 +127,7 @@ class UsersOperation extends Operation
         if (!isset($users[$userName]))
             throw new \Exception("User \"$userName\" does not exists.");
 
-        $role = $this->scriptParams->askForUserInput("Enter role: ");
+        $role = $this->scriptParams->askForUserInput("Enter role: ", array(), 'role');
 
         $roles = $this->config->get("roles");
 
@@ -158,7 +158,7 @@ class UsersOperation extends Operation
 
         $output = "";
 
-        $userName = $this->scriptParams->askForUserInput("Enter username: ");
+        $userName = $this->scriptParams->askForUserInput("Enter username: ", array(), 'username');
 
         if (empty($userName))
             throw new \Exception("Username cannot be empty");
