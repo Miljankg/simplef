@@ -48,7 +48,9 @@ class LogicComponentOperation extends ComponentOperation
     {
         $componentsDir = $this->config->getParsed($this->componentDirConfigIndex);
 
-        return array($componentsDir . $componentName . '/');
+        $componentDir = $componentsDir . $componentName . '/';
+
+        return array($componentDir);
     }
 
     protected function removeComponent($name, array $directoriesToRemove, $askSecQuestion = true)
@@ -104,7 +106,7 @@ class LogicComponentOperation extends ComponentOperation
             $question .= "(yes|no)";
         }
 
-        $answer = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
+        $answer = $this->scriptParams->askYesNo($question);
 
         if ($answer == 'no')
         {
@@ -140,6 +142,79 @@ class LogicComponentOperation extends ComponentOperation
         return parent::removeComponent($name, $directoriesToRemove, false);
     }
 
+    public function addSqlFile($logicComponentName)
+    {
+        $sqlFilePath = $this->config->getParsed('logic_components_dir') . $logicComponentName . '/sql/';
+
+        if (!file_exists($sqlFilePath))
+        {
+            mkdir($sqlFilePath);
+        }
+
+        $sqlFileComment = $this->scriptParams->askForUserInput("Enter short name for the sql file without spaces: ", array(), 'file-name');
+
+        $sqlFileComment = $logicComponentName . '_' . str_replace(" ", "_", $sqlFileComment);
+
+        $sqlFileName = gmdate("YmdHis") . "_{$sqlFileComment}.sql";
+
+        touch($sqlFilePath . '/' . $sqlFileName);
+
+        return "Sql file $sqlFilePath$sqlFileName created successfully";
+    }
+
+    public function removeSqlFile($logicComponentName)
+    {
+        $sqlFilePath = $this->config->getParsed('logic_components_dir') . $logicComponentName . '/sql/';
+
+        $sqlFileName = $this->scriptParams->askForUserInput("Enter file name to be deleted: ", array(), 'file-name');
+
+        $sqlFilePath .= $sqlFileName;
+
+        if (!file_exists($sqlFilePath))
+            throw new \Exception("Sql file $sqlFilePath does not exists");
+
+        unlink($sqlFilePath);
+
+        return "Sql file $sqlFilePath deleted successfully";
+    }
+
+    public function mergeSql()
+    {
+        $logicComponentsDir = $this->config->getParsed('logic_components_dir');
+
+        $logicComponents = $this->components;
+
+        $content = "";
+
+        foreach ($logicComponents as $component => $componentDependencies)
+        {
+            $sqlDir = $logicComponentsDir . $component . '/sql/';
+
+            if (!file_exists($sqlDir))
+                continue;
+
+            $files = glob($sqlDir . '*.sql');
+
+            foreach ($files as $file)
+            {
+                $fileContent = file_get_contents($file);
+
+                $content .= "\n\n\n\n" . $fileContent;
+            }
+        }
+
+        $path = $this->scriptParams->askForUserInput("Enter path to export an sql file: ", array(), 'path');
+
+        if (!file_exists($path))
+            throw new \Exception("Path does not exists: $path");
+
+        $mergeFileName = gmdate("Y-m-d_H-i-s") . "_sf_merge.sql";
+
+        file_put_contents($path . '/' . $mergeFileName, trim($content, "\n"));
+
+        return "Sql files merged to $path/$mergeFileName";
+    }
+
     public function perform()
     {
         $previewValue = $this->previewValue();
@@ -147,8 +222,16 @@ class LogicComponentOperation extends ComponentOperation
         if ($previewValue !== false)
             return $previewValue;
 
+        if ($this->value === 'import')
+            return $this->import();
+
+        if ($this->value === 'merge')
+            return $this->mergeSql();
+
         $componentName = $this->scriptParams->askForUserInput(
-            'Please enter logic component name: '
+            'Please enter logic component name: ',
+            array(),
+            'component-name'
         );
 
         if (empty($componentName))
@@ -172,6 +255,15 @@ class LogicComponentOperation extends ComponentOperation
                 break;
             case 'remove_dependency':
                 $output = $this->removeDependency($componentName);
+                break;
+            case 'export':
+                $output = $this->exportComponentAndDependencies($componentName);
+                break;
+            case 'add_sql_file':
+                $output = $this->addSqlFile($componentName);
+                break;
+            case 'remove_sql_file':
+                $output = $this->removeSqlFile($componentName);
                 break;
         }
 

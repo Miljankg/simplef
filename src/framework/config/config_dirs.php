@@ -12,3 +12,4 @@ $config['output_components_dir']         = '#$app_dir#components/output/';
 $config['logic_components_dir']          = '#$app_dir#components/logic/';
 $config['config_dir']                    = '#$framework_dir#config/';
 $config['images_dir']                    = '#$templates_dir#images/';
+$config['temp_dir']                      = '#$app_dir#temp/';

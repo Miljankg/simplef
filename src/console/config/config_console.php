@@ -69,27 +69,43 @@ $configConsole['action_mapping'] = array(
     'language' => array(
         'type' => 'Console\\Core\\Action\\LanguageOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'disable', 'enable', 'set_default')
+        'allowed_values' => array('add' => array('language-mark'), 'remove' => array('language-mark'),
+                                'disable' => array('language-mark'), 'enable' => array('language-mark'),
+                                'set_default' => array('language-mark'))
     ),
     'logic_component' => array(
         'type' => 'Console\\Core\\Action\\LogicComponentOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency')
+        'allowed_values' => array('add' => array('component-name', 'component-dependencies'), 'remove' => array('component-name'),
+                                'add_dependency' => array('component-name', 'logic-component'), 'remove_dependency' => array('component-name', 'logic-component'),
+                                'export' => array('component-name', 'path'), 'import' => array('path'),
+                                'add_sql_file' => array('component-name', 'file-name'), 'remove_sql_file' => array('component-name', 'file-name'), 'merge' => array('path'))
     ),
     'output_component' => array(
         'type' => 'Console\\Core\\Action\\OutputComponentOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'enable_js', 'disable_js', 'enable_css', 'disable_css', 'add_to_common', 'remove_from_common')
+        'allowed_values' => array('add' => array('component-name'), 'remove' => array('component-name'),
+                                'add_dependency' => array('component-name', 'logic-component'),
+                                'remove_dependency' => array('component-name', 'logic-component'),
+                                'enable_js' => array('component-name'), 'disable_js' => array('component-name'),
+                                'enable_css' => array('component-name'), 'disable_css' => array('component-name'),
+                                'add_to_common' => array('component-name'), 'remove_from_common' => array('component-name'),
+                                'export' => array('component-name', 'path'), 'import' => array('path'))
     ),
     'page' => array(
         'type' => 'Console\\Core\\Action\\PageOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'add_dependency', 'remove_dependency', 'add_role', 'remove_role', 'set_template', 'set_default_page', 'set_empty_page_index', 'set_page_not_found_page', 'set_page_maintenance', 'set_error_page_url')
+        'allowed_values' => array('add' => array('page-name', 'page-dependencies'), 'remove' => array('page-name'),
+                                'add_dependency' => array('page-name', 'output-component'), 'remove_dependency'  => array('page-name', 'output-component'),
+                                'add_role' => array('page-name', 'role'), 'remove_role' => array('page-name', 'role'),
+                                'set_template' => array('template-name'), 'set_default_page' => array('page-name'),
+                                'set_empty_page_index' => array('page-name'), 'set_page_not_found_page' => array('page-name'),
+                                'set_page_maintenance' => array('page-name'), 'set_error_page_url' => array('page-name'))
     ),
     'roles' => array(
         'type' => 'Console\\Core\\Action\\RolesOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove')
+        'allowed_values' => array('add' => array('role-name'), 'remove' => array('role-name'))
     ),
     'users' => array(
         'type' => 'Console\\Core\\Action\\UsersOperation',
@@ -99,7 +115,7 @@ $configConsole['action_mapping'] = array(
     'db_connection' => array(
         'type' => 'Console\\Core\\Action\\DbConnectionOperation',
         'config_index' => '',
-        'allowed_values' => array('add', 'remove', 'update')
+        'allowed_values' => array('add' => array('connection-name'), 'remove' => array('connection-name'), 'update' => array('connection-name', 'field-to-update', 'field-value'))
     )
 );
 

@@ -33,7 +33,7 @@ class DbConnectionOperation extends Operation
 
         $question = "Enter db connection name to filter the output or press enter for complete list: ";
 
-        $answer = $this->scriptParams->askForUserInput($question);
+        $answer = $this->scriptParams->askForUserInput($question, array(), 'connection-name');
 
         $dbConnections = $this->config->get('db_config');
 
@@ -90,7 +90,7 @@ class DbConnectionOperation extends Operation
         {
             $question = "Enter $field: ";
 
-            $answer = $this->scriptParams->askForUserInput($question);
+            $answer = $this->scriptParams->askForUserInput($question, array(), $field);
 
             $dbConnections[$dbConnectionName][$field] = $answer;
         }
@@ -111,7 +111,7 @@ class DbConnectionOperation extends Operation
 
         $areYouSure = "Are you sure that you want to remove db connection \"$dbConnectionName\" (yes|no)?";
 
-        $sure = $this->scriptParams->askForUserInput($areYouSure, array('yes', 'no'));
+        $sure = $this->scriptParams->askYesNo($areYouSure);
 
         if ($sure == 'no')
             return "Giving up on removing db connection.";
@@ -141,11 +141,11 @@ class DbConnectionOperation extends Operation
 
         $question = "Enter field that you want to update ($fieldsStr): ";
 
-        $fieldToUpdate = $this->scriptParams->askForUserInput($question, $this->databaseConnectionFields);
+        $fieldToUpdate = $this->scriptParams->askForUserInput($question, $this->databaseConnectionFields, 'field-to-update');
 
         $question = "Enter the value of the field \"$fieldToUpdate\" to update to: ";
 
-        $value = $this->scriptParams->askForUserInput($question);
+        $value = $this->scriptParams->askForUserInput($question, array(), 'field-value');
 
         $dbConnections[$dbConnectionName][$fieldToUpdate] = $value;
 
@@ -158,6 +158,7 @@ class DbConnectionOperation extends Operation
      * Performs operation.
      *
      * @return string Operation output for printing.
+     * @throws \Exception
      */
     public function perform()
     {

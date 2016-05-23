@@ -61,7 +61,7 @@ class ScriptParams
             {
                 $previousKey = substr( $value, 2, strlen($value) );
 
-                $parsedParameters[$previousKey] = null;
+                $parsedParameters[$previousKey] = "";
             }
             else
             {

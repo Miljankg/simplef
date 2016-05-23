@@ -57,7 +57,7 @@ class LanguageOperation extends Operation
 
         $question = 'Enter the two letters that marks the language (e.g. en)';
 
-        $answer = $this->scriptParams->askForUserInput($question);
+        $answer = $this->scriptParams->askForUserInput($question, array(), 'language-mark');
 
         if (strlen($answer) != 2)
             throw new \Exception('Language must be two letter mark.');
@@ -134,7 +134,7 @@ class LanguageOperation extends Operation
 
         $areYouSure = "Are you sure that you want to delete language $answer (yes|no)?";
 
-        $sure = $this->scriptParams->askForUserInput($areYouSure, array('yes', 'no'));
+        $sure = $this->scriptParams->askYesNo($areYouSure);
 
         if ($sure == 'no')
             return 'Giving up on removing language.';

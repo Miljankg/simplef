@@ -100,7 +100,7 @@ class RolesOperation extends Operation
 
         $question .= "(yes|no):";
 
-        $answer = $this->scriptParams->askForUserInput($question, array("yes", "no"));
+        $answer = $this->scriptParams->askYesNo($question);
 
         if ($answer == 'no')
             return "Giving up on removing role.";
@@ -148,7 +148,7 @@ class RolesOperation extends Operation
 
         $output = "";
 
-        $roleName = $this->scriptParams->askForUserInput("Enter role name: ");
+        $roleName = $this->scriptParams->askForUserInput("Enter role name: ", array(), 'role-name');
 
         if (empty($roleName))
             throw new \Exception("Role name cannot be empty");

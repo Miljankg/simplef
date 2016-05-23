@@ -41,7 +41,7 @@ class OutputComponentOperation extends ComponentOperation
 
         $question = ucfirst($word) . " $what (yes|no)?";
 
-        $yesNo = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
+        $yesNo = $this->scriptParams->askYesNo($question);
 
         return ($yesNo == 'yes');
     }
@@ -103,7 +103,7 @@ class OutputComponentOperation extends ComponentOperation
             $question .= "(yes|no)";
         }
 
-        $answer = $this->scriptParams->askForUserInput($question, array('yes', 'no'));
+        $answer = $this->scriptParams->askYesNo($question);
 
         if ($answer == 'no')
         {
@@ -239,8 +239,13 @@ class OutputComponentOperation extends ComponentOperation
         if ($previewValue !== false)
             return $previewValue;
 
+        if ($this->value === 'import')
+            return $this->import();
+
         $componentName = $this->scriptParams->askForUserInput(
-            'Please enter output component name: '
+            'Please enter output component name: ',
+            array(),
+            'component-name'
         );
 
         if (empty($componentName))
@@ -282,6 +287,9 @@ class OutputComponentOperation extends ComponentOperation
                 break;
             case 'remove_from_common':
                 $output = $this->removeFromCommon($componentName);
+                break;
+            case 'export':
+                $output = $this->exportComponentAndDependencies($componentName);
                 break;
         }
 

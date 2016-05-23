@@ -28,7 +28,9 @@ class PageOperation extends Operation
         $str = '';
 
         $pageName = $this->scriptParams->askForUserInput(
-            "Please enter page name if you want to filter output (or just press enter for full report): "
+            "Please enter page name if you want to filter output (or just press enter for full report): ",
+            array(),
+            'page-name'
         );
 
         if (!empty($pageName))
@@ -93,7 +95,9 @@ class PageOperation extends Operation
             throw new \Exception("$typeName \"$name\" is already configured.");
 
         $dependencies = $this->scriptParams->askForUserInput(
-            "Please enter page dependencies separated by , (comma) or just press enter for none: "
+            "Please enter page dependencies separated by , (comma) or just press enter for none: ",
+            array(),
+            'page-dependencies'
         );
 
         $dependenciesArr = array();
@@ -147,7 +151,7 @@ class PageOperation extends Operation
 
         $areYouSure = "Are you sure that you want to delete page \"$name\" (yes|no)?";
 
-        $sure = $this->scriptParams->askForUserInput($areYouSure, array('yes', 'no'));
+        $sure = $this->scriptParams->askYesNo($areYouSure);
 
         if ($sure == 'no')
             return "Giving up on removing page.";
@@ -191,7 +195,9 @@ class PageOperation extends Operation
         $this->checkIfComponentOrPageExists($name, true, 'pages');
 
         $dependency = $this->scriptParams->askForUserInput(
-            "Enter the name of the output component to add as dependency:"
+            "Enter the name of the output component to add as dependency:",
+            array(),
+            'output-component'
         );
 
         $this->checkIfComponentOrPageExists($dependency, true, 'output_components');
@@ -213,7 +219,9 @@ class PageOperation extends Operation
         $this->checkIfComponentOrPageExists($name, true, 'pages');
 
         $dependency = $this->scriptParams->askForUserInput(
-            "Enter the name of the output component to remove as dependency:"
+            "Enter the name of the output component to remove as dependency:",
+            array(),
+            'output-component'
         );
 
         $this->checkIfComponentOrPageExists($dependency, true, 'output_components');
@@ -294,7 +302,7 @@ class PageOperation extends Operation
 
         $question = "Please, enter the role name: ";
 
-        $roleName = $this->scriptParams->askForUserInput($question);
+        $roleName = $this->scriptParams->askForUserInput($question, array(), 'role');
 
         if (empty($roleName))
             throw new \Exception("Role name cannot be empty.");
@@ -327,7 +335,7 @@ class PageOperation extends Operation
 
         $question = "Please, enter the role name: ";
 
-        $roleName = $this->scriptParams->askForUserInput($question);
+        $roleName = $this->scriptParams->askForUserInput($question, array(), 'role');
 
         if (empty($roleName))
             throw new \Exception("Role name cannot be empty.");
@@ -363,7 +371,7 @@ class PageOperation extends Operation
 
         $question = "Please enter template file name without extension to load for this page, or \"default\" (no quotes), for default template. (current: $currentTpl): ";
 
-        $tplName = $this->scriptParams->askForUserInput($question);
+        $tplName = $this->scriptParams->askForUserInput($question, array(), 'template-name');
 
         $tplDir = $this->config->getParsed('page_template_directory');
 
@@ -416,7 +424,9 @@ class PageOperation extends Operation
             return $previewValue;
 
         $pageName = $this->scriptParams->askForUserInput(
-            'Please enter page name: '
+            'Please enter page name: ',
+            array(),
+            'page-name'
         );
 
         if (empty($pageName))
