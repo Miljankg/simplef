@@ -40,7 +40,16 @@ try
     $configLoader = new \Framework\Core\FrameworkClasses\Configuration\ConfigLoader(\Framework\Core\FrameworkClasses\Configuration\ConfigLocations::PHP_FILE);
     $newConfiguration = $configLoader->loadConfiguration($frameworkDir . 'config/', $config, null, $unparsedConfig, $configFileMapping);
 
-    $config = new Console\Core\Config\ConfigFromFile($configDir, $configConsole['constant_file'], $unparsedConfig, $newConfiguration, $configFileMapping);
+    $dbObj = null;
+
+    if ($config['config_type'] == \Framework\Core\FrameworkClasses\Configuration\ConfigLocations::DB)
+    {
+        $dbFactory = new \Framework\Core\Database\DbFactory(array('simplef_db' => $config['config_db']));
+
+        $dbObj = $dbFactory->GetDbInstance('simplef_db');
+    }
+
+    $config = new Console\Core\Config\ConfigFromFile($configDir, $configConsole['constant_file'], $unparsedConfig, $newConfiguration, $configFileMapping, $dbObj);
 
     $sfAssist = new \Console\Core\SfAssist($argv, $config, $configConsole);
 

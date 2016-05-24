@@ -237,7 +237,7 @@ class SF implements ISF {
                 $this->mainLoadedConfig,
                 $this->requiredMainConfig
                 );
-        
+
         $this->loadAdditionalConfig(
                 $this->mainLoadedConfig['framework_dir'],
                 $this->mainLoadedConfig['config_type'],
@@ -413,7 +413,6 @@ class SF implements ISF {
     private function loadAdditionalConfig($root, $configType, array $loadedConfig) {
 
         $this->loadClassCheckInterface('config', 'Framework\Core\FrameworkClasses\Configuration\IConfig');
-        $this->config = new Config('SF Global', $loadedConfig);            
         
         $configLoader = new ConfigLoader(
                 $configType
@@ -426,8 +425,18 @@ class SF implements ISF {
             
             $phpConfigLocation = $root . 'config/';
                                     
-        }                        
-        
+        } else if ($configType == ConfigLocations::DB) {
+
+            $phpConfigLocation = $root . 'config/';
+
+            $dbFactory = new DbFactory(array('sf_db' => $loadedConfig['config_db']));
+
+            $dbObj = $dbFactory->GetDbInstance('sf_db');
+
+        }
+
+        $this->config = new Config('SF Global', $loadedConfig, $dbObj);
+
         $newConfigFields = $configLoader->loadConfiguration(
                 $phpConfigLocation, 
                 $loadedConfig,

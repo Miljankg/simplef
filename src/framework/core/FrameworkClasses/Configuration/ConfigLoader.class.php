@@ -48,7 +48,7 @@ class ConfigLoader {
                 $config = $this->loadConfigurationFromPhpFile($configPhpFileDir, $alreadyLoadedConfig, $configFileMapping);
                 break;
             case ConfigLocations::DB:
-                $config = $this->loadConfigurationFromDb($dbObj);
+                $config = $this->loadConfigurationFromDb($dbObj, $configPhpFileDir, $alreadyLoadedConfig, $configFileMapping);
                 break;
             default :
                 throw new \Exception("Invalid config location \"$this->configLocation\"");
@@ -131,9 +131,20 @@ class ConfigLoader {
      * @param DB $dbObj Database connection object
      * @return array Loaded configuration
      */
-    private function loadConfigurationFromDb($dbObj) {
-        
-        return array();
+    private function loadConfigurationFromDb($dbObj, $configPhpFileDir, $alreadyLoadedConfig, $configFileMapping) {
+
+        $loadedConfig = $this->loadConfigurationFromPhpFile($configPhpFileDir, $alreadyLoadedConfig, $configFileMapping);
+
+        $getRolesQry = "SELECT * FROM roles";
+
+        $results = $dbObj->ExecuteTableQuery($getRolesQry);
+
+        foreach ($results as $row)
+        {
+            $loadedConfig['roles'][] = $row['role_name'];
+        }
+
+        return $loadedConfig;
         
     }
     

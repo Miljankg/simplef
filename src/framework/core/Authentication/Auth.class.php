@@ -15,23 +15,25 @@ class Auth
     /** @var array */
     private $users = null;
     private $roles = null;
+    private $dataSource = null;
 
     public function __construct(IConfig $dataSource)
     {
         $this->users = $dataSource->get('users');
         $this->roles = $dataSource->get('roles');
+        $this->dataSource = $dataSource;
     }
 
     public function authUser($username, $password)
     {
-        if (!isset($this->users[$username]))
+        $user = $this->dataSource->getUser($username);
+
+        if ($user == null)
             return false;
 
-        $user = $this->users[$username];
-
-        if ($user['password'] != sha1($password))
+        if ($user['user_password'] != sha1($password))
             return false;
 
-        return $user['role'];
+        return $user['role_name'];
     }
 }

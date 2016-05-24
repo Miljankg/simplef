@@ -3,6 +3,7 @@
 namespace Framework\Core\FrameworkClasses\Configuration;
 
 use \Exception;
+use Framework\Core\Database\DB;
 
 /**
  * This class is used to store loaded configuration values.
@@ -18,6 +19,9 @@ class Config implements IConfig
     private $configClosed = false;
     private $namespace = "Un-named Config";
 
+    /** @var DB */
+    private $dbObj = null;
+
     //</editor-fold>
 
     //<editor-fold desc="Constructor">
@@ -28,10 +32,11 @@ class Config implements IConfig
      * @param string $namespace Name of the configuration.
      * @param array $loadedConfig Already loaded config.
      */
-    public function __construct($namespace, array $loadedConfig = array())
+    public function __construct($namespace, array $loadedConfig = array(), DB $dbObj = null)
     {        
         $this->config = $loadedConfig;
         $this->namespace = $namespace;
+        $this->dbObj = $dbObj;
     }
 
     //</editor-fold>
@@ -78,6 +83,33 @@ class Config implements IConfig
             throw new \Exception("Index \"$index\" is does not exists in the \"{$this->namespace}\" config.");
 
         return $this->config[$index];
+    }
+
+    public function getUser($username)
+    {
+        $user = null;
+
+        if ($this->dbObj != null)
+        {
+            $query = "SELECT * FROM users u LEFT JOIN roles r ON u.user_role = r.role_id WHERE user_name='{$username}'";
+
+            $results = $this->dbObj->ExecuteTableQuery($query);
+
+            if (!empty($results))
+            {
+                $user = $results[0];
+            }
+        }
+        else
+        {
+            if (isset($this->config['users'][$username]))
+            {
+                $user  = $this->config['users'][$username];
+                $user['user_name'] = $username;
+            }
+        }
+
+        return $user;
     }
 
     /**

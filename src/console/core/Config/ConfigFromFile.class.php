@@ -8,6 +8,7 @@
 
 namespace Console\Core\Config;
 
+use Framework\Core\Database\DB;
 
 class ConfigFromFile implements IConfig
 {
@@ -19,16 +20,19 @@ class ConfigFromFile implements IConfig
     private $rootDir;
     private $constantsFile;
     private $constantsToRemove = array();
+    /** @var DB */
+    private $dbObj = null;
 
     //</editor-fold>
 
-    public function __construct($rootDir, $constantsFile, $config, $configParsed, $configFileMapping)
+    public function __construct($rootDir, $constantsFile, $config, $configParsed, $configFileMapping, $dbObj = null)
     {
         $this->rootDir = $rootDir;
         $this->constantsFile = $constantsFile;
         $this->loadedConfig = $config;
         $this->loadedConfigParsed = $configParsed;
         $this->configFileMapping = $configFileMapping;
+        $this->dbObj = $dbObj;
     }
 
     public function queueConstantForRemoval($constantName)
@@ -88,6 +92,89 @@ class ConfigFromFile implements IConfig
     public function set($key, $value)
     {
         $this->loadedConfig[$key] = $value;
+    }
+
+    public function roleExists($roleName)
+    {
+        $role = null;
+
+        if ($this->dbObj == null)
+        {
+            $roles = $this->loadedConfig['roles'];
+
+            if (in_array($roleName, $roles))
+                return array_search($roleName, $roles);
+        }
+        else
+        {
+            $sql = "SELECT * FROM roles WHERE role_name='{$roleName}'";
+
+            $results = $this->dbObj->ExecuteTableQuery($sql);
+
+            if (!empty($results))
+                return $results[0]['role_id'];
+        }
+
+        return false;
+    }
+
+    public function getUser($username)
+    {
+        $userData = null;
+
+        if ($this->dbObj == null)
+        {
+            $users = $this->loadedConfig['users'];
+
+            if (isset($users[$username]))
+                $userData = $users[$username];
+        }
+        else
+        {
+            $sql = "SELECT * FROM users WHERE user_name='$username'";
+
+            $results = $this->dbObj->ExecuteTableQuery($sql);
+
+            if (!empty($results))
+                $userData = $results[0];
+        }
+
+        return $userData;
+    }
+
+    public function setUser($userData, $update = false)
+    {
+        if ($this->dbObj == null)
+        {
+            $users = $this->get('users');
+
+            $users[$userData['user_name']]['user_password'] = $userData['user_password'];
+            $users[$userData['user_name']]['role_name'] = $userData['role_name'];
+
+            $this->set('users', $users);
+        }
+        else
+        {
+            $sql = "";
+
+            if (!$update)
+            {
+                $sql = "INSERT INTO users (user_name, user_password, user_role) VALUES ";
+
+                $sql .= "('{$userData['user_name']}'";
+                $sql .= ", '{$userData['user_password']}'";
+                $sql .= ", '{$userData['user_role']}')";
+            }
+            else
+            {
+                $sql = "UPDATE users SET ";
+
+                $sql .= "user_password='{$userData['user_password']}'";
+                $sql .= ", user_role='{$userData['user_role']}'";
+            }
+
+            $this->dbObj->ExecuteNonQuery($sql);
+        }
     }
 
     /**

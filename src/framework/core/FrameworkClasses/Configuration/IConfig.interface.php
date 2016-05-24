@@ -31,6 +31,8 @@ interface IConfig
      */
     public function get($index);
 
+    public function getUser($username);
+
     /**
      * Returns all config fields.
      *

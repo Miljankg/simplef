@@ -17,4 +17,6 @@ interface IConfig
     public function set($key, $value);
     public function saveChanges();
     public function queueConstantForRemoval($constantName);
+    public function setUser($userData, $update = false);
+    public function getUser($username);
 }

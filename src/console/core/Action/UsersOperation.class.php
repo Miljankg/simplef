@@ -51,31 +51,34 @@ class UsersOperation extends Operation
 
     private function addUser($userName)
     {
-        $users = $this->config->get('users');
+        $user = $this->config->getUser($userName);
 
-        if (in_array($userName, $users))
+        if ($user !== null)
             throw new \Exception("User \"$userName\" already exists.");
 
         $role = $this->scriptParams->askForUserInput("Enter role: ", array(), "role");
 
-        $roles = $this->config->get("roles");
-
         if (empty($role))
             throw new \Exception("Role cannot be empty.");
 
-        if (!in_array($role, $roles))
+        $userRole = $this->config->roleExists($role);
+
+        if ($userRole === false)
             throw new \Exception("Role \"$role\" does not exists.");
 
-        $users[$userName] = array('role' => $role);
+        $users = array('role_name' => $role);
 
         $password = $this->scriptParams->askForUserInput("Enter password: ", array(), "password");
 
         if (empty($password))
             throw new \Exception("Password cannot be empty.");
 
-        $users[$userName]['password'] = sha1($password);
+        $users['user_password'] = sha1($password);
 
-        $this->config->set('users', $users);
+        $users['user_name'] = $userName;
+        $users['user_role'] = $userRole;
+
+        $this->config->setUser($users);
 
         return "User \"$userName\" successfully added.";
     }
