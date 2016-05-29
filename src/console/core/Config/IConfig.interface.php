@@ -18,5 +18,11 @@ interface IConfig
     public function saveChanges();
     public function queueConstantForRemoval($constantName);
     public function setUser($userData, $update = false);
+    public function removeUser($username);
     public function getUser($username);
+    public function setRole($roleName);
+    public function getUserCountWithSpecifiedRole($roleName);
+    public function changeUserRole($oldRole, $newRole);
+    public function roleExists($roleName);
+    public function removeRole($roleName);
 }

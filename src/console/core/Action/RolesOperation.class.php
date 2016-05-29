@@ -46,34 +46,19 @@ class RolesOperation extends Operation
 
     private function addRole($roleName)
     {
-        $roles = $this->config->get('roles');
-
-        if (in_array($roleName, $roles))
-            throw new \Exception("Role \"$roleName\" already exists.");
-
-        array_push($roles, $roleName);
-
-        $this->config->set('roles', $roles);
+        $this->config->setRole($roleName);
 
         return "Role \"$roleName\" successfully added.";
     }
 
     private function removeRole($roleName)
     {
-        $roles = $this->config->get('roles');
+        $role = $this->config->roleExists($roleName);
 
-        if (!in_array($roleName, $roles))
+        if ($role === false)
             throw new \Exception("Role \"$roleName\" does not exists.");
 
-        $usersCount = 0;
-
-        $users = $this->config->get('users');
-
-        foreach ($users as $user => $userConfig)
-        {
-            if (isset($userConfig['role']) && $userConfig['role'] == $roleName)
-                $usersCount++;
-        }
+        $usersCount = $this->config->getUserCountWithSpecifiedRole($roleName);
 
         $question = "Are you sure that you want to remove role \"$roleName\"? ";
 
@@ -105,11 +90,6 @@ class RolesOperation extends Operation
         if ($answer == 'no')
             return "Giving up on removing role.";
 
-        if(($key = array_search($roleName, $roles)) !== false)
-        {
-            unset($roles[$key]);
-        }
-
         $pageAffectedCount = 0;
 
         foreach ($pagesMappedToRole as $pageName)
@@ -121,15 +101,11 @@ class RolesOperation extends Operation
             }
         }
 
-        foreach ($users as $userName => $userConfig)
-        {
-            if (isset($userConfig['role']) && $userConfig['role'] == $roleName)
-                $users[$userName]['role'] = 'unknown_role';
-        }
+        $this->config->changeUserRole($roleName, 'unknown_role');
 
-        $this->config->set('users', $users);
         $this->config->set('pages_access', $pagesAccessConfig);
-        $this->config->set('roles', $roles);
+
+        $this->config->removeRole($roleName);
 
         return "Role \"$roleName\" removed successfully. Users affected: $usersCount. Pages affected: $pageAffectedCount.";
     }

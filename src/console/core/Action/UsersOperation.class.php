@@ -85,9 +85,9 @@ class UsersOperation extends Operation
 
     private function removeUser($userName)
     {
-        $users = $this->config->get('users');
+        $user = $this->config->getUser($userName);
 
-        if (!isset($users[$userName]))
+        if ($user === null)
             throw new \Exception("User \"$userName\" does not exists.");
 
         $question = "Are you sure that you want to remove user \"$userName\"? (yes|no)";
@@ -97,18 +97,16 @@ class UsersOperation extends Operation
         if ($answer == 'no')
             return "Giving up on removing user.";
 
-        unset($users[$userName]);
-
-        $this->config->set('users', $users);
+        $this->removeUser($userName);
 
         return "User \"$userName\" removed successfully.";
     }
 
     private function changePassword($userName)
     {
-        $users = $this->config->get('users');
+        $user = $this->config->getUser($userName);
 
-        if (!isset($users[$userName]))
+        if ($user === null)
             throw new \Exception("User \"$userName\" does not exists.");
 
         $password = $this->scriptParams->askForUserInput("Enter password: ", array(), 'password');
@@ -116,33 +114,34 @@ class UsersOperation extends Operation
         if (empty($password))
             throw new \Exception("Password cannot be empty.");
 
-        $users[$userName]['password'] = sha1($password);
+        $user['user_password'] = sha1($password);
 
-        $this->config->set('users', $users);
+        $this->config->setUser($user, true);
 
         return "Password changed for user \"$userName\"";
     }
 
     private function changeRole($userName)
     {
-        $users = $this->config->get('users');
+        $user = $this->config->getUser($userName);
 
-        if (!isset($users[$userName]))
+        if ($user === null)
             throw new \Exception("User \"$userName\" does not exists.");
 
         $role = $this->scriptParams->askForUserInput("Enter role: ", array(), 'role');
 
-        $roles = $this->config->get("roles");
-
         if (empty($role))
             throw new \Exception("Role cannot be empty.");
 
-        if (!in_array($role, $roles))
+        $userRole = $this->config->roleExists($role);
+
+        if ($userRole === false)
             throw new \Exception("Role \"$role\" does not exists.");
 
-        $users[$userName]['role'] = $role;
+        $user['user_role'] = $userRole;
+        $user['role_name'] = $role;
 
-        $this->config->set('users', $users);
+        $this->config->setUser($user, true);
 
         return "Role changed for user \"$userName\"";
     }

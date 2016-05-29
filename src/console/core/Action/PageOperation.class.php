@@ -310,9 +310,9 @@ class PageOperation extends Operation
         if (in_array($roleName, $pageRoles))
             throw new \Exception("Role \"$roleName\" already exists for page \"$pageName\".");
 
-        $roles = $this->config->get('roles');
+        $role = $this->config->roleExists($roleName);
 
-        if (!in_array($roleName, $roles))
+        if ($role === false)
             throw new \Exception("Role \"$roleName\" does not exists.");
 
         array_push($pageRoles, $roleName);
@@ -340,9 +340,9 @@ class PageOperation extends Operation
         if (empty($roleName))
             throw new \Exception("Role name cannot be empty.");
 
-        $roles = $this->config->get('roles');
+        $role = $this->config->roleExists($roleName);
 
-        if (!in_array($roleName, $roles))
+        if ($role === false)
             throw new \Exception("Role \"$roleName\" does not exists.");
 
         if (!isset($pagesAccess[$pageName]) || !in_array($roleName, $pagesAccess[$pageName]))
