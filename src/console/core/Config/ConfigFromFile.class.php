@@ -155,7 +155,7 @@ class ConfigFromFile implements IConfig
 
             array_push($roles, $roleName);
 
-            $this->config->set('roles', $roles);
+            $this->set('roles', $roles);
         }
         else
         {
@@ -177,7 +177,7 @@ class ConfigFromFile implements IConfig
                     $users[$userName]['role_name'] = 'unknown_role';
             }
 
-            $this->config->set('users', $users);
+            $this->set('users', $users);
         }
         else
         {

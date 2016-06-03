@@ -20,14 +20,14 @@ class ScriptParams
     {
         $scriptParameters = $this->parseScriptParameters($arguments);
 
+        if (!isset($scriptParameters['object']))
+            throw new Exception('No object specified');
+
         if (!isset($scriptParameters['action']))
             throw new Exception('No action specified');
 
-        if (!isset($scriptParameters['value']))
-            throw new Exception('No value specified');
-
-        $this->action = $scriptParameters['action'];
-        $this->value = $scriptParameters['value'];
+        $this->action = $scriptParameters['object'];
+        $this->value = $scriptParameters['action'];
 
         $expectedParameters = array();
 

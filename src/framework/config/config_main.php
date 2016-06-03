@@ -14,7 +14,7 @@ $config['app_webroot_dir'] = str_replace(
         dirname(dirname(__DIR__))
         ); // Application location within the server webroot
 
-$config['app_webroot_dir']      = ltrim($config['app_webroot_dir'], $config['ds']);
+$config['app_webroot_dir']      = (php_sapi_name() == 'cli') ? $config['app_webroot_dir'] : ltrim($config['app_webroot_dir'], $config['ds']);
 
 $docRootTmp = (empty($_SERVER['DOCUMENT_ROOT'])) ? "" : $_SERVER['DOCUMENT_ROOT'] . $config['ds'];
 
