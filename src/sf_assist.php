@@ -20,11 +20,14 @@ require_once $configDir . 'config_main.php';
 $frameworkDir = $config['framework_dir'];
 
 require_once __DIR__ . '/framework/core/Loaders/ClassLoader.class.php';
+
+$classLoader = new Framework\Core\Loaders\ClassLoader($config['document_root']);
+
 require_once __DIR__ . '/console/core/Parameters/ScriptParams.class.php';
 require_once $frameworkDir . 'core/FrameworkClasses/Configuration/ConfigLocations.class.php';
 require_once $frameworkDir . 'core/FrameworkClasses/Configuration/ConfigLoader.class.php';
 
-$classLoader = new Framework\Core\Loaders\ClassLoader($rootDir);
+
 
 spl_autoload_register(array($classLoader, 'loadClass'));
 
@@ -49,7 +52,7 @@ try
         $dbObj = $dbFactory->GetDbInstance('simplef_db');
     }
 
-    $config = new Console\Core\Config\ConfigFromFile($configDir, $configConsole['constant_file'], $unparsedConfig, $newConfiguration, $configFileMapping, $dbObj);
+    $config = new Console\Core\Config\ConfigFromFile($configDir, $config['document_root'] . 'framework/config/constants.php', $unparsedConfig, $newConfiguration, $configFileMapping, $dbObj);
 
     $sfAssist = new \Console\Core\SfAssist($argv, $config, $configConsole);
 
